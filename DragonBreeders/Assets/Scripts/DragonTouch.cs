@@ -64,7 +64,7 @@ public class DragonTouch : MonoBehaviour
                     {
                         Vector2 deltaPosition = touch.position - fingerTouchStartPosition;
                         float rotationDelta = deltaPosition.x * rotationSpeed * Time.deltaTime;
-                        currentYRotation += rotationDelta;
+                        currentYRotation -= rotationDelta;
                         transform.eulerAngles = new Vector3(transform.eulerAngles.x, currentYRotation, transform.eulerAngles.z);
 
                         fingerTouchStartPosition = touch.position;
