@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public enum DragonBehaviorState
 { 
@@ -10,24 +9,73 @@ public enum DragonBehaviorState
     AngryState
 }
 
+public enum DragonGrowthState
+{ 
+    Infancy,
+    GrowingUp,
+    Maturity,
+    Adult,
+}
+
 public class DragonBehavior : MonoBehaviour
 {
-    public DragonBehaviorState currentState;
+    public DragonBehaviorState currentBehavior;
+    public DragonGrowthState currentGrowth;
     private Animator animator;
+    private float growSpeed = 5f;
+
+    private Vector3 targetScale;
 
     public static readonly string[] Action = { "Action1", "Action2", "Action3", "Action4", "Action5" };
-
-    private float idleTime = 5f;
-    private float time = 0f;
 
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        currentState = DragonBehaviorState.Idle1State;
+        currentBehavior = DragonBehaviorState.Idle1State;
+        currentGrowth = DragonGrowthState.Infancy;
     }
 
     void Update()
+    {
+        TouchAction();
+
+        switch (currentGrowth)
+        {
+            case DragonGrowthState.Infancy:
+                targetScale = new Vector3(0.2f, 0.2f, 0.2f);
+                if (Touch3() || Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    currentGrowth = DragonGrowthState.GrowingUp;
+                }
+                break;
+            case DragonGrowthState.GrowingUp:
+                targetScale = new Vector3(0.4f, 0.4f, 0.4f);
+                if (Touch3() || Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    currentGrowth = DragonGrowthState.Maturity;
+                }
+                break;
+            case DragonGrowthState.Maturity:
+                targetScale = new Vector3(0.6f, 0.6f, 0.6f);
+                if (Touch3() || Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    currentGrowth = DragonGrowthState.Adult;
+                }
+                break;
+            case DragonGrowthState.Adult:
+                targetScale = new Vector3(1f, 1f, 1f);
+                if (Touch3() || Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    currentGrowth = DragonGrowthState.Infancy;
+                }
+                break;
+        }
+
+        transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * growSpeed);
+    }
+
+    private void TouchAction()
     {
         if (Input.touchCount == 1)
         {
@@ -47,83 +95,27 @@ public class DragonBehavior : MonoBehaviour
                     }
                 }
             }
-
-
-            time += Time.deltaTime;
-
-            if (time > idleTime)
-            {
-                int random = Random.Range(0, 3);
-
-                switch (random)
-                {
-                    case 0:
-                        currentState = DragonBehaviorState.Idle2State;
-                        break;
-                    case 1:
-                        currentState = DragonBehaviorState.HappyState;
-                        break;
-                    case 2:
-                        currentState = DragonBehaviorState.HurtState;
-                        break;
-                    case 3:
-                        currentState = DragonBehaviorState.AngryState;
-                        break;
-                }
-
-                time = 0f;
-            }
-
-
-            switch (currentState)
-            {
-                case DragonBehaviorState.Idle1State:
-                    UpdateIdle1State();
-                    break;
-                case DragonBehaviorState.Idle2State:
-                    UpdateIdle2State();
-                    break;
-                case DragonBehaviorState.HappyState:
-                    UpdateHappyState();
-                    break;
-                case DragonBehaviorState.HurtState:
-                    UpdateHurtState();
-                    break;
-                case DragonBehaviorState.AngryState:
-                    UpdateAngryState();
-                    break;
-            }
         }
     }
 
-    private void UpdateIdle1State()
+    private bool Touch3()
     {
-    
-    
+        if (Input.touchCount == 3)
+        { 
+            Touch touch0 = Input.GetTouch(0);
+            Touch touch1 = Input.GetTouch(1);
+            Touch touch2 = Input.GetTouch(2);
+
+            if (touch0.phase == TouchPhase.Began && touch1.phase == TouchPhase.Began && touch2.phase == TouchPhase.Began)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    private void UpdateIdle2State()
-    {
-        animator.SetTrigger("Idle");
 
-    }
-
-    private void UpdateHappyState()
-    {
-        animator.SetTrigger("Happy");
-
-    }
-
-    private void UpdateHurtState()
-    {
-        animator.SetTrigger("Hurt");
-
-    }
-
-    private void UpdateAngryState()
-    {
-        animator.SetTrigger("Angry");
-    }
 
 
 }
