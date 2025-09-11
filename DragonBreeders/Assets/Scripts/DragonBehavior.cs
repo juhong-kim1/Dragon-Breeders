@@ -10,11 +10,12 @@ public enum DragonBehaviorState
     AngryState
 }
 
-
 public class DragonBehavior : MonoBehaviour
 {
     public DragonBehaviorState currentState;
     private Animator animator;
+
+    public static readonly string[] Action = { "Action1", "Action2", "Action3", "Action4", "Action5" };
 
     private float idleTime = 5f;
     private float time = 0f;
@@ -23,57 +24,76 @@ public class DragonBehavior : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-
         currentState = DragonBehaviorState.Idle1State;
     }
 
     void Update()
     {
-        time += Time.deltaTime;
-
-        if (time > idleTime)
+        if (Input.touchCount == 1)
         {
-            int random = Random.Range(0, 3);
+            Touch touch = Input.GetTouch(0);
 
-            switch (random)
+            if (touch.phase == TouchPhase.Began)
             {
-                case 0:
-                    currentState = DragonBehaviorState.Idle2State;
-                    break;
-                case 1:
-                    currentState = DragonBehaviorState.HappyState;
-                    break;
-                case 2:
-                    currentState = DragonBehaviorState.HurtState;
-                    break;
-                case 3:
-                    currentState = DragonBehaviorState.AngryState;
-                    break;
+                Ray ray = Camera.main.ScreenPointToRay(touch.position);
+
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+                    if (hit.collider.gameObject == this.gameObject)
+                    {
+                        int random = Random.Range(0, 5);
+
+                        animator.SetTrigger(Action[random]);
+                    }
+                }
             }
 
-            time = 0f;
+
+            time += Time.deltaTime;
+
+            if (time > idleTime)
+            {
+                int random = Random.Range(0, 3);
+
+                switch (random)
+                {
+                    case 0:
+                        currentState = DragonBehaviorState.Idle2State;
+                        break;
+                    case 1:
+                        currentState = DragonBehaviorState.HappyState;
+                        break;
+                    case 2:
+                        currentState = DragonBehaviorState.HurtState;
+                        break;
+                    case 3:
+                        currentState = DragonBehaviorState.AngryState;
+                        break;
+                }
+
+                time = 0f;
+            }
+
+
+            switch (currentState)
+            {
+                case DragonBehaviorState.Idle1State:
+                    UpdateIdle1State();
+                    break;
+                case DragonBehaviorState.Idle2State:
+                    UpdateIdle2State();
+                    break;
+                case DragonBehaviorState.HappyState:
+                    UpdateHappyState();
+                    break;
+                case DragonBehaviorState.HurtState:
+                    UpdateHurtState();
+                    break;
+                case DragonBehaviorState.AngryState:
+                    UpdateAngryState();
+                    break;
+            }
         }
-
-
-        switch (currentState)
-        {
-            case DragonBehaviorState.Idle1State:
-                UpdateIdle1State();
-                break;
-            case DragonBehaviorState.Idle2State:
-                UpdateIdle2State();
-                break;
-            case DragonBehaviorState.HappyState:
-                UpdateHappyState();
-                break;
-            case DragonBehaviorState.HurtState:
-                UpdateHurtState();
-                break;
-            case DragonBehaviorState.AngryState:
-                UpdateAngryState();
-                break;
-        }
-
     }
 
     private void UpdateIdle1State()
