@@ -11,19 +11,27 @@ public enum DragonGrowthState
 
 public class DragonHealth : LivingEntity
 {
+    public static readonly string isPassOutTrigger = "IsPassOut";
+
+    public Animator animator;
     public DragonGrowthState currentGrowth;
     private Vector3 targetScale;
 
     private float growSpeed = 5f;
 
     private float hungryTimer = 0f;
-    private float hungryMaxTime = 10f;
+    private float hungryMaxTime = 3f;
 
     private float cleanTimer = 0f;
     private float cleanMaxTime = 15f;
 
+    public bool isPassOut = false;
+    public bool hasTriggerPassOut = false;
+
     private void Start()
     {
+        animator = GetComponent<Animator>();
+
         stamina = 100;
         vitality = 110;
         clean = 90;
@@ -33,6 +41,10 @@ public class DragonHealth : LivingEntity
 
     private void Update()
     {
+        if (isPassOut && hasTriggerPassOut)
+        {
+            OnPassOut();
+        }
 
         switch (currentGrowth)
         {
@@ -128,11 +140,27 @@ public class DragonHealth : LivingEntity
 
             if (full > 0)
             {
-                full -= 1;
+                full -= 30;
+
+                if (full < 0)
+                {
+                    full = 0;
+                }
             }
             else
             {
-                vitality -= 2;
+                if (vitality > 0)
+                {
+                    vitality -= 30;
+
+                    if (vitality < 0)
+                    {
+                        vitality = 0;
+                        isPassOut = true;
+                        hasTriggerPassOut = true;
+                    }
+                }
+
             }
 
             hungryTimer = 0f;
@@ -145,9 +173,23 @@ public class DragonHealth : LivingEntity
 
         if (cleanTimer > cleanMaxTime)
         {
-            clean -= 2;
+            if (clean <= 0)
+            {
+                clean = 0;
+            }
+            else
+            {
+                clean -= 2;
+            }
 
             cleanTimer = 0f;
         }
+    }
+
+    private void OnPassOut()
+    {
+        animator.SetTrigger(isPassOutTrigger);
+
+        hasTriggerPassOut = false;
     }
 }

@@ -8,7 +8,4 @@ public class LivingEntity : MonoBehaviour
     public int full;
     public int intimacy;
     public int clean;
-
-    public bool isPassOut = false;
-
 }

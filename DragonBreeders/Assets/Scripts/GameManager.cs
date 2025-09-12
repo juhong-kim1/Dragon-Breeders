@@ -1,5 +1,6 @@
 using System.Text;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -36,5 +37,22 @@ public class GameManager : MonoBehaviour
         IntimacyText.text = $"Intimacy : {dragonHealth.intimacy}";
         CleanText.text = $"Clean : {dragonHealth.clean}";
 
+    }
+
+    public void OnClickRest()
+    {
+        if (dragonHealth.isPassOut)
+        {
+            dragonHealth.isPassOut = false;
+            dragonHealth.hasTriggerPassOut = false;
+            dragonHealth.animator.Rebind();
+        }
+
+        dragonHealth.vitality += 50;
+    }
+
+    public void OnClickFeed()
+    {
+        dragonHealth.full += 50;
     }
 }
