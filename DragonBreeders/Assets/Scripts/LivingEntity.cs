@@ -10,4 +10,5 @@ public class LivingEntity : MonoBehaviour
     public int clean;
 
     public bool isPassOut = false;
+
 }

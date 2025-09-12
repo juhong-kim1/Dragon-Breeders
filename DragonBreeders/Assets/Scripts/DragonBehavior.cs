@@ -14,9 +14,6 @@ public class DragonBehavior : MonoBehaviour
     public DragonBehaviorState currentBehavior;
     public DragonGrowthState currentGrowth;
     private Animator animator;
-    private float growSpeed = 5f;
-
-    private Vector3 targetScale;
 
     public static readonly string[] Action = { "Action1", "Action2", "Action3", "Action4", "Action5" };
 

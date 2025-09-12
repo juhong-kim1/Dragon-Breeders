@@ -16,9 +16,11 @@ public class DragonHealth : LivingEntity
 
     private float growSpeed = 5f;
 
-    private float time = 0f;
+    private float hungryTimer = 0f;
+    private float hungryMaxTime = 10f;
 
-    private float hungryTime = 10f;
+    private float cleanTimer = 0f;
+    private float cleanMaxTime = 15f;
 
     private void Start()
     {
@@ -51,7 +53,7 @@ public class DragonHealth : LivingEntity
         transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * growSpeed);
 
         OnHungry();
-
+        OnClean();
     }
 
     private bool Touch3()
@@ -119,13 +121,25 @@ public class DragonHealth : LivingEntity
 
     private void OnHungry()
     {
-        time += Time.deltaTime;
+        hungryTimer += Time.deltaTime;
 
-        if (time > hungryTime)
+        if (hungryTimer > hungryMaxTime)
         {
             full -= 1;
 
-            time = 0f;
+            hungryTimer = 0f;
+        }
+    }
+
+    private void OnClean()
+    {
+        cleanTimer += Time.deltaTime;
+
+        if (cleanTimer > cleanMaxTime)
+        {
+            clean -= 2;
+
+            cleanTimer = 0f;
         }
     }
 }
