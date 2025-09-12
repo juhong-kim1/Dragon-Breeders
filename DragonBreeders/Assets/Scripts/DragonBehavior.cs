@@ -9,14 +9,6 @@ public enum DragonBehaviorState
     AngryState
 }
 
-public enum DragonGrowthState
-{ 
-    Infancy,
-    GrowingUp,
-    Maturity,
-    Adult,
-}
-
 public class DragonBehavior : MonoBehaviour
 {
     public DragonBehaviorState currentBehavior;
@@ -39,40 +31,6 @@ public class DragonBehavior : MonoBehaviour
     void Update()
     {
         TouchAction();
-
-        switch (currentGrowth)
-        {
-            case DragonGrowthState.Infancy:
-                targetScale = new Vector3(0.2f, 0.2f, 0.2f);
-                if (Touch3() || Input.GetKeyDown(KeyCode.Alpha1))
-                {
-                    currentGrowth = DragonGrowthState.GrowingUp;
-                }
-                break;
-            case DragonGrowthState.GrowingUp:
-                targetScale = new Vector3(0.4f, 0.4f, 0.4f);
-                if (Touch3() || Input.GetKeyDown(KeyCode.Alpha1))
-                {
-                    currentGrowth = DragonGrowthState.Maturity;
-                }
-                break;
-            case DragonGrowthState.Maturity:
-                targetScale = new Vector3(0.6f, 0.6f, 0.6f);
-                if (Touch3() || Input.GetKeyDown(KeyCode.Alpha1))
-                {
-                    currentGrowth = DragonGrowthState.Adult;
-                }
-                break;
-            case DragonGrowthState.Adult:
-                targetScale = new Vector3(1f, 1f, 1f);
-                if (Touch3() || Input.GetKeyDown(KeyCode.Alpha1))
-                {
-                    currentGrowth = DragonGrowthState.Infancy;
-                }
-                break;
-        }
-
-        transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * growSpeed);
     }
 
     private void TouchAction()
@@ -97,25 +55,4 @@ public class DragonBehavior : MonoBehaviour
             }
         }
     }
-
-    private bool Touch3()
-    {
-        if (Input.touchCount == 3)
-        { 
-            Touch touch0 = Input.GetTouch(0);
-            Touch touch1 = Input.GetTouch(1);
-            Touch touch2 = Input.GetTouch(2);
-
-            if (touch0.phase == TouchPhase.Began && touch1.phase == TouchPhase.Began && touch2.phase == TouchPhase.Began)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-
-
 }
