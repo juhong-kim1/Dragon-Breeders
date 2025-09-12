@@ -125,7 +125,15 @@ public class DragonHealth : LivingEntity
 
         if (hungryTimer > hungryMaxTime)
         {
-            full -= 1;
+
+            if (full > 0)
+            {
+                full -= 1;
+            }
+            else
+            {
+                vitality -= 2;
+            }
 
             hungryTimer = 0f;
         }
