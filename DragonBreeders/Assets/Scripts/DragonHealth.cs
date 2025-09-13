@@ -133,6 +133,9 @@ public class DragonHealth : LivingEntity
 
     private void OnHungry()
     {
+        if (isPassOut)
+            return;
+
         hungryTimer += Time.deltaTime;
 
         if (hungryTimer > hungryMaxTime)
@@ -169,6 +172,9 @@ public class DragonHealth : LivingEntity
 
     private void OnClean()
     {
+        if (isPassOut)
+            return;
+
         cleanTimer += Time.deltaTime;
 
         if (cleanTimer > cleanMaxTime)

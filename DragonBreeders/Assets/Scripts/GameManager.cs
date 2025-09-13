@@ -11,8 +11,14 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI staminaText;
     public TextMeshProUGUI vitalityText;
     public TextMeshProUGUI fullText;
-    public TextMeshProUGUI IntimacyText;
-    public TextMeshProUGUI CleanText;
+    public TextMeshProUGUI intimacyText;
+    public TextMeshProUGUI cleanText;
+
+    public TextMeshProUGUI mapStaminaText;
+    public TextMeshProUGUI mapVitalityText;
+    public TextMeshProUGUI mapFullText;
+    public TextMeshProUGUI mapIntimacyText;
+    public TextMeshProUGUI mapCleanText;
 
     private DragonGrowthState state;
 
@@ -34,12 +40,18 @@ public class GameManager : MonoBehaviour
         staminaText.text = $"Stamina : {dragonHealth.stamina}";
         vitalityText.text = $"Vitality : {dragonHealth.vitality}";
         fullText.text = $"Full : {dragonHealth.full}";
-        IntimacyText.text = $"Intimacy : {dragonHealth.intimacy}";
-        CleanText.text = $"Clean : {dragonHealth.clean}";
+        intimacyText.text = $"Intimacy : {dragonHealth.intimacy}";
+        cleanText.text = $"Clean : {dragonHealth.clean}";
+
+        mapStaminaText.text = $"Stamina : {dragonHealth.stamina}";
+        mapVitalityText.text = $"Vitality : {dragonHealth.vitality}";
+        mapFullText.text = $"Full : {dragonHealth.full}";
+        mapIntimacyText.text = $"Intimacy : {dragonHealth.intimacy}";
+        mapCleanText.text = $"Clean : {dragonHealth.clean}";
 
     }
 
-    public void OnClickRest()
+    public void OnClickReset()
     {
         if (dragonHealth.isPassOut)
         {
@@ -53,6 +65,9 @@ public class GameManager : MonoBehaviour
 
     public void OnClickFeed()
     {
+        if (dragonHealth.isPassOut)
+            return;
+
         dragonHealth.full += 50;
     }
 }
