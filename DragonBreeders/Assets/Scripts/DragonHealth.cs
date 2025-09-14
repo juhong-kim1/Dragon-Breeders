@@ -17,6 +17,11 @@ public class DragonHealth : MonoBehaviour
     public DragonGrowthState currentGrowth;
     private Vector3 targetScale;
 
+    public int currentSpeciesType = 1;
+    public int currentElementType = 1;
+
+    private DragonStatTableData currentTableData;
+
     private float growSpeed = 5f;
 
     private float hungryTimer = 0f;
@@ -31,7 +36,8 @@ public class DragonHealth : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
-        UpdateGrowthStats();
+        //UpdateGrowthStats();
+        ApplyTableData();
     }
 
     private void Update()
@@ -41,23 +47,71 @@ public class DragonHealth : MonoBehaviour
         CheckPassOutStat();
     }
 
+    private void ApplyTableData()
+    {
+        int growthType = GetGrowthTypeFromState(currentGrowth);
+        currentTableData = DataTableManger.DragonStatTable.GetByTypes(currentSpeciesType, currentElementType, growthType);
+
+        if (currentTableData == null)
+        {
+
+            Debug.LogError($"테이블 데이터를 찾을 수 없습니다: Species:{currentSpeciesType}, Element:{currentElementType}, Growth:{growthType}");
+
+            targetScale = Vector3.one * 0.2f;
+            return;
+        }
+
+        if (stats == null)
+        {
+            stats = new DragonStats();
+        }
+
+        stats.maxStamina = currentTableData.MAXHP;
+        stats.maxFatigue = currentTableData.MAXFTG;
+        stats.maxhunger = currentTableData.MAXFOOD;
+        stats.maxClean = currentTableData.MAXHYG;
+        stats.maxIntimacy = currentTableData.MAXFRN;
+        stats.experienceMax = currentTableData.EXP_REQ;
+
+        if (stats.stamina <= 0) stats.stamina = stats.maxStamina;
+        if (stats.hunger <= 0) stats.hunger = stats.maxhunger;
+        if (stats.clean <= 0) stats.clean = stats.maxClean;
+
+        targetScale = Vector3.one * currentTableData.SCALE_SIZE;
+
+        hungryMaxTime = 60f / currentTableData.DEPRATE_FOOD;
+        cleanMaxTime = 60f / currentTableData.DEPRATE_HYG;
+    }
+
+    private int GetGrowthTypeFromState(DragonGrowthState state)
+    {
+        switch (state)
+        {
+            case DragonGrowthState.Infancy: return 1;
+            case DragonGrowthState.GrowingUp: return 2;
+            case DragonGrowthState.Maturity: return 3;
+            case DragonGrowthState.Adult: return 3;
+            default: return 1;
+        }
+    }
+
     private void UpdateGrowth()
     {
-        switch (currentGrowth)
-        {
-            case DragonGrowthState.Infancy:
-                targetScale = Vector3.one * 0.2f;
-                break;
-            case DragonGrowthState.GrowingUp:
-                targetScale = Vector3.one * 0.4f;
-                break;
-            case DragonGrowthState.Maturity:
-                targetScale = Vector3.one * 0.6f;
-                break;
-            case DragonGrowthState.Adult:
-                targetScale = Vector3.one * 1f;
-                break;
-        }
+        //switch (currentGrowth)
+        //{
+        //    case DragonGrowthState.Infancy:
+        //        targetScale = Vector3.one * 0.2f;
+        //        break;
+        //    case DragonGrowthState.GrowingUp:
+        //        targetScale = Vector3.one * 0.4f;
+        //        break;
+        //    case DragonGrowthState.Maturity:
+        //        targetScale = Vector3.one * 0.6f;
+        //        break;
+        //    case DragonGrowthState.Adult:
+        //        targetScale = Vector3.one * 1f;
+        //        break;
+        //}
 
         transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * growSpeed);
 
@@ -116,37 +170,38 @@ public class DragonHealth : MonoBehaviour
         animator.Rebind();
     }
 
-    private void UpdateGrowthStats()
-    {
-        switch (currentGrowth)
-        {
-            case DragonGrowthState.Infancy:
-                stats.maxStamina = 100;
-                stats.experienceMax = 100f;
-                break;
-            case DragonGrowthState.GrowingUp:
-                stats.maxStamina = 150;
-                stats.experienceMax = 100f;
-                break;
-            case DragonGrowthState.Maturity:
-                stats.maxStamina = 200;
-                stats.experienceMax = 100f;
-                break;
-            case DragonGrowthState.Adult:
-                stats.maxStamina = 250;
-                stats.experienceMax = 100f;
-                break;
-        }
+    //private void UpdateGrowthStats()
+    //{
+    //    switch (currentGrowth)
+    //    {
+    //        case DragonGrowthState.Infancy:
+    //            stats.maxStamina = 100;
+    //            stats.experienceMax = 100f;
+    //            break;
+    //        case DragonGrowthState.GrowingUp:
+    //            stats.maxStamina = 150;
+    //            stats.experienceMax = 100f;
+    //            break;
+    //        case DragonGrowthState.Maturity:
+    //            stats.maxStamina = 200;
+    //            stats.experienceMax = 100f;
+    //            break;
+    //        case DragonGrowthState.Adult:
+    //            stats.maxStamina = 250;
+    //            stats.experienceMax = 100f;
+    //            break;
+    //    }
 
-        stats.stamina = stats.maxStamina;
-    }
+    //    stats.stamina = stats.maxStamina;
+    //}
 
     public void GrowUp()
     {
         if (currentGrowth < DragonGrowthState.Adult)
         {
             currentGrowth++;
-            UpdateGrowthStats();
+            ApplyTableData();
+            //UpdateGrowthStats();
         }
     }
 
@@ -173,7 +228,8 @@ public class DragonHealth : MonoBehaviour
         {
             stats.ConsumeGrowthExperience();
             currentGrowth++;
-            UpdateGrowthStats();
+            ApplyTableData();
+            // UpdateGrowthStats();
         }
     }
 }
