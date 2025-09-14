@@ -1921,6 +1921,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 291a98b2c2880e64aa11c57110b315ae, type: 3}
   m_PrefabInstance: {fileID: 291150156}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &295256573 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1068594307813545380, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
+  m_PrefabInstance: {fileID: 5138436980520108006}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &299927745
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4298,7 +4309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &618681089
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5262,7 +5273,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &787292721
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7632,6 +7643,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 9dae912d11ba3ad4a94f0a77865e7c9c, type: 3}
   m_PrefabInstance: {fileID: 1166941606}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1213730343 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1068594307813545380, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
+  m_PrefabInstance: {fileID: 1885707526}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1233368166
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8078,6 +8100,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7578221263843879661, guid: 3f91b1dd8c0f73746ae9dc6f01d19cf0, type: 3}
   m_PrefabInstance: {fileID: 1275062245}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1275744930 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4294411729827946900, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
+  m_PrefabInstance: {fileID: 5138436980520108006}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1297175165
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8735,15 +8768,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dragonHealth: {fileID: 2080525269}
   staminaText: {fileID: 2137153600}
-  vitalityText: {fileID: 1491370254}
-  fullText: {fileID: 1791306774}
+  figureText: {fileID: 1491370254}
+  hungryText: {fileID: 1791306774}
   intimacyText: {fileID: 1958372198}
   cleanText: {fileID: 1566298697}
-  mapStaminaText: {fileID: 1737244727}
-  mapVitalityText: {fileID: 1327465065}
-  mapFullText: {fileID: 332312759}
-  mapIntimacyText: {fileID: 1562079357}
-  mapCleanText: {fileID: 1668900946}
+  experienceText: {fileID: 295256573}
+  growthStateText: {fileID: 1275744930}
+  mapStatTexts:
+  - {fileID: 1737244727}
+  - {fileID: 1327465065}
+  - {fileID: 332312759}
+  - {fileID: 1562079357}
+  - {fileID: 1668900946}
+  - {fileID: 1213730343}
+  - {fileID: 1847087960}
 --- !u!4 &1382034689
 Transform:
   m_ObjectHideFlags: 0
@@ -11301,6 +11339,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 874502c9ea4d6f041b78ddb7bfb3fc94, type: 3}
   m_PrefabInstance: {fileID: 1843227562}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1847087960 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4294411729827946900, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
+  m_PrefabInstance: {fileID: 1885707526}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1852522197
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13202,12 +13251,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 034b07a7a255b984dbdb4f72508ad443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stamina: 0
-  vitality: 0
-  full: 0
-  intimacy: 0
-  clean: 0
-  animator: {fileID: 0}
+  stats:
+    stamina: 100
+    fatigue: 0
+    hunger: 100
+    intimacy: 0
+    clean: 100
+    maxStamina: 250
+    maxFatigue: 100
+    maxhunger: 100
+    maxIntimacy: 100
+    maxClean: 100
+    experience: 0
+    experienceMax: 100
   currentGrowth: 0
   isPassOut: 0
   hasTriggerPassOut: 0
@@ -13491,6 +13547,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 73758817}
     m_Modifications:
+    - target: {fileID: 1068594307813545380, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
+      propertyPath: m_text
+      value: 'EXP : 00'
+      objectReference: {fileID: 0}
     - target: {fileID: 1382123903554521426, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -13571,9 +13631,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4997582101371273460, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 700
+      objectReference: {fileID: 0}
     - target: {fileID: 6962485877062034520, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
       propertyPath: m_Name
       value: Temp Ui
+      objectReference: {fileID: 0}
+    - target: {fileID: 8076715662070035652, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

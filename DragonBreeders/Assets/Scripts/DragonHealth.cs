@@ -122,15 +122,19 @@ public class DragonHealth : MonoBehaviour
         {
             case DragonGrowthState.Infancy:
                 stats.maxStamina = 100;
+                stats.experienceMax = 100f;
                 break;
             case DragonGrowthState.GrowingUp:
                 stats.maxStamina = 150;
+                stats.experienceMax = 100f;
                 break;
             case DragonGrowthState.Maturity:
                 stats.maxStamina = 200;
+                stats.experienceMax = 100f;
                 break;
             case DragonGrowthState.Adult:
                 stats.maxStamina = 250;
+                stats.experienceMax = 100f;
                 break;
         }
 
@@ -147,7 +151,29 @@ public class DragonHealth : MonoBehaviour
     }
 
     public void StartResting()
-    { 
-    
+    {
+        if (stats.fatigue < 60)
+        {
+            return;
+        }
+
+        if (isPassOut) return;
+
+        int expGained = stats.CalculateExperience();
+        stats.ChangeStat(StatType.Experience, expGained);
+
+        stats.ChangeStat(StatType.Fatigue, -30);
+
+        CheckGrowth();
+    }
+
+    private void CheckGrowth()
+    {
+        if (stats.CanGrowUp() && currentGrowth < DragonGrowthState.Adult)
+        {
+            stats.ConsumeGrowthExperience();
+            currentGrowth++;
+            UpdateGrowthStats();
+        }
     }
 }
