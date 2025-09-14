@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public enum DragonGrowthState
@@ -9,10 +8,11 @@ public enum DragonGrowthState
     Adult,
 }
 
-public class DragonHealth : LivingEntity
+public class DragonHealth : MonoBehaviour
 {
     public static readonly string isPassOutTrigger = "IsPassOut";
 
+    public DragonStats stats;
     public Animator animator;
     public DragonGrowthState currentGrowth;
     private Vector3 targetScale;
@@ -31,41 +31,14 @@ public class DragonHealth : LivingEntity
     private void Start()
     {
         animator = GetComponent<Animator>();
-
-        stamina = 100;
-        vitality = 110;
-        clean = 90;
-        full = 100;
-        intimacy = 0;
+        UpdateGrowthStats();
     }
 
     private void Update()
     {
-        if (isPassOut && hasTriggerPassOut)
-        {
-            OnPassOut();
-        }
-
-        switch (currentGrowth)
-        {
-            case DragonGrowthState.Infancy:
-                UpdateInfancy();
-                break;
-            case DragonGrowthState.GrowingUp:
-                UpdateGrowingUp();
-                break;
-            case DragonGrowthState.Maturity:
-                UpdateMaturity();
-                break;
-            case DragonGrowthState.Adult:
-                UpdateAdult();
-                break;
-        }
-
-        transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * growSpeed);
-
-        OnHungry();
-        OnClean();
+        UpdateGrowth();
+        UpdateStats();
+        CheckPassOutStat();
     }
 
     private bool Touch3()
@@ -85,117 +58,114 @@ public class DragonHealth : LivingEntity
         return false;
     }
 
-    private void UpdateInfancy()
+
+    private void UpdateGrowth()
     {
-        targetScale = new Vector3(0.2f, 0.2f, 0.2f);
-        if (Touch3() || Input.GetKeyDown(KeyCode.Alpha1))
+        switch (currentGrowth)
         {
-            currentGrowth = DragonGrowthState.GrowingUp;
+            case DragonGrowthState.Infancy:
+                targetScale = Vector3.one * 0.2f;
+                break;
+            case DragonGrowthState.GrowingUp:
+                targetScale = Vector3.one * 0.4f;
+                break;
+            case DragonGrowthState.Maturity:
+                targetScale = Vector3.one * 0.6f;
+                break;
+            case DragonGrowthState.Adult:
+                targetScale = Vector3.one * 1f;
+                break;
         }
 
-        stamina = 100;
-    }
-
-    private void UpdateGrowingUp()
-    {
-        targetScale = new Vector3(0.4f, 0.4f, 0.4f);
-        if (Touch3() || Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            currentGrowth = DragonGrowthState.Maturity;
-        }
-
-        stamina = 150;
+        transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * growSpeed);
 
     }
 
-    private void UpdateMaturity()
-    {
-        targetScale = new Vector3(0.6f, 0.6f, 0.6f);
-        if (Touch3() || Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            currentGrowth = DragonGrowthState.Adult;
-        }
-
-        stamina = 200;
-    }
-
-
-    private void UpdateAdult()
-    {
-        targetScale = new Vector3(1f, 1f, 1f);
-        if (Touch3() || Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            currentGrowth = DragonGrowthState.Infancy;
-        }
-
-        stamina = 250;
-    }
-
-    private void OnHungry()
+    private void UpdateStats()
     {
         if (isPassOut)
             return;
 
         hungryTimer += Time.deltaTime;
-
-        if (hungryTimer > hungryMaxTime)
+        if (hungryTimer >= hungryMaxTime)
         {
+            stats.ChangeStat(StatType.Hunger, -10);
 
-            if (full > 0)
+            if (stats.hunger <= 0)
             {
-                full -= 30;
-
-                if (full < 0)
-                {
-                    full = 0;
-                }
-            }
-            else
-            {
-                if (vitality > 0)
-                {
-                    vitality -= 30;
-
-                    if (vitality < 0)
-                    {
-                        vitality = 0;
-                        isPassOut = true;
-                        hasTriggerPassOut = true;
-                    }
-                }
-
+                stats.ChangeStat(StatType.Fatigue, 15);
             }
 
             hungryTimer = 0f;
         }
-    }
-
-    private void OnClean()
-    {
-        if (isPassOut)
-            return;
 
         cleanTimer += Time.deltaTime;
-
-        if (cleanTimer > cleanMaxTime)
+        if (cleanTimer >= cleanMaxTime)
         {
-            if (clean <= 0)
-            {
-                clean = 0;
-            }
-            else
-            {
-                clean -= 2;
-            }
-
+            stats.ChangeStat(StatType.Clean, -2);
             cleanTimer = 0f;
         }
     }
 
     private void OnPassOut()
     {
-        animator.SetTrigger(isPassOutTrigger);
-
+        isPassOut = true;
         hasTriggerPassOut = false;
+        animator.SetTrigger(isPassOutTrigger);
+    }
+
+    private void CheckPassOutStat()
+    {
+        if (stats.IsStatPassOut(StatType.Fatigue))
+        {
+            if (!isPassOut)
+            {
+                OnPassOut();
+            }
+        }
+
+    }
+
+    public void Recover()
+    {
+        isPassOut = false;
+        hasTriggerPassOut = true;
+        stats.ChangeStat(StatType.Fatigue, -30);
+        animator.Rebind();
+    }
+
+    private void UpdateGrowthStats()
+    {
+        switch (currentGrowth)
+        {
+            case DragonGrowthState.Infancy:
+                stats.maxStamina = 100;
+                break;
+            case DragonGrowthState.GrowingUp:
+                stats.maxStamina = 150;
+                break;
+            case DragonGrowthState.Maturity:
+                stats.maxStamina = 200;
+                break;
+            case DragonGrowthState.Adult:
+                stats.maxStamina = 250;
+                break;
+        }
+
+        stats.stamina = stats.maxStamina;
+    }
+
+    public void GrowUp()
+    {
+        if (currentGrowth < DragonGrowthState.Adult)
+        {
+            currentGrowth++;
+            UpdateGrowthStats();
+        }
+    }
+
+    public void StartResting()
+    { 
+    
     }
 }
