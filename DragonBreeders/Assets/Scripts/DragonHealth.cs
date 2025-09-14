@@ -77,10 +77,17 @@ public class DragonHealth : MonoBehaviour
         if (stats.hunger <= 0) stats.hunger = stats.maxhunger;
         if (stats.clean <= 0) stats.clean = stats.maxClean;
 
-        targetScale = Vector3.one * currentTableData.SCALE_SIZE;
+        if (currentGrowth == DragonGrowthState.Adult)
+        {
+            targetScale = Vector3.one;
+        }
+        else
+        {
+            targetScale = Vector3.one * currentTableData.SCALE_SIZE;
+        }
 
-        hungryMaxTime = 60f / currentTableData.DEPRATE_FOOD;
-        cleanMaxTime = 60f / currentTableData.DEPRATE_HYG;
+        hungryMaxTime = currentTableData.DEPRATE_FOOD * 4f;
+        cleanMaxTime = currentTableData.DEPRATE_HYG * 15f;
     }
 
     private int GetGrowthTypeFromState(DragonGrowthState state)

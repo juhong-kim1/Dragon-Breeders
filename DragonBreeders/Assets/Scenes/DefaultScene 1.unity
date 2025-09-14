@@ -583,6 +583,14 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 72
       objectReference: {fileID: 0}
+    - target: {fileID: 7367281917386050203, guid: 3f91b1dd8c0f73746ae9dc6f01d19cf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1382034688}
+    - target: {fileID: 7367281917386050203, guid: 3f91b1dd8c0f73746ae9dc6f01d19cf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClickEXP
+      objectReference: {fileID: 0}
     - target: {fileID: 7578221263843879661, guid: 3f91b1dd8c0f73746ae9dc6f01d19cf0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -8010,6 +8018,14 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 72
       objectReference: {fileID: 0}
+    - target: {fileID: 7367281917386050203, guid: 3f91b1dd8c0f73746ae9dc6f01d19cf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1382034688}
+    - target: {fileID: 7367281917386050203, guid: 3f91b1dd8c0f73746ae9dc6f01d19cf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClickPlay
+      objectReference: {fileID: 0}
     - target: {fileID: 7578221263843879661, guid: 3f91b1dd8c0f73746ae9dc6f01d19cf0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -10576,6 +10592,14 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 66.9
       objectReference: {fileID: 0}
+    - target: {fileID: 7367281917386050203, guid: 3f91b1dd8c0f73746ae9dc6f01d19cf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1382034688}
+    - target: {fileID: 7367281917386050203, guid: 3f91b1dd8c0f73746ae9dc6f01d19cf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClickTrain
+      objectReference: {fileID: 0}
     - target: {fileID: 7578221263843879661, guid: 3f91b1dd8c0f73746ae9dc6f01d19cf0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -11769,7 +11793,7 @@ PrefabInstance:
       objectReference: {fileID: 1382034688}
     - target: {fileID: 7367281917386050203, guid: 3f91b1dd8c0f73746ae9dc6f01d19cf0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnClickReset
+      value: OnClickRest
       objectReference: {fileID: 0}
     - target: {fileID: 7578221263843879661, guid: 3f91b1dd8c0f73746ae9dc6f01d19cf0, type: 3}
       propertyPath: m_Pivot.x
@@ -12909,6 +12933,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Green
       objectReference: {fileID: 0}
+    - target: {fileID: 168864, guid: 281a986484325de459dc1b3709335bc5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 491582, guid: 281a986484325de459dc1b3709335bc5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -13265,6 +13293,8 @@ MonoBehaviour:
     experience: 0
     experienceMax: 100
   currentGrowth: 0
+  currentSpeciesType: 1
+  currentElementType: 1
   isPassOut: 0
   hasTriggerPassOut: 0
 --- !u!224 &2084676599 stripped

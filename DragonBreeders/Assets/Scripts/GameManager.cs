@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void OnClickReset()
+    public void OnClickRest()
     {
         if (dragonHealth.isPassOut)
         {
@@ -74,9 +74,38 @@ public class GameManager : MonoBehaviour
         if (!dragonHealth.isPassOut)
         {
             dragonHealth.stats.ChangeStat(StatType.Hunger, 30);
+            dragonHealth.stats.ChangeStat(StatType.Intimacy, 10);
         }
     }
 
     public void OnClickPlay()
-    { }
+    {
+        if (!dragonHealth.isPassOut)
+        {
+            dragonHealth.stats.ChangeStat(StatType.Hunger, -10);
+            dragonHealth.stats.ChangeStat(StatType.Intimacy, 20);
+        }
+
+    }
+
+    public void OnClickTrain()
+    {
+        if (!dragonHealth.isPassOut)
+        {
+            dragonHealth.stats.ChangeStat(StatType.Hunger, -10);
+            dragonHealth.stats.ChangeStat(StatType.Fatigue, 20);
+            dragonHealth.stats.ChangeStat(StatType.Stamina, 20);
+        }
+
+    }
+
+    public void OnClickEXP()
+    {
+        if (!dragonHealth.isPassOut)
+        {
+            dragonHealth.stats.ChangeStat(StatType.Hunger, -20);
+            dragonHealth.stats.ChangeStat(StatType.Fatigue, 30);
+            dragonHealth.stats.ChangeStat(StatType.Stamina, 10);
+        }
+    }
 }
