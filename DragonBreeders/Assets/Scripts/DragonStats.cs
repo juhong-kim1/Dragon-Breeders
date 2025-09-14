@@ -7,9 +7,10 @@ public enum StatType
     Hunger,
     Intimacy,
     Clean,
+    Experience,
 }
 
-
+[System.Serializable]
 public class DragonStats
 {
     [Header("CoreStats")]
@@ -25,6 +26,10 @@ public class DragonStats
     public int maxhunger = 100;
     public int maxIntimacy = 100;
     public int maxClean = 100;
+
+    [Header("GrowthSystem")]
+    public float experience = 0;
+    public float experienceMax = 100;
 
     public void ChangeStat(StatType statType, int amount)
     {
@@ -45,6 +50,9 @@ public class DragonStats
             case StatType.Clean:
                 clean = Mathf.Clamp(clean + amount, 0, maxClean);
                 break;
+            case StatType.Experience:
+                experience = Mathf.Clamp(experience + amount, 0, float.MaxValue);
+                break;
         }
     }
 
@@ -58,4 +66,19 @@ public class DragonStats
         return false;
     }
 
+    public int CalculateExperience()
+    {
+        return (stamina + intimacy) / 4;
+    }
+
+    public bool CanGrowUp()
+    {
+        return experience >= experienceMax;    
+    }
+
+    public void ConsumeGrowthExperience()
+    {
+        experience -= experienceMax;
+        if (experience < 0) experience = 0;
+    }
 }

@@ -13,7 +13,7 @@ public class DragonHealth : MonoBehaviour
     public static readonly string isPassOutTrigger = "IsPassOut";
 
     public DragonStats stats;
-    public Animator animator;
+    private Animator animator;
     public DragonGrowthState currentGrowth;
     private Vector3 targetScale;
 
@@ -40,24 +40,6 @@ public class DragonHealth : MonoBehaviour
         UpdateStats();
         CheckPassOutStat();
     }
-
-    private bool Touch3()
-    {
-        if (Input.touchCount == 3)
-        {
-            Touch touch0 = Input.GetTouch(0);
-            Touch touch1 = Input.GetTouch(1);
-            Touch touch2 = Input.GetTouch(2);
-
-            if (touch0.phase == TouchPhase.Began && touch1.phase == TouchPhase.Began && touch2.phase == TouchPhase.Began)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 
     private void UpdateGrowth()
     {

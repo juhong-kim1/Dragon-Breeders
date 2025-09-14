@@ -29,11 +29,11 @@ public class GameManager : MonoBehaviour
 
         var stats = dragonHealth.stats;
 
-        if (staminaText) staminaText.text = $"체력: {stats.stamina:F0}/{stats.maxStamina:F0}";
-        if (hungryText) hungryText.text = $"배고픔: {stats.hunger:F0}";
-        if (intimacyText) intimacyText.text = $"친밀도: {stats.intimacy:F0}";
-        if (cleanText) cleanText.text = $"청결: {stats.clean:F0}";
-        if (figureText) figureText.text = $"피로도: {stats.fatigue:F0}";
+        if (staminaText) staminaText.text = $"Stamina: {stats.stamina:F0}/{stats.maxStamina:F0}";
+        if (hungryText) hungryText.text = $"Hunger: {stats.hunger:F0}";
+        if (intimacyText) intimacyText.text = $"Intimacy: {stats.intimacy:F0}";
+        if (cleanText) cleanText.text = $"Clean: {stats.clean:F0}";
+        if (figureText) figureText.text = $"Fatigue: {stats.fatigue:F0}";
 
 
         UpdateMapUI(stats);
@@ -44,11 +44,11 @@ public class GameManager : MonoBehaviour
     {
         if (mapStatTexts.Length >= 6)
         {
-            mapStatTexts[0].text = $"체력: {stats.stamina:F0}";
-            mapStatTexts[2].text = $"배고픔: {stats.hunger:F0}";
-            mapStatTexts[3].text = $"친밀도: {stats.intimacy:F0}";
-            mapStatTexts[4].text = $"청결: {stats.clean:F0}";
-            mapStatTexts[5].text = $"피로도: {stats.fatigue:F0}";
+            mapStatTexts[0].text = $"Stamina: {stats.stamina:F0}";
+            mapStatTexts[2].text = $"Hunger: {stats.hunger:F0}";
+            mapStatTexts[3].text = $"Intimacy: {stats.intimacy:F0}";
+            mapStatTexts[4].text = $"Clean: {stats.clean:F0}";
+            mapStatTexts[5].text = $"Fatigue: {stats.fatigue:F0}";
         }
     }
 
