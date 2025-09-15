@@ -23,7 +23,7 @@ public class DragonStats
     [Header("MaxValues")]
     public int maxStamina = 250;
     public int maxFatigue = 100;
-    public int maxhunger = 100;
+    public int maxHunger = 100;
     public int maxIntimacy = 100;
     public int maxClean = 100;
 
@@ -42,7 +42,7 @@ public class DragonStats
                 fatigue = Mathf.Clamp(fatigue + amount, 0, maxFatigue);
                 break;
             case StatType.Hunger:
-                hunger = Mathf.Clamp(hunger + amount, 0, maxhunger);
+                hunger = Mathf.Clamp(hunger + amount, 0, maxHunger);
                 break;
             case StatType.Intimacy:
                 intimacy = Mathf.Clamp(intimacy + amount, 0, maxIntimacy);

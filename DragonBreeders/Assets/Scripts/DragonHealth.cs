@@ -13,6 +13,7 @@ public class DragonHealth : MonoBehaviour
     public static readonly string isPassOutTrigger = "IsPassOut";
 
     public DragonStats stats;
+    public DragonStatus status;
     private Animator animator;
     public DragonGrowthState currentGrowth;
     private Vector3 targetScale;
@@ -34,9 +35,7 @@ public class DragonHealth : MonoBehaviour
     public bool hasTriggerPassOut = false;
 
     public StatusType currentStatus = StatusType.Default;
-
-    private float statusCheckTimer = 0f;
-    private float statusCheckMaxTime = 180f;
+    private StatusType previousStatus = StatusType.Default;
 
     private void Start()
     {
@@ -74,13 +73,13 @@ public class DragonHealth : MonoBehaviour
 
         stats.maxStamina = currentTableData.MAXHP;
         stats.maxFatigue = currentTableData.MAXFTG;
-        stats.maxhunger = currentTableData.MAXFOOD;
+        stats.maxHunger = currentTableData.MAXFOOD;
         stats.maxClean = currentTableData.MAXHYG;
         stats.maxIntimacy = currentTableData.MAXFRN;
         stats.experienceMax = currentTableData.EXP_REQ;
 
         if (stats.stamina <= 0) stats.stamina = stats.maxStamina;
-        if (stats.hunger <= 0) stats.hunger = stats.maxhunger;
+        if (stats.hunger <= 0) stats.hunger = stats.maxHunger;
         if (stats.clean <= 0) stats.clean = stats.maxClean;
 
         if (currentGrowth == DragonGrowthState.Adult)
@@ -180,6 +179,7 @@ public class DragonHealth : MonoBehaviour
     {
         isPassOut = false;
         hasTriggerPassOut = true;
+        currentStatus = StatusType.Default;
         stats.ChangeStat(StatType.Fatigue, -30);
         animator.Rebind();
     }
@@ -250,21 +250,26 @@ public class DragonHealth : MonoBehaviour
 
     private void CheckDragonStatus()
     {
-        if (currentStatus == StatusType.Default)
+        //status.CheckAndUpdateStatusByStats(stats);
+
+        //status.UpdateTimersAndEffects(stats);
+
+
+        StatusType newStatus = status.CheckStatusByStats(stats);
+
+        if (newStatus != StatusType.Default)
         {
-            statusCheckTimer += Time.deltaTime;
-
-            if (statusCheckTimer >= statusCheckMaxTime)
-            {
-                StatusType newStatus = DragonStatus.CheckStatusByStats(stats);
-
-                if (newStatus != StatusType.Default)
-                {
-                    currentStatus = newStatus;
-                }
-
-                statusCheckTimer = 0;
-            }
+            currentStatus = newStatus;
         }
+
+        if (currentStatus != previousStatus)
+        {
+            status.EffectImmediateByStatus(currentStatus, stats);
+            previousStatus = currentStatus;
+        }
+
+        status.EffectByStatus(currentStatus, stats);
+
     }
+    
 }

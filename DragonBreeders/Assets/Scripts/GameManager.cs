@@ -1,11 +1,10 @@
-
 using UnityEngine;
 using TMPro;
+using System.Threading;
 
 public class GameManager : MonoBehaviour
 {
     public DragonHealth dragonHealth;
-    public DragonStatusManager StatusManager;
 
     public TextMeshProUGUI staminaText;
     public TextMeshProUGUI figureText;
@@ -18,10 +17,12 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI[] mapStatTexts;
 
-
+    public float timer = 0f;
 
     public void Update()
     {
+        timer += Time.deltaTime;
+
         UpdateStatText();
 
     }
@@ -93,13 +94,27 @@ public class GameManager : MonoBehaviour
 
     public void OnClickTrain()
     {
-        if (!dragonHealth.isPassOut)
-        {
-            dragonHealth.stats.ChangeStat(StatType.Hunger, -10);
-            dragonHealth.stats.ChangeStat(StatType.Fatigue, 20);
-            dragonHealth.stats.ChangeStat(StatType.Stamina, 20);
-        }
+        if (dragonHealth.isPassOut)
+            return;
 
+        dragonHealth.stats.ChangeStat(StatType.Hunger, -10);
+        dragonHealth.stats.ChangeStat(StatType.Fatigue, 20);
+        dragonHealth.stats.ChangeStat(StatType.Stamina, 20);
+
+        float random = Random.Range(0, 100);
+
+        if (random < 3)
+        {
+            dragonHealth.currentStatus = StatusType.Scratches;
+        }
+        if (random >= 3 && random < 4.5)
+        {
+            dragonHealth.currentStatus = StatusType.Bleeding;
+        }
+        if (random >= 4.5 && random < 6)
+        {
+            dragonHealth.currentStatus = StatusType.Fracture;
+        }
     }
 
     public void OnClickEXP()
