@@ -34,8 +34,7 @@ public class DragonHealth : MonoBehaviour
     public bool isPassOut = false;
     public bool hasTriggerPassOut = false;
 
-    public StatusType currentStatus = StatusType.Default;
-    private StatusType previousStatus = StatusType.Default;
+    public StatusType currentStatuses = StatusType.None;
 
     private void Start()
     {
@@ -159,7 +158,7 @@ public class DragonHealth : MonoBehaviour
     {
         isPassOut = true;
         hasTriggerPassOut = false;
-        currentStatus = StatusType.PassOut;
+        status.AddStatus(StatusType.PassOut);
         animator.SetTrigger(isPassOutTrigger);
     }
 
@@ -179,7 +178,7 @@ public class DragonHealth : MonoBehaviour
     {
         isPassOut = false;
         hasTriggerPassOut = true;
-        currentStatus = StatusType.Default;
+        status.RemoveStatus(StatusType.PassOut);
         stats.ChangeStat(StatType.Fatigue, -30);
         animator.Rebind();
     }
@@ -216,7 +215,8 @@ public class DragonHealth : MonoBehaviour
             currentGrowth++;
             ApplyTableData();
             //UpdateGrowthStats();
-            currentStatus = StatusType.Default;
+            status.RemoveStatus(StatusType.Hungry);
+            status.RemoveStatus(StatusType.Fatigue);
         }
     }
 
@@ -250,26 +250,31 @@ public class DragonHealth : MonoBehaviour
 
     private void CheckDragonStatus()
     {
-        //status.CheckAndUpdateStatusByStats(stats);
+        if (status == null) return;
 
-        //status.UpdateTimersAndEffects(stats);
+        currentStatuses = status.CheckStatusByStats(stats);
 
+        status.UpdateTimersAndEffects(stats);
 
-        StatusType newStatus = status.CheckStatusByStats(stats);
-
-        if (newStatus != StatusType.Default)
-        {
-            currentStatus = newStatus;
-        }
-
-        if (currentStatus != previousStatus)
-        {
-            status.EffectImmediateByStatus(currentStatus, stats);
-            previousStatus = currentStatus;
-        }
-
-        status.EffectByStatus(currentStatus, stats);
-
+        SyncPassOutState();
     }
-    
+
+    private void SyncPassOutState()
+    {
+        bool shouldPassOut = status.HasStatus(StatusType.PassOut);
+
+        if (shouldPassOut != isPassOut)
+        {
+            if (shouldPassOut && !isPassOut)
+            {
+                OnPassOut();
+            }
+            else if (!shouldPassOut && isPassOut)
+            {
+                isPassOut = false;
+                animator.Rebind();
+            }
+        }
+    }
+
 }

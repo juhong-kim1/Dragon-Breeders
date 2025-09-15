@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         if (figureText) figureText.text = $"Fatigue: {stats.fatigue:F0}";
         if (experienceText) experienceText.text = $"Exp: {stats.experience:F0}/{stats.experienceMax:F0}";
         if (growthStateText) growthStateText.text = $"Stage: {dragonHealth.currentGrowth}";
-        if (currentStatusText) currentStatusText.text = $"Status: {dragonHealth.currentStatus}";
+        if (currentStatusText) currentStatusText.text = $"Status: {dragonHealth.currentStatuses}";
 
 
         UpdateMapUI(stats);
@@ -105,15 +105,15 @@ public class GameManager : MonoBehaviour
 
         if (random < 3)
         {
-            dragonHealth.currentStatus = StatusType.Scratches;
+            dragonHealth.status.AddStatus(StatusType.Scratches);
         }
         if (random >= 3 && random < 4.5)
         {
-            dragonHealth.currentStatus = StatusType.Bleeding;
+            dragonHealth.status.AddStatus(StatusType.Bleeding);
         }
         if (random >= 4.5 && random < 6)
         {
-            dragonHealth.currentStatus = StatusType.Fracture;
+            dragonHealth.status.AddStatus(StatusType.Fracture);
         }
     }
 
