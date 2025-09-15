@@ -29,6 +29,30 @@ public class DragonStatus
 
     public float maxTimer = 60f;
 
+    private static readonly Dictionary<StatusType, int> StatusToTableID = new Dictionary<StatusType, int>
+    {
+        { StatusType.Cold, 20101 },
+        { StatusType.FoodPoisoning, 20102 },
+        { StatusType.HighFever, 20103 },
+        { StatusType.Infection, 20104 },
+        { StatusType.Scratches, 20205 },
+        { StatusType.Bleeding, 20201 },
+        { StatusType.Fracture, 20204 },
+        { StatusType.Dirty, 20305 },
+        { StatusType.Hungry, 20304 },
+        { StatusType.Fatigue, 20303 },
+        { StatusType.PassOut, 20306 }
+    };
+
+    public DebuffTableData GetDebuffData(StatusType status)
+    {
+        if (StatusToTableID.TryGetValue(status, out int id))
+        {
+            return DataTableManger.DebuffTable.Get(id);
+        }
+        return null;
+    }
+
     public bool HasStatus(StatusType status)
     {
         return (currentStatuses & status) != 0;
@@ -88,7 +112,7 @@ public class DragonStatus
         if ((statuses & StatusType.PassOut) != 0)
             stats.ChangeStat(StatType.Intimacy, -50);
 
-        if ((statuses & (StatusType.Fracture | StatusType.Hungry)) != 0)
+        if ((statuses & (StatusType.Fracture | StatusType.Hungry | StatusType.Cold)) != 0)
             stats.maxFatigue -= 30;
     }
 
@@ -117,10 +141,25 @@ public class DragonStatus
         switch (status)
         {
             case StatusType.Bleeding:
+            case StatusType.Infection:
             case StatusType.Fatigue:
                 if (timer >= maxTimer)
                 {
                     stats.ChangeStat(StatType.Stamina, -2);
+                    statusTimers[status] = 0f;
+                }
+                break;
+            case StatusType.FoodPoisoning:
+                if (timer >= maxTimer)
+                {
+                    stats.ChangeStat(StatType.Hunger, -2);
+                    statusTimers[status] = 0f;
+                }
+                break;
+            case StatusType.HighFever:
+                if (timer >= maxTimer)
+                {
+                    stats.ChangeStat(StatType.Fatigue, 2);
                     statusTimers[status] = 0f;
                 }
                 break;

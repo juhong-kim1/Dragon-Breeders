@@ -222,12 +222,12 @@ public class DragonHealth : MonoBehaviour
 
     public void StartResting()
     {
-        if (stats.fatigue < 60)
+        if (isPassOut) return;
+
+        if (!status.HasStatus(StatusType.Fatigue))
         {
             return;
         }
-
-        if (isPassOut) return;
 
         int expGained = stats.CalculateExperience();
         stats.ChangeStat(StatType.Experience, expGained);

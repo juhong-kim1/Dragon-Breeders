@@ -17,6 +17,7 @@ public static class DataTableIds
     public static string String => StringTableIds[(int)Variables.Language];
 
     public static readonly string DragonStat = "DragonStatTable";
+    public static readonly string Debuff = "DebuffTable";
 }
 
 

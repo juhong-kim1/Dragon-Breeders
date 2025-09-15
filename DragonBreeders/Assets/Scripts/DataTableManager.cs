@@ -30,6 +30,11 @@ public static class DataTableManger
         var dragonStatTable = new DragonStatTable();
         dragonStatTable.Load(DataTableIds.DragonStat);
         tables.Add(DataTableIds.DragonStat, dragonStatTable);
+
+
+        var debuffTable = new DebuffTable();
+        debuffTable.Load(DataTableIds.Debuff);
+        tables.Add(DataTableIds.Debuff, debuffTable);
     }
 
     //public static StringTable StringTable
@@ -45,6 +50,14 @@ public static class DataTableManger
         get
         {
             return Get<DragonStatTable>(DataTableIds.DragonStat);
+        }
+    }
+
+    public static DebuffTable DebuffTable
+    {
+        get
+        {
+            return Get<DebuffTable>(DataTableIds.Debuff);
         }
     }
 

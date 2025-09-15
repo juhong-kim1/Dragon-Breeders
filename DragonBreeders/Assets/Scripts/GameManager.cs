@@ -1,6 +1,5 @@
-using UnityEngine;
 using TMPro;
-using System.Threading;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -58,6 +57,7 @@ public class GameManager : MonoBehaviour
             mapStatTexts[4].text = $"Fatigue: {stats.fatigue:F0}";
             mapStatTexts[5].text = $"Exp: {stats.experience:F0}/{stats.experienceMax:F0}";
             mapStatTexts[6].text = $"Stage: {dragonHealth.currentGrowth}";
+            mapStatTexts[7].text = $"Status: {dragonHealth.currentStatuses}";
         }
     }
 
@@ -101,29 +101,38 @@ public class GameManager : MonoBehaviour
         dragonHealth.stats.ChangeStat(StatType.Fatigue, 20);
         dragonHealth.stats.ChangeStat(StatType.Stamina, 20);
 
-        float random = Random.Range(0, 100);
+        CheckInjury(StatusType.Scratches);
+        CheckInjury(StatusType.Bleeding);
+        CheckInjury(StatusType.Fracture);
+    }
 
-        if (random < 3)
+    private void CheckInjury(StatusType status)
+    {
+        var debuffData = dragonHealth.status.GetDebuffData(status);
+        if (debuffData != null)
         {
-            dragonHealth.status.AddStatus(StatusType.Scratches);
-        }
-        if (random >= 3 && random < 4.5)
-        {
-            dragonHealth.status.AddStatus(StatusType.Bleeding);
-        }
-        if (random >= 4.5 && random < 6)
-        {
-            dragonHealth.status.AddStatus(StatusType.Fracture);
+            float random = UnityEngine.Random.Range(0f, 100f);
+            if (random < debuffData.TRIGGER_RATE)
+            {
+                dragonHealth.status.AddStatus(status);
+            }
         }
     }
 
     public void OnClickEXP()
     {
-        if (!dragonHealth.isPassOut)
-        {
-            dragonHealth.stats.ChangeStat(StatType.Hunger, -20);
-            dragonHealth.stats.ChangeStat(StatType.Fatigue, 30);
-            dragonHealth.stats.ChangeStat(StatType.Stamina, 10);
-        }
+        if (dragonHealth.isPassOut)
+            return;
+
+        dragonHealth.stats.ChangeStat(StatType.Hunger, -20);
+        dragonHealth.stats.ChangeStat(StatType.Fatigue, 30);
+        dragonHealth.stats.ChangeStat(StatType.Stamina, 10);
+
+        CheckInjury(StatusType.Cold);
+        CheckInjury(StatusType.FoodPoisoning);
+        CheckInjury(StatusType.HighFever);
+        CheckInjury(StatusType.Infection);
     }
+
+
 }
