@@ -19,7 +19,6 @@ public enum StatusType
     PassOut = 1024,     // 기절
 }
 
-
 [System.Serializable]
 public class DragonStatus
 {
@@ -77,24 +76,18 @@ public class DragonStatus
     {
         StatusType newStatuses = StatusType.None;
 
-        if (stats.fatigue >= stats.maxFatigue)
-        { 
+        if (stats.stamina <= 0)
             newStatuses |= StatusType.PassOut;
-        }
-        else if (stats.fatigue > (stats.maxFatigue * 0.8f))
-        {
-            newStatuses |= StatusType.Fatigue;
-        }
-        if (stats.hunger < (stats.maxHunger * 0.2f))
-        {
-            newStatuses |= StatusType.Hungry;
-        }
-        if (stats.clean < (stats.maxClean * 0.2f))
-        {
-            newStatuses |= StatusType.Dirty;
-        }
 
- 
+        else if (stats.fatigue >= (stats.maxFatigue * 0.8f))
+            newStatuses |= StatusType.Fatigue;
+
+        if (stats.hunger <= (stats.maxHunger * 0.2f))
+            newStatuses |= StatusType.Hungry;
+
+        if (stats.clean <= (stats.maxClean * 0.2f))
+            newStatuses |= StatusType.Dirty;
+
         StatusType addedStatuses = newStatuses & ~previousStatuses;
         if (addedStatuses != StatusType.None)
         {
@@ -109,11 +102,18 @@ public class DragonStatus
 
     private void ApplyImmediateEffects(StatusType statuses, DragonStats stats)
     {
-        if ((statuses & StatusType.PassOut) != 0)
-            stats.ChangeStat(StatType.Intimacy, -50);
-
-        if ((statuses & (StatusType.Fracture | StatusType.Hungry | StatusType.Cold)) != 0)
-            stats.maxFatigue -= 30;
+        for (int i = 0; i < 11; i++)
+        {
+            StatusType status = (StatusType)(1 << i);
+            if ((statuses & status) != 0)
+            {
+                var debuffData = GetDebuffData(status);
+                if (debuffData != null && debuffData.TRIGGER_TYPE == 1)
+                {
+                    ApplyDebuffEffect(debuffData, stats);
+                }
+            }
+        }
     }
 
     public void UpdateTimersAndEffects(DragonStats stats)
@@ -136,34 +136,114 @@ public class DragonStatus
     {
         if (!statusTimers.ContainsKey(status)) return;
 
-        float timer = statusTimers[status];
+        var debuffData = GetDebuffData(status);
+        if (debuffData == null || debuffData.TRIGGER_TYPE != 2) return;
 
-        switch (status)
+        float timer = statusTimers[status];
+        float interval = 60f / debuffData.TRIGGER_RATE;
+
+        if (timer >= interval)
         {
-            case StatusType.Bleeding:
-            case StatusType.Infection:
-            case StatusType.Fatigue:
-                if (timer >= maxTimer)
-                {
-                    stats.ChangeStat(StatType.Stamina, -2);
-                    statusTimers[status] = 0f;
-                }
+            ApplyDebuffEffect(debuffData, stats);
+            statusTimers[status] = 0f;
+        }
+    }
+
+    private void ApplyDebuffEffect(DebuffTableData debuffData, DragonStats stats)
+    {
+        switch (debuffData.EFFECT_TYPE)
+        {
+            case 1:
+                int maxFatigueReduction = Mathf.RoundToInt(stats.maxFatigue * debuffData.VALUE / 100f);
+                stats.maxFatigue -= maxFatigueReduction;
                 break;
-            case StatusType.FoodPoisoning:
-                if (timer >= maxTimer)
-                {
-                    stats.ChangeStat(StatType.Hunger, -2);
-                    statusTimers[status] = 0f;
-                }
+            case 2:
+                float hungerDrain = stats.maxHunger * debuffData.VALUE / 100f;
+                stats.ChangeStat(StatType.Hunger, -Mathf.RoundToInt(hungerDrain));
                 break;
-            case StatusType.HighFever:
-                if (timer >= maxTimer)
-                {
-                    stats.ChangeStat(StatType.Fatigue, 2);
-                    statusTimers[status] = 0f;
-                }
+            case 3:
+                float fatigueAmount = stats.maxFatigue * debuffData.VALUE / 100f;
+                stats.ChangeStat(StatType.Fatigue, Mathf.RoundToInt(fatigueAmount));
+                break;
+            case 4:
+                float staminaDrain = stats.maxStamina * debuffData.VALUE / 100f;
+                stats.ChangeStat(StatType.Stamina, -Mathf.RoundToInt(staminaDrain));
+                break;
+            case 5: // 탐험 시 질병 확률 증가
+                break;
+            case 6:
+                stats.ChangeStat(StatType.Intimacy, -Mathf.RoundToInt(debuffData.VALUE));
                 break;
         }
+    }
+
+    public void TryApplyRandomDebuff(StatusType status)
+    {
+        var debuffData = GetDebuffData(status);
+        if (debuffData != null &&
+            (debuffData.TRIGGER_TYPE == 1 || debuffData.TRIGGER_TYPE == 2))
+        {
+            float random = UnityEngine.Random.Range(0f, 100f);
+            if (random < debuffData.TRIGGER_RATE)
+            {
+                AddStatus(status);
+            }
+        }
+    }
+
+    public int GetStatusCount()
+    {
+        int count = 0;
+        StatusType temp = currentStatuses;
+
+        while (temp != 0)
+        {
+            temp &= temp - 1;
+            count++;
+        }
+        return count;
+    }
+
+    public float GetDiseaseRiskMultiplier()
+    {
+        float multiplier = 1f;
+
+        for (int i = 0; i < 11; i++)
+        {
+            StatusType status = (StatusType)(1 << i);
+            if (HasStatus(status))
+            {
+                var debuffData = GetDebuffData(status);
+                if (debuffData != null && debuffData.EFFECT_TYPE == 5)
+                {
+                    multiplier += debuffData.VALUE / 100f;
+                }
+            }
+        }
+
+        return multiplier;
+    }
+
+    public bool CanCureWith(StatusType status, int cureType)
+    {
+        var debuffData = GetDebuffData(status);
+        return debuffData != null && debuffData.CURE_TYPE == cureType;
+    }
+
+    public List<StatusType> GetCurableStatuses(int cureType)
+    {
+        var result = new List<StatusType>();
+
+        for (int i = 0; i < 11; i++)
+        {
+            StatusType status = (StatusType)(1 << i);
+            if (HasStatus(status) && CanCureWith(status, cureType))
+            {
+                result.Add(status);
+            }
+        }
+
+        return result;
     }
 }
 

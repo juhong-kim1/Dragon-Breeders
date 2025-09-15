@@ -35,6 +35,10 @@ public static class DataTableManger
         var debuffTable = new DebuffTable();
         debuffTable.Load(DataTableIds.Debuff);
         tables.Add(DataTableIds.Debuff, debuffTable);
+
+        var nurtualTable = new NurtureTable();
+        nurtualTable.Load(DataTableIds.Nurture);
+        tables.Add(DataTableIds.Nurture, nurtualTable);
     }
 
     //public static StringTable StringTable
@@ -58,6 +62,14 @@ public static class DataTableManger
         get
         {
             return Get<DebuffTable>(DataTableIds.Debuff);
+        }
+    }
+
+    public static NurtureTable NurtureTable
+    {
+        get
+        {
+            return Get<NurtureTable>(DataTableIds.Nurture);
         }
     }
 

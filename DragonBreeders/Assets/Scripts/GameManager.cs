@@ -21,9 +21,7 @@ public class GameManager : MonoBehaviour
     public void Update()
     {
         timer += Time.deltaTime;
-
         UpdateStatText();
-
     }
 
     public void UpdateStatText()
@@ -41,14 +39,12 @@ public class GameManager : MonoBehaviour
         if (growthStateText) growthStateText.text = $"Stage: {dragonHealth.currentGrowth}";
         if (currentStatusText) currentStatusText.text = $"Status: {dragonHealth.currentStatuses}";
 
-
         UpdateMapUI(stats);
-
     }
 
     private void UpdateMapUI(DragonStats stats)
     {
-        if (mapStatTexts.Length >= 7)
+        if (mapStatTexts.Length >= 8)
         {
             mapStatTexts[0].text = $"Stamina: {stats.stamina:F0}";
             mapStatTexts[1].text = $"Hunger: {stats.hunger:F0}";
@@ -61,6 +57,42 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OnClickFeed()
+    {
+        if (dragonHealth.isPassOut) return;
+
+        var data = DataTableManger.NurtureTable.Get(50300);
+        if (data == null) return;
+
+        int hungerRecovery = dragonHealth.stats.maxHunger * data.REC_PERCENT / 100;
+        dragonHealth.stats.ChangeStat(StatType.Hunger, hungerRecovery);
+    }
+
+    public void OnClickBath()
+    {
+        if (dragonHealth.isPassOut) return;
+
+        var data = DataTableManger.NurtureTable.Get(50400);
+        if (data == null) return;
+
+        int cleanRecovery = dragonHealth.stats.maxClean * data.REC_PERCENT / 100;
+        dragonHealth.stats.ChangeStat(StatType.Clean, cleanRecovery);
+    }
+
+    public void OnClickPlay()
+    {
+        if (dragonHealth.isPassOut) return;
+
+        var data = DataTableManger.NurtureTable.Get(50500);
+        if (data == null) return;
+
+ 
+        int intimacyRecovery = dragonHealth.stats.maxIntimacy * data.REC_PERCENT / 100;
+        dragonHealth.stats.ChangeStat(StatType.Intimacy, intimacyRecovery);
+        dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
+        dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
+    }
+
     public void OnClickRest()
     {
         if (dragonHealth.isPassOut)
@@ -69,70 +101,48 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            dragonHealth.StartResting();
-        }
-    }
+            var data = DataTableManger.NurtureTable.Get(50200);
+            if (data == null) return;
 
-    public void OnClickFeed()
-    {
-        if (!dragonHealth.isPassOut)
-        {
-            dragonHealth.stats.ChangeStat(StatType.Hunger, 30);
-            dragonHealth.stats.ChangeStat(StatType.Intimacy, 10);
+            int fatigueRecovery = dragonHealth.stats.maxFatigue * data.REC_PERCENT / 100;
+            dragonHealth.stats.ChangeStat(StatType.Fatigue, -fatigueRecovery);
         }
-    }
-
-    public void OnClickPlay()
-    {
-        if (!dragonHealth.isPassOut)
-        {
-            dragonHealth.stats.ChangeStat(StatType.Hunger, -10);
-            dragonHealth.stats.ChangeStat(StatType.Intimacy, 20);
-        }
-
     }
 
     public void OnClickTrain()
     {
-        if (dragonHealth.isPassOut)
-            return;
+        if (dragonHealth.isPassOut) return;
 
-        dragonHealth.stats.ChangeStat(StatType.Hunger, -10);
-        dragonHealth.stats.ChangeStat(StatType.Fatigue, 20);
-        dragonHealth.stats.ChangeStat(StatType.Stamina, 20);
+        var data = DataTableManger.NurtureTable.Get(50014);
+        if (data == null) return;
 
-        CheckInjury(StatusType.Scratches);
-        CheckInjury(StatusType.Bleeding);
-        CheckInjury(StatusType.Fracture);
-    }
+        dragonHealth.stats.ChangeStat(StatType.Experience, data.EXPGROWTH);
+        dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
+        dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
 
-    private void CheckInjury(StatusType status)
-    {
-        var debuffData = dragonHealth.status.GetDebuffData(status);
-        if (debuffData != null)
+        if (Random.Range(0f, 100f) < data.RATE_INJURY)
         {
-            float random = UnityEngine.Random.Range(0f, 100f);
-            if (random < debuffData.TRIGGER_RATE)
-            {
-                dragonHealth.status.AddStatus(status);
-            }
+            StatusType[] injuries = { StatusType.Scratches, StatusType.Bleeding, StatusType.Fracture };
+            StatusType randomInjury = injuries[Random.Range(0, injuries.Length)];
+            dragonHealth.status.AddStatus(randomInjury);
         }
     }
 
-    public void OnClickEXP()
+    public void OnClickExplore()
     {
-        if (dragonHealth.isPassOut)
-            return;
+        if (dragonHealth.isPassOut) return;
 
-        dragonHealth.stats.ChangeStat(StatType.Hunger, -20);
-        dragonHealth.stats.ChangeStat(StatType.Fatigue, 30);
-        dragonHealth.stats.ChangeStat(StatType.Stamina, 10);
+        var data = DataTableManger.NurtureTable.Get(50000);
+        if (data == null) return;
 
-        CheckInjury(StatusType.Cold);
-        CheckInjury(StatusType.FoodPoisoning);
-        CheckInjury(StatusType.HighFever);
-        CheckInjury(StatusType.Infection);
+        dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
+        dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
+
+        if (Random.Range(0f, 100f) < data.RATE_DISEASE)
+        {
+            StatusType[] diseases = { StatusType.Cold, StatusType.FoodPoisoning, StatusType.HighFever, StatusType.Infection };
+            StatusType randomDisease = diseases[Random.Range(0, diseases.Length)];
+            dragonHealth.status.AddStatus(randomDisease);
+        }
     }
-
-
 }

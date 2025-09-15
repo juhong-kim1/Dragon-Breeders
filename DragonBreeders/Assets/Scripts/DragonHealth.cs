@@ -40,6 +40,11 @@ public class DragonHealth : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         //UpdateGrowthStats();
+        if (status == null)
+        {
+            status = new DragonStatus();
+        }
+
         ApplyTableData();
     }
 
