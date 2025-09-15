@@ -33,6 +33,11 @@ public class DragonHealth : MonoBehaviour
     public bool isPassOut = false;
     public bool hasTriggerPassOut = false;
 
+    public StatusType currentStatus = StatusType.Default;
+
+    private float statusCheckTimer = 0f;
+    private float statusCheckMaxTime = 180f;
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -45,6 +50,7 @@ public class DragonHealth : MonoBehaviour
         UpdateGrowth();
         UpdateStats();
         CheckPassOutStat();
+        CheckDragonStatus();
     }
 
     private void ApplyTableData()
@@ -154,6 +160,7 @@ public class DragonHealth : MonoBehaviour
     {
         isPassOut = true;
         hasTriggerPassOut = false;
+        currentStatus = StatusType.PassOut;
         animator.SetTrigger(isPassOutTrigger);
     }
 
@@ -209,6 +216,7 @@ public class DragonHealth : MonoBehaviour
             currentGrowth++;
             ApplyTableData();
             //UpdateGrowthStats();
+            currentStatus = StatusType.Default;
         }
     }
 
@@ -237,6 +245,26 @@ public class DragonHealth : MonoBehaviour
             currentGrowth++;
             ApplyTableData();
             // UpdateGrowthStats();
+        }
+    }
+
+    private void CheckDragonStatus()
+    {
+        if (currentStatus == StatusType.Default)
+        {
+            statusCheckTimer += Time.deltaTime;
+
+            if (statusCheckTimer >= statusCheckMaxTime)
+            {
+                StatusType newStatus = DragonStatus.CheckStatusByStats(stats);
+
+                if (newStatus != StatusType.Default)
+                {
+                    currentStatus = newStatus;
+                }
+
+                statusCheckTimer = 0;
+            }
         }
     }
 }

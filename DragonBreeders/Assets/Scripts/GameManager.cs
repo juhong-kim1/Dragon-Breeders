@@ -5,6 +5,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public DragonHealth dragonHealth;
+    public DragonStatusManager StatusManager;
 
     public TextMeshProUGUI staminaText;
     public TextMeshProUGUI figureText;
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI cleanText;
     public TextMeshProUGUI experienceText;
     public TextMeshProUGUI growthStateText;
+    public TextMeshProUGUI currentStatusText;
 
     public TextMeshProUGUI[] mapStatTexts;
 
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour
         if (figureText) figureText.text = $"Fatigue: {stats.fatigue:F0}";
         if (experienceText) experienceText.text = $"Exp: {stats.experience:F0}/{stats.experienceMax:F0}";
         if (growthStateText) growthStateText.text = $"Stage: {dragonHealth.currentGrowth}";
+        if (currentStatusText) currentStatusText.text = $"Status: {dragonHealth.currentStatus}";
 
 
         UpdateMapUI(stats);

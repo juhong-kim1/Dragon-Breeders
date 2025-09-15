@@ -8783,6 +8783,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragonHealth: {fileID: 2080525269}
+  StatusManager: {fileID: 0}
   staminaText: {fileID: 2137153600}
   figureText: {fileID: 1491370254}
   hungryText: {fileID: 1791306774}
@@ -8790,6 +8791,7 @@ MonoBehaviour:
   cleanText: {fileID: 1566298697}
   experienceText: {fileID: 295256573}
   growthStateText: {fileID: 1275744930}
+  currentStatusText: {fileID: 1442469588}
   mapStatTexts:
   - {fileID: 1737244727}
   - {fileID: 1327465065}
@@ -9143,6 +9145,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 58b58b80c1378714db569c288f890d1c, type: 3}
   m_PrefabInstance: {fileID: 1430128002}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1442469588 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 134292312321390391, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
+  m_PrefabInstance: {fileID: 5138436980520108006}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1465286923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13297,6 +13310,7 @@ MonoBehaviour:
   currentElementType: 1
   isPassOut: 0
   hasTriggerPassOut: 0
+  currentStatus: 0
 --- !u!224 &2084676599 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1382123903554521426, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
@@ -13577,10 +13591,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 73758817}
     m_Modifications:
-    - target: {fileID: 1068594307813545380, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
-      propertyPath: m_text
-      value: 'EXP : 00'
-      objectReference: {fileID: 0}
     - target: {fileID: 1382123903554521426, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -13661,17 +13671,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4997582101371273460, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 700
-      objectReference: {fileID: 0}
     - target: {fileID: 6962485877062034520, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
       propertyPath: m_Name
       value: Temp Ui
-      objectReference: {fileID: 0}
-    - target: {fileID: 8076715662070035652, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
