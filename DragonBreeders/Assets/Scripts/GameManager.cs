@@ -130,7 +130,8 @@ public class GameManager : MonoBehaviour
 
     public void OnClickTrain()
     {
-        if (dragonHealth.isPassOut) return;
+        if (dragonHealth.isPassOut) { Debug.Log("기절 중, 훈련 불가"); return; }
+        if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) { Debug.Log("유아기에선 훈련 불가"); return; }
 
         var data = DataTableManger.NurtureTable.Get(50014);
         if (data == null) return;
@@ -149,7 +150,10 @@ public class GameManager : MonoBehaviour
 
     public void OnClickExplore()
     {
-        if (dragonHealth.isPassOut || !canExplore) return;
+        if (dragonHealth.isPassOut) { Debug.Log("기절 중, 탐험 불가"); return; }
+        if (!canExplore) { Debug.Log("탐험 쿨 진행 중"); return; }
+        if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) {Debug.Log("유아기에선 탐험 불가"); return; }
+
 
         var data = DataTableManger.NurtureTable.Get(50000);
         if (data == null) return;

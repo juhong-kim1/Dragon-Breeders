@@ -21,7 +21,7 @@ public class DragonHealth : MonoBehaviour
     public int currentSpeciesType = 1;
     public int currentElementType = 1;
 
-    private DragonStatTableData currentTableData;
+    public DragonStatTableData currentTableData;
 
     private float growSpeed = 5f;
 
