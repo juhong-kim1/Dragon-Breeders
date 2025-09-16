@@ -52,8 +52,8 @@ public class DragonHealth : MonoBehaviour
     {
         UpdateGrowth();
         UpdateStats();
-        CheckPassOutStat();
         CheckDragonStatus();
+        CheckPassOutStat();
     }
 
     private void ApplyTableData()
@@ -161,8 +161,17 @@ public class DragonHealth : MonoBehaviour
 
     private void OnPassOut()
     {
+        if (isPassOut)
+        {
+            return;
+        }
+
+        Debug.Log("온패스아웃 호출");
+
         isPassOut = true;
-        hasTriggerPassOut = false;
+
+
+        hasTriggerPassOut = true;
         status.AddStatus(StatusType.PassOut);
         animator.SetTrigger(isPassOutTrigger);
     }
@@ -184,34 +193,14 @@ public class DragonHealth : MonoBehaviour
         isPassOut = false;
         hasTriggerPassOut = true;
         status.RemoveStatus(StatusType.PassOut);
-        stats.ChangeStat(StatType.Fatigue, -30);
+
+        var data = DataTableManger.NurtureTable.Get(50200);
+        if (data == null) return;
+
+        int fatigueRecovery = stats.maxFatigue * data.REC_PERCENT / 100;
+       stats.ChangeStat(StatType.Fatigue, -fatigueRecovery);
         animator.Rebind();
     }
-
-    //private void UpdateGrowthStats()
-    //{
-    //    switch (currentGrowth)
-    //    {
-    //        case DragonGrowthState.Infancy:
-    //            stats.maxStamina = 100;
-    //            stats.experienceMax = 100f;
-    //            break;
-    //        case DragonGrowthState.GrowingUp:
-    //            stats.maxStamina = 150;
-    //            stats.experienceMax = 100f;
-    //            break;
-    //        case DragonGrowthState.Maturity:
-    //            stats.maxStamina = 200;
-    //            stats.experienceMax = 100f;
-    //            break;
-    //        case DragonGrowthState.Adult:
-    //            stats.maxStamina = 250;
-    //            stats.experienceMax = 100f;
-    //            break;
-    //    }
-
-    //    stats.stamina = stats.maxStamina;
-    //}
 
     public void GrowUp()
     {
@@ -219,37 +208,8 @@ public class DragonHealth : MonoBehaviour
         {
             currentGrowth++;
             ApplyTableData();
-            //UpdateGrowthStats();
             status.RemoveStatus(StatusType.Hungry);
             status.RemoveStatus(StatusType.Fatigue);
-        }
-    }
-
-    public void StartResting()
-    {
-        if (isPassOut) return;
-
-        if (!status.HasStatus(StatusType.Fatigue))
-        {
-            return;
-        }
-
-        int expGained = stats.CalculateExperience();
-        stats.ChangeStat(StatType.Experience, expGained);
-
-        stats.ChangeStat(StatType.Fatigue, -30);
-
-        CheckGrowth();
-    }
-
-    private void CheckGrowth()
-    {
-        if (stats.CanGrowUp() && currentGrowth < DragonGrowthState.Adult)
-        {
-            stats.ConsumeGrowthExperience();
-            currentGrowth++;
-            ApplyTableData();
-            // UpdateGrowthStats();
         }
     }
 
@@ -261,25 +221,25 @@ public class DragonHealth : MonoBehaviour
 
         status.UpdateTimersAndEffects(stats);
 
-        SyncPassOutState();
+        //SyncPassOutState();
     }
 
-    private void SyncPassOutState()
-    {
-        bool shouldPassOut = status.HasStatus(StatusType.PassOut);
+    //private void SyncPassOutState()
+    //{
+    //    bool shouldPassOut = status.HasStatus(StatusType.PassOut);
 
-        if (shouldPassOut != isPassOut)
-        {
-            if (shouldPassOut && !isPassOut)
-            {
-                OnPassOut();
-            }
-            else if (!shouldPassOut && isPassOut)
-            {
-                isPassOut = false;
-                animator.Rebind();
-            }
-        }
-    }
+    //    if (shouldPassOut != isPassOut)
+    //    {
+    //        if (shouldPassOut && !isPassOut)
+    //        {
+    //            OnPassOut();
+    //        }
+    //        else if (!shouldPassOut && isPassOut)
+    //        {
+    //            isPassOut = false;
+    //            animator.Rebind();
+    //        }
+    //    }
+    //}
 
 }

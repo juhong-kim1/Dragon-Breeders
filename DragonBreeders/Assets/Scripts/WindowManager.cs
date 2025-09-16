@@ -7,6 +7,7 @@ public enum Windows
     Start,
     Game,
     Map,
+    Home,
 }
 
 public class WindowManager : MonoBehaviour

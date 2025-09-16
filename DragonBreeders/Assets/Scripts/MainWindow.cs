@@ -10,4 +10,10 @@ public class MainWindow : GenericWindow
     {
         manager.Open(Windows.Map);
     }
+
+    public void OnClickHome()
+    {
+        manager.Open(Windows.Home);
+    
+    }
 }
