@@ -7,6 +7,8 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public Image icon;
     public Egg egg;
 
+    [SerializeField] private GameManager gameManager;
+
     private bool isPressing = false;
     private float pressTime = 0f;
     public float holdDuration = 5f; // 5√ 
@@ -59,12 +61,20 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
             GameObject newDragon = Instantiate(
                 egg.dragonPrefab,
-                Camera.main.transform.position + Camera.main.transform.forward * 2f,
-                Quaternion.identity
+               parent.transform
             );
 
             if (parent != null)
                 newDragon.transform.SetParent(parent.transform);
+
+            DragonHealth newHealth = newDragon.GetComponent<DragonHealth>();
+            if (newHealth != null)
+            {
+                if (gameManager != null)
+                {
+                    gameManager.dragonHealth = newHealth;
+                }
+            }
 
             ClearEgg();
         }

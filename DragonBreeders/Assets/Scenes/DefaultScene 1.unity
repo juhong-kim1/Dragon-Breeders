@@ -1474,7 +1474,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vault: {fileID: 2111678529}
   grassEggIcon: {fileID: 21300000, guid: 6811ed51330a7ca449331258b78b1a72, type: 3}
-  dragonPrefab: {fileID: 2080525263}
+  dragonPrefab: {fileID: 168864, guid: 281a986484325de459dc1b3709335bc5, type: 3}
 --- !u!4 &184023073
 Transform:
   m_ObjectHideFlags: 0
@@ -7824,8 +7824,7 @@ Transform:
   m_LocalPosition: {x: -5, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2080525264}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
 --- !u!1001 &1041467672
@@ -10018,7 +10017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb170b483836b4b805153cd9079f1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragonHealth: {fileID: 2080525269}
+  dragonHealth: {fileID: 3824956051522308218, guid: 281a986484325de459dc1b3709335bc5, type: 3}
   staminaText: {fileID: 2137153600}
   figureText: {fileID: 1491370254}
   hungryText: {fileID: 1791306774}
@@ -14804,70 +14803,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &2002811919
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1039579711}
-    m_Modifications:
-    - target: {fileID: 168864, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-      propertyPath: m_Name
-      value: Green
-      objectReference: {fileID: 0}
-    - target: {fileID: 168864, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 491582, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 491582, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 491582, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 491582, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 491582, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 491582, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 491582, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 491582, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 491582, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 491582, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 168864, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2080525269}
-  m_SourcePrefab: {fileID: 100100000, guid: 281a986484325de459dc1b3709335bc5, type: 3}
 --- !u!1001 &2007239938
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15264,50 +15199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27f89c2e8ae83074581710dd62e2747d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2080525263 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 168864, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-  m_PrefabInstance: {fileID: 2002811919}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2080525264 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 491582, guid: 281a986484325de459dc1b3709335bc5, type: 3}
-  m_PrefabInstance: {fileID: 2002811919}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2080525269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2080525263}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 034b07a7a255b984dbdb4f72508ad443, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stats:
-    stamina: 100
-    fatigue: 0
-    hunger: 100
-    intimacy: 0
-    clean: 100
-    maxStamina: 250
-    maxFatigue: 100
-    maxHunger: 100
-    maxIntimacy: 100
-    maxClean: 100
-    experience: 0
-    experienceMax: 100
-  status:
-    currentStatuses: 0
-    maxTimer: 60
-  currentGrowth: 0
-  currentSpeciesType: 1
-  currentElementType: 1
-  isPassOut: 0
-  hasTriggerPassOut: 0
-  currentStatuses: 0
 --- !u!224 &2084676599 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1382123903554521426, guid: 8e00de105dc69cb4290ff3680e49361b, type: 3}
@@ -15877,17 +15768,9 @@ PrefabInstance:
       value: Slot
       objectReference: {fileID: 0}
     - target: {fileID: 5029766327146390451, guid: 56114d7a10160b840b04e9b9938fb385, type: 3}
-      propertyPath: egg.icon
+      propertyPath: gameManager
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5029766327146390451, guid: 56114d7a10160b840b04e9b9938fb385, type: 3}
-      propertyPath: egg.eggName
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5029766327146390451, guid: 56114d7a10160b840b04e9b9938fb385, type: 3}
-      propertyPath: egg.dragonPrefab
-      value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1382034688}
     - target: {fileID: 7531518480124890495, guid: 56114d7a10160b840b04e9b9938fb385, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

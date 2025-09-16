@@ -93,5 +93,5 @@ MonoBehaviour:
     eggName: 
     icon: {fileID: 0}
     dragonPrefab: {fileID: 0}
-    hatchDuration: 60
-    startTime: 0
+  gameManager: {fileID: 0}
+  holdDuration: 5
