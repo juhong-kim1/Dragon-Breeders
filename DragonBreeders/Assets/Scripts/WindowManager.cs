@@ -8,6 +8,7 @@ public enum Windows
     Game,
     Map,
     Home,
+    EggVault
 }
 
 public class WindowManager : MonoBehaviour
