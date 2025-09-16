@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -16,12 +17,30 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI[] mapStatTexts;
 
-    public float timer = 0f;
+    public float exploreTimer = 0f;
+
+    public bool canExplore = true;
 
     public void Update()
     {
-        timer += Time.deltaTime;
         UpdateStatText();
+
+        if (!canExplore)
+        {
+            exploreTimer += Time.deltaTime;
+            var trainingData = DataTableManger.NurtureTable?.Get(50000);
+
+            //Debug.Log(trainingData.TIME);
+
+            if (trainingData != null && exploreTimer >= trainingData.TIME)
+            {
+                canExplore = true;
+                exploreTimer = 0f;
+            }
+        }
+
+
+
     }
 
     public void UpdateStatText()
@@ -130,10 +149,12 @@ public class GameManager : MonoBehaviour
 
     public void OnClickExplore()
     {
-        if (dragonHealth.isPassOut) return;
+        if (dragonHealth.isPassOut || !canExplore) return;
 
         var data = DataTableManger.NurtureTable.Get(50000);
         if (data == null) return;
+
+        Debug.Log("≈Ω«Ë Ω√¿€");
 
         dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
         dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
@@ -144,5 +165,8 @@ public class GameManager : MonoBehaviour
             StatusType randomDisease = diseases[Random.Range(0, diseases.Length)];
             dragonHealth.status.AddStatus(randomDisease);
         }
+
+        canExplore = false;
+        exploreTimer = 0f;
     }
 }
