@@ -8,7 +8,7 @@ public class HomeWindow : GenericWindow
 
     public void OnClickBack()
     {
-        manager.Open(Windows.Game);
+        manager.Open(Windows.Map);
         
     }
 

@@ -8,4 +8,10 @@ public class MapWindow : GenericWindow
     {
         manager.Open(Windows.Game);
     }
+
+    public void OnClickHome()
+    {
+        manager.Open(Windows.Home);
+
+    }
 }
