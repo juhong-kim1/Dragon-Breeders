@@ -110,9 +110,7 @@ public class GameManager : MonoBehaviour
                 Destroy(dragonHealth.gameObject);
 
                 EggSlot.isDragonActive = false;
-            
             }
-        
         }
 
 
