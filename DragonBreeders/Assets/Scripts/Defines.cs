@@ -19,6 +19,7 @@ public static class DataTableIds
     public static readonly string DragonStat = "DragonStatTable";
     public static readonly string Debuff = "DebuffTable";
     public static readonly string Nurture = "DragonNurtureTable";
+    public static readonly string Item = "ItemTable";
 }
 
 

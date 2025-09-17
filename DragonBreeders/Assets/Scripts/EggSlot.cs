@@ -1,11 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems; // 드래그/포인터 이벤트용
+using UnityEngine.EventSystems;
 
 public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    private static readonly string dragonTag = "Dragon";
+
+
     public Image icon;
     public Egg egg;
+
+    public static bool isDragonActive = false;
 
     [SerializeField] private GameManager gameManager;
 
@@ -50,9 +55,17 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void HatchEgg()
     {
+        if (isDragonActive)
+        {
+            Debug.Log("이미 드래곤을 사육중입니다.");
+
+            return;
+        }
+
+
         if (egg != null && egg.dragonPrefab != null)
         {
-            GameObject parent = GameObject.Find("Dragon");
+            GameObject parent = GameObject.FindWithTag(dragonTag);
             if (parent == null)
             {
                 Debug.LogWarning("Dragon 오브젝트가 씬에 없습니다!");
@@ -75,6 +88,8 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     gameManager.dragonHealth = newHealth;
                 }
             }
+
+            isDragonActive = true;
 
             ClearEgg();
         }

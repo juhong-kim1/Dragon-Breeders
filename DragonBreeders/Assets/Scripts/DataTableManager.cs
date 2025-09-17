@@ -39,6 +39,11 @@ public static class DataTableManger
         var nurtualTable = new NurtureTable();
         nurtualTable.Load(DataTableIds.Nurture);
         tables.Add(DataTableIds.Nurture, nurtualTable);
+
+        var itemTable = new ItemTable();
+        itemTable.Load(DataTableIds.Item);
+        tables.Add(DataTableIds.Item, itemTable);
+
     }
 
     //public static StringTable StringTable
@@ -70,6 +75,14 @@ public static class DataTableManger
         get
         {
             return Get<NurtureTable>(DataTableIds.Nurture);
+        }
+    }
+
+    public static ItemTable ItemTable
+    {
+        get
+        {
+            return Get<ItemTable>(DataTableIds.Item);
         }
     }
 

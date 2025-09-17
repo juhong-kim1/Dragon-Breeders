@@ -8,7 +8,6 @@ public class EggVaultTest : MonoBehaviour
 
     void Start()
     {
-        // 슬롯 강제 초기화
         foreach (var slot in vault.slots)
         {
             slot.ClearEgg();

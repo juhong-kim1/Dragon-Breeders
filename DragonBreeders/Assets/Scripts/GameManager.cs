@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -5,6 +6,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public DragonHealth dragonHealth;
+    public EggVault vault;
+
+    public GameObject[] dragonPrefabs;
+    public Sprite[] icon;
+
 
     public TextMeshProUGUI staminaText;
     public TextMeshProUGUI figureText;
@@ -96,6 +102,18 @@ public class GameManager : MonoBehaviour
             }
         }
 
+
+        if (dragonHealth.currentGrowth == DragonGrowthState.Adult)
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                Destroy(dragonHealth.gameObject);
+
+                EggSlot.isDragonActive = false;
+            
+            }
+        
+        }
 
 
     }
@@ -296,6 +314,61 @@ public class GameManager : MonoBehaviour
             StatusType randomDisease = diseases[Random.Range(0, diseases.Length)];
             dragonHealth.status.AddStatus(randomDisease);
         }
+
+        var itemData = DataTableManger.ItemTable;
+
+        if (Random.Range(0f, 100f) > 50f) //itemData.Get(5010001).DROP_RATE
+        {
+            int random = Random.Range(0, 4);
+            int randomTypeDragon = Random.Range(0, 4);
+
+            Debug.Log("·£´ý ¾Ë »ý¼º");
+
+            switch (random)
+            {
+                case 0:
+                    Egg egg1 = new Egg
+                    {
+                        eggName = "Grass Egg",
+                        icon = icon[random],
+                        dragonPrefab = dragonPrefabs[randomTypeDragon]
+                    };
+                    vault.AddEgg(egg1);
+                    break;
+                case 1:
+                    Egg egg2 = new Egg
+                    {
+                        eggName = "FIre Egg",
+                        icon = icon[random],
+                        dragonPrefab = dragonPrefabs[randomTypeDragon + 4]
+                    };
+                    vault.AddEgg(egg2);
+                    break;
+                case 2:
+                    Egg egg3 = new Egg
+                    {
+                        eggName = "Water Egg",
+                        icon = icon[random],
+                        dragonPrefab = dragonPrefabs[randomTypeDragon + 8]
+                    };
+                    vault.AddEgg(egg3);
+                    break;
+                case 3:
+                    Egg egg4 = new Egg
+                    {
+                        eggName = "Wind Egg",
+                        icon = icon[random],
+                        dragonPrefab = dragonPrefabs[randomTypeDragon + 12]
+                    };
+                    vault.AddEgg(egg4);
+                    break;
+
+            }
+
+
+
+        }
+
 
         canExplore = false;
         exploreTimer = 0f;
