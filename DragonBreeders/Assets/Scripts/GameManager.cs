@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -36,6 +37,8 @@ public class GameManager : MonoBehaviour
     private bool canBath = true;
     private bool canPlay = true;
 
+    public Image playProgressBar;
+
     public void Update()
     {
         UpdateStatText();
@@ -55,8 +58,9 @@ public class GameManager : MonoBehaviour
         if (!canRest)
         {
             restTimer += Time.deltaTime;
-            var restData = DataTableManger.NurtureTable.Get(50200);
 
+            var restData = DataTableManger.NurtureTable.Get(50200);
+  
             if (restData != null && restTimer >= restData.TIME)
             {
                 canRest = true;
@@ -69,10 +73,14 @@ public class GameManager : MonoBehaviour
             feedTimer += Time.deltaTime;
             var feedData = DataTableManger.NurtureTable.Get(50300);
 
-            if (feedData != null && feedTimer >= feedData.TIME)
+            if (feedData != null)
             {
-                canFeed = true;
-                feedTimer = 0f;
+                if (feedTimer >= feedData.TIME)
+                {
+                    canFeed = true;
+                    feedTimer = 0f;
+
+                }
             }
         }
 
@@ -94,11 +102,12 @@ public class GameManager : MonoBehaviour
         {
             playTimer += Time.deltaTime;
             var playData = DataTableManger.NurtureTable.Get(50500);
-
+            playProgressBar.fillAmount = Mathf.Clamp01(playTimer / playData.TIME);
             if (playData != null && playTimer >= playData.TIME)
             {
                 canPlay = true;
                 playTimer = 0f;
+                playProgressBar.fillAmount = 0f;
             }
         }
 

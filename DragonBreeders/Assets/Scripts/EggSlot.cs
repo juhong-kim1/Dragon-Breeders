@@ -18,6 +18,9 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private float pressTime = 0f;
     public float holdDuration = 5f; // 5ÃÊ
 
+    public Image progressBar;
+    private bool isHolding = false;
+
     void Awake()
     {
         egg = null;
@@ -27,13 +30,15 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     void Update()
     {
-        if (isPressing && egg != null)
+        if (isHolding && isPressing && egg != null)
         {
             pressTime += Time.deltaTime;
+            progressBar.fillAmount = Mathf.Clamp01(pressTime / holdDuration);
             if (pressTime >= holdDuration)
             {
                 HatchEgg();
                 isPressing = false;
+                ResetProgress();
             }
         }
     }
@@ -42,6 +47,7 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (egg != null)
         {
+            isHolding = true;
             isPressing = true;
             pressTime = 0f;
         }
@@ -49,6 +55,8 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        isHolding = false;
+        ResetProgress();
         isPressing = false;
         pressTime = 0f;
     }
@@ -117,6 +125,12 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public bool IsEmpty()
     {
         return egg == null;
+    }
+
+    private void ResetProgress()
+    {
+        pressTime = 0f;
+        progressBar.fillAmount = 0f;
     }
 }
 
