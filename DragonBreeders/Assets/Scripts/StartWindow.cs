@@ -10,4 +10,14 @@ public class StartWindow : GenericWindow
     {
         manager.Open(Windows.Game);
     }
+
+    public void OnClickQuit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+    Application.Quit();
+#endif
+
+    }
 }

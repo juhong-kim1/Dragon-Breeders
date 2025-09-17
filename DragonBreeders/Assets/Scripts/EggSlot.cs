@@ -102,6 +102,8 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             icon.sprite = egg.icon;
             icon.enabled = true;
+
+            Debug.Log($"아이콘 활성화 완료, enabled: {icon.enabled}");
         }
     }
 
