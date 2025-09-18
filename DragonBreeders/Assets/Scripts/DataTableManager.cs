@@ -22,9 +22,9 @@ public static class DataTableManger
         //    tables.Add(id, table);
         //}
 #else
-        var stringTable = new StringTable();
-        stringTable.Load(DataTableIds.String);
-        tables.Add(DataTableIds.String, stringTable);
+        //var stringTable = new StringTable();
+        //stringTable.Load(DataTableIds.String);
+        //tables.Add(DataTableIds.String, stringTable);
 #endif
 
         var dragonStatTable = new DragonStatTable();

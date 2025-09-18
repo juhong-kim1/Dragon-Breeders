@@ -8,6 +8,6 @@ public class EggVaultWindow : GenericWindow
 
     public void OnClickBack()
     {
-        manager.Open(Windows.Home);
+        manager.Open(Windows.Map);
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 public enum Windows
@@ -7,7 +6,6 @@ public enum Windows
     Start,
     Game,
     Map,
-    Home,
     EggVault
 }
 

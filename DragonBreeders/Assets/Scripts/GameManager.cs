@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI currentStatusText;
 
     public TextMeshProUGUI[] mapStatTexts;
-    public TextMeshProUGUI[] homeStatTexts;
 
     private float exploreTimer = 0f;
     private float restTimer = 0f;
@@ -137,11 +136,10 @@ public class GameManager : MonoBehaviour
         if (cleanText) cleanText.text = $"Clean: {stats.clean:F0}";
         if (figureText) figureText.text = $"Fatigue: {stats.fatigue:F0}";
         if (experienceText) experienceText.text = $"Exp: {stats.experience:F0}/{stats.experienceMax:F0}";
-        if (growthStateText) growthStateText.text = $"Stage: {dragonHealth.currentGrowth}";
+        if (growthStateText) growthStateText.text = $"Level: {dragonHealth.currentGrowth}";
         if (currentStatusText) currentStatusText.text = $"Status: {dragonHealth.currentStatuses}";
 
         UpdateMapUI(stats);
-        UpdateHomeUI(stats);
     }
 
     private void UpdateMapUI(DragonStats stats)
@@ -154,22 +152,8 @@ public class GameManager : MonoBehaviour
             mapStatTexts[3].text = $"Clean: {stats.clean:F0}";
             mapStatTexts[4].text = $"Fatigue: {stats.fatigue:F0}";
             mapStatTexts[5].text = $"Exp: {stats.experience:F0}/{stats.experienceMax:F0}";
-            mapStatTexts[6].text = $"Stage: {dragonHealth.currentGrowth}";
+            mapStatTexts[6].text = $"Level: {dragonHealth.currentGrowth}";
             mapStatTexts[7].text = $"Status: {dragonHealth.currentStatuses}";
-        }
-    }
-    private void UpdateHomeUI(DragonStats stats)
-    {
-        if (mapStatTexts.Length >= 8)
-        {
-            homeStatTexts[0].text = $"Stamina: {stats.stamina:F0}";
-            homeStatTexts[1].text = $"Hunger: {stats.hunger:F0}";
-            homeStatTexts[2].text = $"Intimacy: {stats.intimacy:F0}";
-            homeStatTexts[3].text = $"Clean: {stats.clean:F0}";
-            homeStatTexts[4].text = $"Fatigue: {stats.fatigue:F0}";
-            homeStatTexts[5].text = $"Exp: {stats.experience:F0}/{stats.experienceMax:F0}";
-            homeStatTexts[6].text = $"Stage: {dragonHealth.currentGrowth}";
-            homeStatTexts[7].text = $"Status: {dragonHealth.currentStatuses}";
         }
     }
 

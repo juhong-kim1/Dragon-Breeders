@@ -7,6 +7,7 @@ public class MainWindow : GenericWindow
     public Button menuButton;
     public Button statButton;
     public Button helpButton;
+
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject statPanel;
     [SerializeField] private GameObject helpPanel;
@@ -19,6 +20,11 @@ public class MainWindow : GenericWindow
         menuPanel.SetActive(false);
         statPanel.SetActive(false);
         helpPanel.SetActive(false);
+    }
+
+    public void OnClickStart()
+    {
+        manager.Open(Windows.Start);
     }
 
     public void OnClickMap()
