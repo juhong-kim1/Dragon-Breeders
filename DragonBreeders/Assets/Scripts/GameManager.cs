@@ -65,12 +65,22 @@ public class GameManager : MonoBehaviour
 
     public OtherWindowUI[] otherWindows;
 
+    public int famePoint = 0;
+    public TextMeshProUGUI famePointText;
+
+    public Button releaseButton;
+
+    private void Start()
+    {
+        releaseButton.gameObject.SetActive(false);
+    }
 
     public void Update()
     {
         CheckFPS();
 
         UpdateStatText();
+        UpdateReleaseButton();
 
         if (!canExplore)
         {
@@ -180,6 +190,8 @@ public class GameManager : MonoBehaviour
         intimacySlider.value = Mathf.Clamp01((float)stats.intimacy / stats.maxIntimacy);
         cleanSlider.value = Mathf.Clamp01((float)stats.clean / stats.maxClean);
         experienceSlider.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
+
+        famePointText.text = $"명성 : {famePoint}";
 
         UpdateMapUI(stats);
 
@@ -520,7 +532,7 @@ public class GameManager : MonoBehaviour
         if (dragonHealth.currentGrowth == DragonGrowthState.Adult)
         {
             Destroy(dragonHealth.gameObject);
-
+            famePoint += 100;
             EggSlot.isDragonActive = false;
 
         }
@@ -549,6 +561,12 @@ public class GameManager : MonoBehaviour
         restProgressBar.fillAmount = 0f;
     }
 
+    public void ExperienceCheatButton()
+    {
+        dragonHealth.stats.ChangeStat(StatType.Experience, 100);
+        dragonHealth.GainExperienceFromStats();
+    }
+
     private void CheckFPS()
     {
         frameCount++;
@@ -562,5 +580,30 @@ public class GameManager : MonoBehaviour
             frameCount = 0;
             fpsTimer = 0f;
         }
+    }
+
+    private void UpdateReleaseButton()
+    {
+        if (releaseButton == null) return;
+
+        if (dragonHealth == null)
+        {
+            releaseButton.gameObject.SetActive(false);
+            return;
+        }
+
+        releaseButton.gameObject.SetActive(dragonHealth.currentGrowth == DragonGrowthState.Adult);
+    }
+
+    public void OnClickReleaseDragon()
+    {
+        if (dragonHealth == null) return;
+
+        Destroy(dragonHealth.gameObject);
+        famePoint += 100;
+        EggSlot.isDragonActive = false;
+
+        releaseButton.gameObject.SetActive(false);
+        Debug.Log("드래곤을 방생했습니다!");
     }
 }
