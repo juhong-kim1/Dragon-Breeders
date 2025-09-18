@@ -6,7 +6,7 @@ public class DragonTouch : MonoBehaviour
     private Vector2 fingerTouchStartPosition;
     private bool isSwiping = false;
     private float minZoomSize = 20f;
-    private float maxZoomSize = 120f;
+    private float maxZoomSize = 80f;
     private float rotationSpeed = 5f;
 
     private float currentYRotation;

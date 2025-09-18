@@ -18,6 +18,9 @@ public class DragonBehavior : MonoBehaviour
 
     public static readonly string[] Action = { "Action1", "Action2", "Action3", "Action4", "Action5" };
 
+    public static readonly string Play = "Play";
+    public static readonly string Rest = "Rest";
+
 
     private void Start()
     {
@@ -62,7 +65,15 @@ public class DragonBehavior : MonoBehaviour
         {
             dragonHealth.GrowUp();
         }
+    }
 
+    public void PlayRestAnimation()
+    {
+        animator.SetTrigger("Rest");
+    }
 
+    public void PlayPlayAnimation()
+    {
+        animator.SetTrigger("Play");
     }
 }

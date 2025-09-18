@@ -292,6 +292,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        dragonHealth.GetComponent<DragonBehavior>().PlayPlayAnimation();
 
         int intimacyRecovery = dragonHealth.stats.maxIntimacy * data.REC_PERCENT / 100;
         dragonHealth.stats.ChangeStat(StatType.Intimacy, intimacyRecovery);
@@ -328,6 +329,8 @@ public class GameManager : MonoBehaviour
             int fatigueRecovery = dragonHealth.stats.maxFatigue * data.REC_PERCENT / 100;
             dragonHealth.stats.ChangeStat(StatType.Fatigue, -fatigueRecovery);
             dragonHealth.GainExperienceFromStats();
+
+            dragonHealth.GetComponent<DragonBehavior>().PlayRestAnimation();
 
             canRest = false;
             restTimer = 0f;
