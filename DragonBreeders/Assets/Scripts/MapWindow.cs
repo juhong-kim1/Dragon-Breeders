@@ -7,6 +7,12 @@ public class MapWindow : GenericWindow
     public Button menuButton;
     public Button statButton;
     public Button helpButton;
+
+    public GameObject eggVaultWindowObject;
+    public GameObject mainWindowObject;
+    public TutorialManager tutorialManager;
+    public GameManager gameManager;
+
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject statPanel;
     [SerializeField] private GameObject helpPanel;
@@ -29,12 +35,17 @@ public class MapWindow : GenericWindow
     public void OnClickBack()
     {
         manager.Open(Windows.Game);
+
+        if (tutorialManager != null && gameManager.dragonHealth != null)
+            tutorialManager.OnWindowOpened(mainWindowObject);
     }
 
     public void OnClickEgg()
     {
         manager.Open(Windows.EggVault);
 
+        if (tutorialManager != null)
+            tutorialManager.OnWindowOpened(eggVaultWindowObject);
     }
 
     private void ToggleMenu()

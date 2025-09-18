@@ -10,6 +10,8 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public Image icon;
     public Egg egg;
 
+    public TutorialManager tutorialManager;
+
     public static bool isDragonActive = false;
 
     [SerializeField] private GameManager gameManager;
@@ -39,6 +41,9 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 HatchEgg();
                 isPressing = false;
                 ResetProgress();
+
+                if (tutorialManager != null)
+                    tutorialManager.NextStep();
             }
         }
     }

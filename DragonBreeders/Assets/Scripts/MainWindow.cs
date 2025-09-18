@@ -8,9 +8,13 @@ public class MainWindow : GenericWindow
     public Button statButton;
     public Button helpButton;
 
+    public GameObject mapWindowObject;
+
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject statPanel;
     [SerializeField] private GameObject helpPanel;
+
+    public TutorialManager tutorialManager;
 
     private void Start()
     {
@@ -30,6 +34,9 @@ public class MainWindow : GenericWindow
     public void OnClickMap()
     {
         manager.Open(Windows.Map);
+
+        if (tutorialManager != null)
+            tutorialManager.OnWindowOpened(mapWindowObject);
     }
 
     private void ToggleMenu()
@@ -46,4 +53,6 @@ public class MainWindow : GenericWindow
     {
         helpPanel.SetActive(!helpPanel.activeSelf);
     }
+
+
 }
