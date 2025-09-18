@@ -10,15 +10,33 @@ public class GameManager : MonoBehaviour
     public GameObject[] dragonPrefabs;
     public Sprite[] icon;
 
-
-    public TextMeshProUGUI staminaText;
-    public TextMeshProUGUI figureText;
-    public TextMeshProUGUI hungryText;
-    public TextMeshProUGUI intimacyText;
-    public TextMeshProUGUI cleanText;
-    public TextMeshProUGUI experienceText;
     public TextMeshProUGUI growthStateText;
     public TextMeshProUGUI currentStatusText;
+
+    public TextMeshProUGUI currentStaminaValue;
+    public TextMeshProUGUI maxStaminaValue;
+
+    public TextMeshProUGUI currentFatigueValue;
+    public TextMeshProUGUI maxFatigueValue;
+
+    public TextMeshProUGUI currentHungryValue;
+    public TextMeshProUGUI maxHungryValue;
+
+    public TextMeshProUGUI currentIntimacyValue;
+    public TextMeshProUGUI maxIntimacyValue;
+
+    public TextMeshProUGUI currentCleanValue;
+    public TextMeshProUGUI maxCleanValue;
+
+    public TextMeshProUGUI currentExperienceValue;
+    public TextMeshProUGUI maxExperienceValue;
+
+    public Slider staminaSlider;
+    public Slider fatigueSlider;
+    public Slider hungrySlider;
+    public Slider intimacySlider;
+    public Slider cleanSlider;
+    public Slider experienceSlider;
 
     public TextMeshProUGUI[] mapStatTexts;
 
@@ -128,14 +146,31 @@ public class GameManager : MonoBehaviour
 
         var stats = dragonHealth.stats;
 
-        if (staminaText) staminaText.text = $"Stamina: {stats.stamina:F0}/{stats.maxStamina:F0}";
-        if (hungryText) hungryText.text = $"Hunger: {stats.hunger:F0}";
-        if (intimacyText) intimacyText.text = $"Intimacy: {stats.intimacy:F0}";
-        if (cleanText) cleanText.text = $"Clean: {stats.clean:F0}";
-        if (figureText) figureText.text = $"Fatigue: {stats.fatigue:F0}";
-        if (experienceText) experienceText.text = $"Exp: {stats.experience:F0}/{stats.experienceMax:F0}";
-        if (growthStateText) growthStateText.text = $"Level: {dragonHealth.currentGrowth}";
-        if (currentStatusText) currentStatusText.text = $"Status: {dragonHealth.currentStatuses}";
+
+        growthStateText.text = $"{dragonHealth.currentGrowth}";
+
+        currentStaminaValue.text = $"{stats.stamina}";
+        currentFatigueValue.text = $"{stats.fatigue}";
+        currentHungryValue.text = $"{stats.hunger}";
+        currentIntimacyValue.text = $"{stats.intimacy}";
+        currentCleanValue.text = $"{stats.clean}";
+        currentExperienceValue.text = $"{stats.experience}";
+
+
+
+        maxStaminaValue.text = $"{stats.maxStamina}";
+        maxFatigueValue.text = $"{stats.maxFatigue}";
+        maxHungryValue.text = $"{stats.maxHunger}";
+        maxIntimacyValue.text = $"{stats.maxIntimacy}";
+        maxCleanValue.text = $"{stats.maxClean}";
+        maxExperienceValue.text = $"{stats.experienceMax}";
+
+        fatigueSlider.value = Mathf.Clamp01((float)stats.fatigue / stats.maxFatigue);
+        staminaSlider.value = Mathf.Clamp01((float)stats.stamina / stats.maxStamina);
+        hungrySlider.value = Mathf.Clamp01((float)stats.hunger / stats.maxHunger);
+        intimacySlider.value = Mathf.Clamp01((float)stats.intimacy / stats.maxIntimacy);
+        cleanSlider.value = Mathf.Clamp01((float)stats.clean / stats.maxClean);
+        experienceSlider.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
 
         UpdateMapUI(stats);
     }
@@ -144,14 +179,7 @@ public class GameManager : MonoBehaviour
     {
         if (mapStatTexts.Length >= 8)
         {
-            mapStatTexts[0].text = $"Stamina: {stats.stamina:F0}";
-            mapStatTexts[1].text = $"Hunger: {stats.hunger:F0}";
-            mapStatTexts[2].text = $"Intimacy: {stats.intimacy:F0}";
-            mapStatTexts[3].text = $"Clean: {stats.clean:F0}";
-            mapStatTexts[4].text = $"Fatigue: {stats.fatigue:F0}";
-            mapStatTexts[5].text = $"Exp: {stats.experience:F0}/{stats.experienceMax:F0}";
-            mapStatTexts[6].text = $"Level: {dragonHealth.currentGrowth}";
-            mapStatTexts[7].text = $"Status: {dragonHealth.currentStatuses}";
+
         }
     }
 
