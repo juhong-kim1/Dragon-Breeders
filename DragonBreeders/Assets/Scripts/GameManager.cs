@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
     private int frameCount = 0;
     private float fpsTimer = 0f;
 
+    public OtherWindowUI[] otherWindows;
+
 
     public void Update()
     {
@@ -180,6 +182,13 @@ public class GameManager : MonoBehaviour
         experienceSlider.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
 
         UpdateMapUI(stats);
+
+        UpdateMainUI(dragonHealth);
+        foreach (var window in otherWindows)
+        {
+            if (window != null)
+                window.UpdateStats(dragonHealth);
+        }
     }
 
     private void UpdateMapUI(DragonStats stats)
@@ -188,6 +197,34 @@ public class GameManager : MonoBehaviour
         {
 
         }
+    }
+
+    private void UpdateMainUI(DragonHealth dragon)
+    {
+        var stats = dragon.stats;
+
+        growthStateText.text = $"{dragon.currentGrowth}";
+
+        currentStaminaValue.text = $"{stats.stamina}";
+        currentFatigueValue.text = $"{stats.fatigue}";
+        currentHungryValue.text = $"{stats.hunger}";
+        currentIntimacyValue.text = $"{stats.intimacy}";
+        currentCleanValue.text = $"{stats.clean}";
+        currentExperienceValue.text = $"{stats.experience}";
+
+        maxStaminaValue.text = $"{stats.maxStamina}";
+        maxFatigueValue.text = $"{stats.maxFatigue}";
+        maxHungryValue.text = $"{stats.maxHunger}";
+        maxIntimacyValue.text = $"{stats.maxIntimacy}";
+        maxCleanValue.text = $"{stats.maxClean}";
+        maxExperienceValue.text = $"{stats.experienceMax}";
+
+        staminaSlider.value = Mathf.Clamp01((float)stats.stamina / stats.maxStamina);
+        fatigueSlider.value = Mathf.Clamp01((float)stats.fatigue / stats.maxFatigue);
+        hungrySlider.value = Mathf.Clamp01((float)stats.hunger / stats.maxHunger);
+        intimacySlider.value = Mathf.Clamp01((float)stats.intimacy / stats.maxIntimacy);
+        cleanSlider.value = Mathf.Clamp01((float)stats.clean / stats.maxClean);
+        experienceSlider.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
     }
 
 
@@ -260,6 +297,7 @@ public class GameManager : MonoBehaviour
         if (dragonHealth.isPassOut)
         {
             dragonHealth.Recover();
+            dragonHealth.GainExperienceFromStats();
 
             canRest = false;
             restTimer = 0f;
@@ -277,6 +315,7 @@ public class GameManager : MonoBehaviour
 
             int fatigueRecovery = dragonHealth.stats.maxFatigue * data.REC_PERCENT / 100;
             dragonHealth.stats.ChangeStat(StatType.Fatigue, -fatigueRecovery);
+            dragonHealth.GainExperienceFromStats();
 
             canRest = false;
             restTimer = 0f;

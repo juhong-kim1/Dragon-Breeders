@@ -68,12 +68,12 @@ public class DragonStats
 
     public int CalculateExperience()
     {
-        return (stamina + intimacy) / 4;
+        return (stamina + hunger + clean + intimacy);
     }
 
     public bool CanGrowUp()
     {
-        return experience >= experienceMax;    
+        return experience >= experienceMax;
     }
 
     public void ConsumeGrowthExperience()

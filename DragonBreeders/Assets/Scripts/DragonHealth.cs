@@ -26,10 +26,10 @@ public class DragonHealth : MonoBehaviour
     private float growSpeed = 5f;
 
     private float hungryTimer = 0f;
-    private float hungryMaxTime = 3f;
+    private float hungryMaxTime = 10f; //기존 3
 
     private float cleanTimer = 0f;
-    private float cleanMaxTime = 15f;
+    private float cleanMaxTime = 20f; //기존 15
 
     public bool isPassOut = false;
     public bool hasTriggerPassOut = false;
@@ -241,5 +241,23 @@ public class DragonHealth : MonoBehaviour
     //        }
     //    }
     //}
+
+    public void GainExperienceFromStats()
+    {
+        if (stats == null) return;
+
+        int gainedExp = stats.CalculateExperience();
+
+        stats.ChangeStat(StatType.Experience, gainedExp);
+
+        Debug.Log($"경험치 획득: {gainedExp}, 현재 경험치: {stats.experience}/{stats.experienceMax}");
+
+        if (stats.CanGrowUp())
+        {
+            GrowUp();
+            stats.ConsumeGrowthExperience();
+            Debug.Log("드래곤이 성장했습니다!");
+        }
+    }
 
 }
