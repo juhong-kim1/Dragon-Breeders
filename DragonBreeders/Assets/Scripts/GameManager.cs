@@ -58,9 +58,16 @@ public class GameManager : MonoBehaviour
     public Image exploreProgressBar;
     public Image restProgressBar;
 
+    public TextMeshProUGUI fpsText;
+
+    private int frameCount = 0;
+    private float fpsTimer = 0f;
+
 
     public void Update()
     {
+        CheckFPS();
+
         UpdateStatText();
 
         if (!canExplore)
@@ -501,5 +508,20 @@ public class GameManager : MonoBehaviour
         feedProgressBar.fillAmount = 0f;
         exploreProgressBar.fillAmount = 0f;    
         restProgressBar.fillAmount = 0f;
+    }
+
+    private void CheckFPS()
+    {
+        frameCount++;
+        fpsTimer += Time.unscaledDeltaTime;
+
+        if (fpsTimer >= 1f)
+        {
+            float fps = frameCount / fpsTimer;
+            fpsText.text = $"{Mathf.Ceil(fps)} FPS";
+
+            frameCount = 0;
+            fpsTimer = 0f;
+        }
     }
 }
