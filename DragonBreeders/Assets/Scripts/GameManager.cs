@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,6 +35,11 @@ public class GameManager : MonoBehaviour
     private bool canPlay = true;
 
     public Image playProgressBar;
+    public Image feedProgressBar;
+    public Image bathProgressBar;
+    public Image exploreProgressBar;
+    public Image restProgressBar;
+
 
     public void Update()
     {
@@ -46,11 +49,13 @@ public class GameManager : MonoBehaviour
         {
             exploreTimer += Time.deltaTime;
             var exploreData = DataTableManger.NurtureTable.Get(50000);
+            exploreProgressBar.fillAmount = Mathf.Clamp01(exploreTimer / exploreData.TIME);
 
             if (exploreData != null && exploreTimer >= exploreData.TIME)
             {
                 canExplore = true;
                 exploreTimer = 0f;
+                exploreProgressBar.fillAmount = 0f;
             }
         }
 
@@ -59,11 +64,13 @@ public class GameManager : MonoBehaviour
             restTimer += Time.deltaTime;
 
             var restData = DataTableManger.NurtureTable.Get(50200);
-  
+            restProgressBar.fillAmount = Mathf.Clamp01(restTimer / restData.TIME);
+
             if (restData != null && restTimer >= restData.TIME)
             {
                 canRest = true;
                 restTimer = 0f;
+                restProgressBar.fillAmount = 0f;
             }
         }
 
@@ -71,6 +78,8 @@ public class GameManager : MonoBehaviour
         {
             feedTimer += Time.deltaTime;
             var feedData = DataTableManger.NurtureTable.Get(50300);
+            feedProgressBar.fillAmount = Mathf.Clamp01(feedTimer / feedData.TIME);
+
 
             if (feedData != null)
             {
@@ -78,7 +87,7 @@ public class GameManager : MonoBehaviour
                 {
                     canFeed = true;
                     feedTimer = 0f;
-
+                    feedProgressBar.fillAmount = 0f;
                 }
             }
         }
@@ -88,11 +97,12 @@ public class GameManager : MonoBehaviour
         {
             bathTimer += Time.deltaTime;
             var bathData = DataTableManger.NurtureTable.Get(50400);
-
+            bathProgressBar.fillAmount = Mathf.Clamp01(bathTimer / bathData.TIME);
             if (bathData != null && bathTimer >= bathData.TIME)
             {
                 canBath = true;
                 bathTimer = 0f;
+                bathProgressBar.fillAmount = 0f;
             }
         }
 
@@ -109,19 +119,7 @@ public class GameManager : MonoBehaviour
                 playProgressBar.fillAmount = 0f;
             }
         }
-
-
-        if (dragonHealth.currentGrowth == DragonGrowthState.Adult)
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Destroy(dragonHealth.gameObject);
-
-                EggSlot.isDragonActive = false;
-            }
-        }
-
-
+        
     }
 
     public void UpdateStatText()
@@ -392,4 +390,88 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OnClickEggCheat()
+    {
+        int random = Random.Range(0, 4);
+        int randomTypeDragon = Random.Range(0, 4);
+
+        Debug.Log("·£´ý ¾Ë »ý¼º");
+
+        switch (random)
+        {
+            case 0:
+                Egg egg1 = new Egg
+                {
+                    eggName = "Grass Egg",
+                    icon = icon[random],
+                    dragonPrefab = dragonPrefabs[randomTypeDragon]
+                };
+                vault.AddEgg(egg1);
+                break;
+            case 1:
+                Egg egg2 = new Egg
+                {
+                    eggName = "FIre Egg",
+                    icon = icon[random],
+                    dragonPrefab = dragonPrefabs[randomTypeDragon + 4]
+                };
+                vault.AddEgg(egg2);
+                break;
+            case 2:
+                Egg egg3 = new Egg
+                {
+                    eggName = "Water Egg",
+                    icon = icon[random],
+                    dragonPrefab = dragonPrefabs[randomTypeDragon + 8]
+                };
+                vault.AddEgg(egg3);
+                break;
+            case 3:
+                Egg egg4 = new Egg
+                {
+                    eggName = "Wind Egg",
+                    icon = icon[random],
+                    dragonPrefab = dragonPrefabs[randomTypeDragon + 12]
+                };
+                vault.AddEgg(egg4);
+                break;
+        }
+    }
+
+    public void GrowCheatButton()
+    {
+        if (dragonHealth == null)
+            return;
+
+        if (dragonHealth.currentGrowth == DragonGrowthState.Adult)
+        {
+            Destroy(dragonHealth.gameObject);
+
+            EggSlot.isDragonActive = false;
+
+        }
+
+        dragonHealth.GrowUp();
+    }
+
+    public void CoolTimeResetButton()
+    {
+        canBath = true;
+        canExplore = true;
+        canFeed = true;
+        canPlay = true;
+        canRest = true;
+
+        exploreTimer = 0f;
+        restTimer = 0f;
+        feedTimer = 0f;
+        bathTimer = 0f;
+        playTimer = 0f;
+
+        playProgressBar.fillAmount = 0f;
+        bathProgressBar.fillAmount = 0f;
+        feedProgressBar.fillAmount = 0f;
+        exploreProgressBar.fillAmount = 0f;    
+        restProgressBar.fillAmount = 0f;
+    }
 }
