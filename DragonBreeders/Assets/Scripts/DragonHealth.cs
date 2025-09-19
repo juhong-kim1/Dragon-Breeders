@@ -23,7 +23,7 @@ public class DragonHealth : MonoBehaviour
 
     public DragonStatTableData currentTableData;
 
-    private float growSpeed = 5f;
+    private float growSpeed = 1.2f;
 
     private float hungryTimer = 0f;
     private float hungryMaxTime = 10f; //±‚¡∏ 3
@@ -35,6 +35,12 @@ public class DragonHealth : MonoBehaviour
     public bool hasTriggerPassOut = false;
 
     public StatusType currentStatuses = StatusType.None;
+
+    private float rotationSpeed = 360f;
+    public bool isFormChanging = false;
+
+    private float rotationTime = 0f;
+    private float rotationMaxTime = 2f;
 
     private void Start()
     {
@@ -131,6 +137,16 @@ public class DragonHealth : MonoBehaviour
 
         transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * growSpeed);
 
+        if (isFormChanging == true && rotationTime < rotationMaxTime)
+        {
+            transform.localRotation *= Quaternion.Euler(0f, rotationSpeed * Time.deltaTime, 0f);
+            rotationTime += Time.deltaTime;
+        }
+        else
+        { 
+            isFormChanging = false;
+            rotationTime = 0f;
+        }
     }
 
     private void UpdateStats()
@@ -210,6 +226,7 @@ public class DragonHealth : MonoBehaviour
             ApplyTableData();
             status.RemoveStatus(StatusType.Hungry);
             status.RemoveStatus(StatusType.Fatigue);
+            isFormChanging = true;
         }
     }
 

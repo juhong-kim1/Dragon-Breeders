@@ -73,6 +73,9 @@ public class GameManager : MonoBehaviour
 
     public Button releaseButton;
 
+    public ParticleSystem levelUpParticle;
+    private bool isPlaying = false;
+
     private void Start()
     {
         releaseButton.gameObject.SetActive(false);
@@ -161,7 +164,19 @@ public class GameManager : MonoBehaviour
                 playProgressBar.fillAmount = 0f;
             }
         }
-        
+
+        if (dragonHealth != null && dragonHealth.isFormChanging && !isPlaying)
+        { 
+            levelUpParticle.Play();
+
+            isPlaying = true;
+        }
+
+        if (dragonHealth != null && !dragonHealth.isFormChanging)
+        {
+            isPlaying = false;
+        }
+
     }
 
     public void UpdateStatText()
@@ -260,6 +275,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        levelUpParticle.Play();
         int hungerRecovery = dragonHealth.stats.maxHunger * data.REC_PERCENT / 100;
         dragonHealth.stats.ChangeStat(StatType.Hunger, hungerRecovery);
 
@@ -418,7 +434,7 @@ public class GameManager : MonoBehaviour
 
         if (Random.Range(0f, 100f) > 50f) //itemData.Get(5010001).DROP_RATE
         {
-            int random = Random.Range(0, 4);
+            int random = Random.Range(0, 4); 
             int randomTypeDragon = Random.Range(0, 4);
 
             Debug.Log("·£´ý ¾Ë »ý¼º");
