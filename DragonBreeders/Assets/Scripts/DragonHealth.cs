@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum DragonGrowthState
@@ -41,6 +42,8 @@ public class DragonHealth : MonoBehaviour
 
     private float rotationTime = 0f;
     private float rotationMaxTime = 2f;
+
+    private float flySpeed = 5f;
 
     private void Start()
     {
@@ -227,6 +230,10 @@ public class DragonHealth : MonoBehaviour
             status.RemoveStatus(StatusType.Hungry);
             status.RemoveStatus(StatusType.Fatigue);
             isFormChanging = true;
+
+            string Action = DragonBehavior.Action[2];
+
+            animator.SetTrigger(Action);
         }
     }
 
@@ -277,4 +284,16 @@ public class DragonHealth : MonoBehaviour
         }
     }
 
+    public void ReleaseDragon()
+    {
+        transform.Translate(Vector3.up * flySpeed * Time.deltaTime, Space.World);
+
+        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
+
+        string Action = DragonBehavior.Play;
+
+        animator.SetTrigger(Action);
+
+        Destroy(gameObject, 5f);
+    }
 }

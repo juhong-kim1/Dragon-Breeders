@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
 
     public ParticleSystem levelUpParticle;
     private bool isPlaying = false;
+    private bool isDragonReleased = false;
 
     private void Start()
     {
@@ -86,6 +87,16 @@ public class GameManager : MonoBehaviour
     public void Update()
     {
         CheckFPS();
+
+        if (dragonHealth == null)
+        {
+            isDragonReleased = false;
+        }
+
+        if (isDragonReleased && dragonHealth != null)
+        {
+            dragonHealth.ReleaseDragon();
+        }
 
         UpdateStatText();
         UpdateReleaseButton();
@@ -165,18 +176,8 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (dragonHealth != null && dragonHealth.isFormChanging && !isPlaying)
-        { 
-            levelUpParticle.Play();
 
-            isPlaying = true;
-        }
-
-        if (dragonHealth != null && !dragonHealth.isFormChanging)
-        {
-            isPlaying = false;
-        }
-
+        GrowUpEffect();
     }
 
     public void UpdateStatText()
@@ -640,11 +641,31 @@ public class GameManager : MonoBehaviour
     {
         if (dragonHealth == null) return;
 
-        Destroy(dragonHealth.gameObject);
+        //Destroy(dragonHealth.gameObject);
         famePoint += 100;
         EggSlot.isDragonActive = false;
 
+        isDragonReleased = true;
+
         releaseButton.gameObject.SetActive(false);
         Debug.Log("드래곤을 방생했습니다!");
+    }
+
+    private void GrowUpEffect()
+    {
+
+        if (dragonHealth != null && dragonHealth.isFormChanging && !isPlaying)
+        {
+            levelUpParticle.Play();
+
+            levelUpParticle.transform.localScale = Vector3.one * (float)dragonHealth.currentGrowth;
+
+            isPlaying = true;
+        }
+
+        if (dragonHealth != null && !dragonHealth.isFormChanging)
+        {
+            isPlaying = false;
+        }
     }
 }
