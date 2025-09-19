@@ -5,10 +5,13 @@ public class StartWindow : GenericWindow
 {
     public Button startButton;
 
+    public GameManager gameManager;
+
 
     public void OnClickStart()
     {
         manager.Open(Windows.Game);
+        gameManager.alarmPanel.gameObject.SetActive(true);
     }
 
     public void OnClickQuit()

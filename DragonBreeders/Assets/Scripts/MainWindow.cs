@@ -15,6 +15,7 @@ public class MainWindow : GenericWindow
     [SerializeField] private GameObject helpPanel;
 
     public TutorialManager tutorialManager;
+    public GameManager gameManager;
 
     private void Start()
     {
@@ -29,6 +30,8 @@ public class MainWindow : GenericWindow
     public void OnClickStart()
     {
         manager.Open(Windows.Start);
+        gameManager.alarmPanel.gameObject.SetActive(false);
+
     }
 
     public void OnClickMap()

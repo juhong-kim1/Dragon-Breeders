@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI currentExperienceValue;
     public TextMeshProUGUI maxExperienceValue;
 
+    public GameObject alarmPanel;
+    public TextMeshProUGUI alarmText;
+
     public Slider staminaSlider;
     public Slider fatigueSlider;
     public Slider hungrySlider;
@@ -73,6 +76,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         releaseButton.gameObject.SetActive(false);
+        alarmPanel.gameObject.SetActive(false);
+
     }
 
     public void Update()
@@ -251,11 +256,14 @@ public class GameManager : MonoBehaviour
         if (!CanExecuteNurture(data))
         {
             Debug.Log("먹이주기 조건 불충족: 배고픔이 100%");
+            alarmText.text = "먹이주기 조건 불충족: 배부름이 100%";
             return;
         }
 
         int hungerRecovery = dragonHealth.stats.maxHunger * data.REC_PERCENT / 100;
         dragonHealth.stats.ChangeStat(StatType.Hunger, hungerRecovery);
+
+        alarmText.text = "먹이주기 완료, 배부름이 25% 증가";
 
         canFeed = false;
         feedTimer = 0f;
@@ -274,6 +282,8 @@ public class GameManager : MonoBehaviour
         int cleanRecovery = dragonHealth.stats.maxClean * data.REC_PERCENT / 100;
         dragonHealth.stats.ChangeStat(StatType.Clean, cleanRecovery);
 
+        alarmText.text = "목욕 완료, 청결도 30% 회복";
+
         canBath = false;
         bathTimer = 0f;
     }
@@ -289,6 +299,7 @@ public class GameManager : MonoBehaviour
         if (!CanExecuteNurture(data))
         {
             Debug.Log("놀아주기 조건 불충족: 피로도가 75% 이상");
+            alarmText.text = "놀아주기 조건 불충족: 피로도가 75% 이상";
             return;
         }
 
@@ -298,6 +309,8 @@ public class GameManager : MonoBehaviour
         dragonHealth.stats.ChangeStat(StatType.Intimacy, intimacyRecovery);
         dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
         dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
+
+        alarmText.text = "놀아주기 완료, 친밀도 10% 증가";
 
         canPlay = false;
         playTimer = 0f;
@@ -323,12 +336,15 @@ public class GameManager : MonoBehaviour
             if (!CanExecuteNurture(data))
             {
                 Debug.Log("휴식 조건 불충족: 피로도가 80% 미만");
+                alarmText.text = "휴식 조건 불충족: 피로도가 80% 미만";
                 return;
             }
 
             int fatigueRecovery = dragonHealth.stats.maxFatigue * data.REC_PERCENT / 100;
             dragonHealth.stats.ChangeStat(StatType.Fatigue, -fatigueRecovery);
             dragonHealth.GainExperienceFromStats();
+
+            alarmText.text = "피로도 100% 회복 성공";
 
             dragonHealth.GetComponent<DragonBehavior>().PlayRestAnimation();
 
@@ -342,7 +358,7 @@ public class GameManager : MonoBehaviour
     public void OnClickTrain()
     {
         if (dragonHealth.isPassOut) { Debug.Log("기절 중, 훈련 불가"); return; }
-        if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) { Debug.Log("유아기에선 훈련 불가"); return; }
+        if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) { Debug.Log("유아기에선 훈련 불가"); alarmText.text = "유아기에선 훈련 불가"; return; }
 
         var data = DataTableManger.NurtureTable.Get(50014);
         if (data == null) return;
@@ -350,12 +366,16 @@ public class GameManager : MonoBehaviour
         if (!CanExecuteNurture(data))
         {
             Debug.Log("훈련 조건 불충족: 피로도가 65% 이상");
+            alarmText.text = "훈련 조건 불충족: 피로도가 65% 이상";
             return;
         }
 
         dragonHealth.stats.ChangeStat(StatType.Experience, data.EXPGROWTH);
         dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
         dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
+
+
+        alarmText.text = "훈련완료, 경험치 14 획득";
 
         if (Random.Range(0f, 100f) < data.RATE_INJURY)
         {
@@ -369,7 +389,7 @@ public class GameManager : MonoBehaviour
     {
         if (dragonHealth.isPassOut) { Debug.Log("기절 중, 탐험 불가"); return; }
         if (!canExplore) { Debug.Log("탐험 쿨 진행 중"); return; }
-        if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) {Debug.Log("유아기에선 탐험 불가"); return; }
+        if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) {Debug.Log("유아기에선 탐험 불가"); alarmText.text = "유아기에선 탐험 불가"; return; }
 
 
         var data = DataTableManger.NurtureTable.Get(50000);
@@ -378,6 +398,7 @@ public class GameManager : MonoBehaviour
         if(!CanExecuteNurture(data))
         {
             Debug.Log("탐험 조건 불충족: 피로도가 65% 이상");
+            alarmText.text = "탐험 조건 불충족: 피로도가 65% 이상";
             return;
         }
 
@@ -401,6 +422,7 @@ public class GameManager : MonoBehaviour
             int randomTypeDragon = Random.Range(0, 4);
 
             Debug.Log("랜덤 알 생성");
+            alarmText.text = "탐험 성공! 랜덤 알을 얻었습니다.";
 
             switch (random)
             {

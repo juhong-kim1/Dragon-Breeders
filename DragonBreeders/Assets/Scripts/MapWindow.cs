@@ -30,6 +30,7 @@ public class MapWindow : GenericWindow
     public void OnClickStart()
     {
         manager.Open(Windows.Start);
+        gameManager.alarmPanel.gameObject.SetActive(false);
     }
 
     public void OnClickBack()
