@@ -90,6 +90,12 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                parent.transform
             );
 
+            DragonBehavior behavior = newDragon.GetComponent<DragonBehavior>();
+            if (behavior != null && gameManager != null)
+            {
+                behavior.SetTouchUI(gameManager.dragonFeedback);
+            }
+
             if (parent != null)
                 newDragon.transform.SetParent(parent.transform);
 

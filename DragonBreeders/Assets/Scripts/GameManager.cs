@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public DragonHealth dragonHealth;
-    private DragonBehavior dragonBehavior;
     public EggVault vault;
 
     public GameObject[] dragonPrefabs;
@@ -86,12 +85,6 @@ public class GameManager : MonoBehaviour
     {
         releaseButton.gameObject.SetActive(false);
         alarmPanel.gameObject.SetActive(false);
-
-        if (dragonHealth != null)
-        {
-            dragonBehavior = dragonHealth.GetComponent<DragonBehavior>();
-            dragonBehavior.SetTouchUI(dragonFeedback);
-        }
 
     }
 
