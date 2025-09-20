@@ -26,6 +26,9 @@ public class DragonBehavior : MonoBehaviour
     public TextMeshProUGUI dragonFeedback;
     public string[] touchMessage = { "±×¸£¸ª", "¸Û¸Û", "²¿¸£¸¤", "³¢À×", "¾È³çÇÏ¼¼¿ä\n µå·¡°ïÀÔ´Ï´Ù", "ÄÝ·Ï", "¢½" };
 
+    private float lastTouchTime = 0f;
+    public float touchCooldown = 3f;
+
 
     private void Start()
     {
@@ -55,6 +58,9 @@ public class DragonBehavior : MonoBehaviour
 
             if (touch.phase == TouchPhase.Began)
             {
+                if (Time.time - lastTouchTime < touchCooldown)
+                    return;
+
                 Ray ray = Camera.main.ScreenPointToRay(touch.position);
 
                 if (Physics.Raycast(ray, out RaycastHit hit))
@@ -80,6 +86,8 @@ public class DragonBehavior : MonoBehaviour
                     dragonFeedback.gameObject.SetActive(true);
                     StartCoroutine(TextAnimation());
                 }
+
+                lastTouchTime = Time.time;
             }
         }
     }
