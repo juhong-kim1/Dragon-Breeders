@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public DragonHealth dragonHealth;
+    public PlayerManager playerManager;
     public EggVault vault;
 
     public GameObject[] dragonPrefabs;
@@ -70,7 +71,6 @@ public class GameManager : MonoBehaviour
 
     public OtherWindowUI[] otherWindows;
 
-    public int famePoint = 0;
     public TextMeshProUGUI famePointText;
 
     public Button releaseButton;
@@ -217,7 +217,7 @@ public class GameManager : MonoBehaviour
         experienceSlider.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
         experienceSliderToMain.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
 
-        famePointText.text = $"명성 : {famePoint}";
+        famePointText.text = $"명성 : {playerManager.famePoint}";
 
         UpdateMapUI(stats);
 
@@ -579,7 +579,7 @@ public class GameManager : MonoBehaviour
         if (dragonHealth.currentGrowth == DragonGrowthState.Adult)
         {
             Destroy(dragonHealth.gameObject);
-            famePoint += 100;
+            playerManager.famePoint += 100;
             EggSlot.isDragonActive = false;
 
         }
@@ -647,7 +647,7 @@ public class GameManager : MonoBehaviour
         if (dragonHealth == null) return;
 
         //Destroy(dragonHealth.gameObject);
-        famePoint += 100;
+        playerManager.famePoint += 100;
         EggSlot.isDragonActive = false;
 
         isDragonReleased = true;
