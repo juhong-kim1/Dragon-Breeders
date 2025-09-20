@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public DragonHealth dragonHealth;
+    private DragonBehavior dragonBehavior;
     public EggVault vault;
 
     public GameObject[] dragonPrefabs;
@@ -40,6 +41,8 @@ public class GameManager : MonoBehaviour
     public Slider intimacySlider;
     public Slider cleanSlider;
     public Slider experienceSlider;
+
+    public Slider experienceSliderToMain;
 
     public TextMeshProUGUI[] mapStatTexts;
 
@@ -77,10 +80,18 @@ public class GameManager : MonoBehaviour
     private bool isPlaying = false;
     private bool isDragonReleased = false;
 
+    public TextMeshProUGUI dragonFeedback;
+
     private void Start()
     {
         releaseButton.gameObject.SetActive(false);
         alarmPanel.gameObject.SetActive(false);
+
+        if (dragonHealth != null)
+        {
+            dragonBehavior = dragonHealth.GetComponent<DragonBehavior>();
+            dragonBehavior.SetTouchUI(dragonFeedback);
+        }
 
     }
 
@@ -211,6 +222,7 @@ public class GameManager : MonoBehaviour
         intimacySlider.value = Mathf.Clamp01((float)stats.intimacy / stats.maxIntimacy);
         cleanSlider.value = Mathf.Clamp01((float)stats.clean / stats.maxClean);
         experienceSlider.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
+        experienceSliderToMain.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
 
         famePointText.text = $"¸í¼º : {famePoint}";
 

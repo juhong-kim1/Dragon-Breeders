@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public enum DragonBehaviorState
 { 
@@ -21,6 +23,9 @@ public class DragonBehavior : MonoBehaviour
     public static readonly string Play = "Play";
     public static readonly string Rest = "Rest";
 
+    public TextMeshProUGUI dragonFeedback;
+    public string[] touchMessage = { "±×¸£¸ª", "¸Û¸Û", "²¿¸£¸¤", "³¢À×", "¾È³çÇÏ¼¼¿ä\n µå·¡°ïÀÔ´Ï´Ù", "ÄÝ·Ï", "¢½" };
+
 
     private void Start()
     {
@@ -32,6 +37,14 @@ public class DragonBehavior : MonoBehaviour
     {
         TouchAction();
         TouchGrowth();
+    }
+
+    public void SetTouchUI(TextMeshProUGUI uiText)
+    {
+        dragonFeedback = uiText;
+
+        if (dragonFeedback != null)
+            dragonFeedback.gameObject.SetActive(false);
     }
 
     private void TouchAction()
@@ -53,9 +66,30 @@ public class DragonBehavior : MonoBehaviour
                         animator.SetTrigger(Action[random]);
                         dragonHealth.stats.ChangeStat(StatType.Intimacy, 1);
                     }
+
+                    string message = touchMessage[Random.Range(0, touchMessage.Length)];
+                    dragonFeedback.text = message;
+
+
+                    RectTransform rect = dragonFeedback.GetComponent<RectTransform>();
+                    float x = Random.Range(-15f, 15f);
+                    float y = Random.Range(-20f, 20f);
+                    rect.anchoredPosition = new Vector2(x, y);
+
+
+                    dragonFeedback.gameObject.SetActive(true);
+                    StartCoroutine(TextAnimation());
                 }
             }
         }
+    }
+
+    private IEnumerator TextAnimation()
+    {
+        yield return new WaitForSeconds(2f);
+
+        if (dragonFeedback != null)
+            dragonFeedback.gameObject.SetActive(false);
     }
 
     private void TouchGrowth()

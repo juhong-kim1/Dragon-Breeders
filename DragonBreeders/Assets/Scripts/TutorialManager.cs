@@ -12,6 +12,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject mapWindow;
     public GameObject eggVaultWindow;
     public GameObject nestWindow;
+    public GameObject retryButton;
 
     private int currentStep = 0;
     private bool tutorialActive = false;
@@ -20,6 +21,7 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         tutorialPanel.SetActive(false);
+        isTutorialClear = PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
     }
     public void OnGameStart()
     {
