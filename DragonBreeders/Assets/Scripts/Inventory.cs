@@ -44,4 +44,16 @@ public class Inventory : MonoBehaviour
         slots.Add(newSlot);
         Debug.Log($"아이템 추가: {itemData.GetName()} → 새 슬롯 생성");
     }
+
+    public int GetAmountByID(int itemID)
+    {
+        foreach (var slot in slots)
+        {
+            if (!slot.IsEmpty() && slot.item.GetID() == itemID)
+            {
+                return slot.GetAmount();
+            }
+        }
+        return 0;
+    }
 }

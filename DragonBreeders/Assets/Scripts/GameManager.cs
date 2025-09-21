@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
     public OtherWindowUI[] otherWindows;
 
     public TextMeshProUGUI famePointText;
+    public TextMeshProUGUI coinText;
 
     public Button releaseButton;
 
@@ -87,7 +88,6 @@ public class GameManager : MonoBehaviour
     {
         releaseButton.gameObject.SetActive(false);
         alarmPanel.gameObject.SetActive(false);
-
     }
 
     public void Update()
@@ -218,8 +218,6 @@ public class GameManager : MonoBehaviour
         cleanSlider.value = Mathf.Clamp01((float)stats.clean / stats.maxClean);
         experienceSlider.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
         experienceSliderToMain.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
-
-        famePointText.text = $"¸í¼º : {playerManager.famePoint}";
 
         UpdateMapUI(stats);
 
@@ -702,7 +700,6 @@ public class GameManager : MonoBehaviour
         if (dragonHealth == null) return;
 
         //Destroy(dragonHealth.gameObject);
-        playerManager.famePoint += dragonHealth.stats.CalculateStats();
         EggSlot.isDragonActive = false;
 
         isDragonReleased = true;
