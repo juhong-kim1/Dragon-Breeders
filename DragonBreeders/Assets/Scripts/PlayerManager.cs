@@ -12,12 +12,12 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         coin = 1000;
-        UpdateCoinUI();
+        //UpdateCoinUI();
     }
 
-    public void UpdateCoinUI()
-    {
-        int coinAmount = playerInventory.GetAmountByID(5070001);
-        coinText.text = coinAmount.ToString();
-    }
+    //public void UpdateCoinUI()
+    //{
+    //    int coinAmount = playerInventory.GetAmountByID(5070001);
+    //    coinText.text = coinAmount.ToString();
+    //}
 }

@@ -1,5 +1,3 @@
-using UnityEditorInternal;
-using UnityEngine;
 
 public enum Languages
 {
