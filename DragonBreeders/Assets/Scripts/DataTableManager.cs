@@ -44,6 +44,10 @@ public static class DataTableManger
         itemTable.Load(DataTableIds.Item);
         tables.Add(DataTableIds.Item, itemTable);
 
+        var shopTable = new ShopTable();
+        shopTable.Load(DataTableIds.Shop);
+        tables.Add(DataTableIds.Shop, shopTable);
+
     }
 
     public static StringTable StringTable
@@ -84,6 +88,15 @@ public static class DataTableManger
         {
             return Get<ItemTable>(DataTableIds.Item);
         }
+    }
+
+    public static ShopTable ShopTable
+    {
+        get
+        {
+            return Get<ShopTable>(DataTableIds.Shop);
+        }
+
     }
 
     public static T Get<T>(string id) where T : DataTable

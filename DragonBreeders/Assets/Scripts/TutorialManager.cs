@@ -146,4 +146,8 @@ public class TutorialManager : MonoBehaviour
         Debug.Log("튜토리얼 완료");
     }
 
+    public void TutorialOff()
+    { 
+        tutorialPanel.SetActive(false);
+    }
 }

@@ -63,4 +63,9 @@ public class MapWindow : GenericWindow
     {
         helpPanel.SetActive(!helpPanel.activeSelf);
     }
+
+    public void OnClickShop()
+    {
+        manager.Open(Windows.Shop);
+    }
 }

@@ -8,6 +8,7 @@ public class InventorySlot : MonoBehaviour
     public Image icon;
     public TextMeshProUGUI amountText;
     public TextMeshProUGUI itemName;
+    public GameObject amountParent;
     public IItem item;
     private int amount;
 
@@ -21,14 +22,18 @@ public class InventorySlot : MonoBehaviour
         item = newItem;
         amount = newAmount;
 
-        if (icon != null && item != null)
+        if (icon != null && item != null && amountParent != null)
         {
             icon.sprite = item.GetIcon();
             icon.enabled = true;
 
             itemName.text = item.GetName();
             itemName.enabled = true;
+
+            amountParent.SetActive(true);
         }
+
+        Debug.Log($"슬롯에 아이템 설정: ID={item.GetID()}, 이름={item.GetName()}, 스프라이트={icon.sprite?.name}, 수량={amount}");
 
         UpdateAmountText();
         Debug.Log($"슬롯에 아이템 설정: {item.GetName()} x{amount}");
@@ -47,6 +52,7 @@ public class InventorySlot : MonoBehaviour
         item = null;
         amount = 0;
         if (icon != null) icon.enabled = false;
+        if (amountParent != null) amountParent.SetActive(false);
         UpdateAmountText();
     }
 

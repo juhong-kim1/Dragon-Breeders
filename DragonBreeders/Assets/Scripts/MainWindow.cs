@@ -28,6 +28,7 @@ public class MainWindow : GenericWindow
         menuPanel.SetActive(false);
         statPanel.SetActive(false);
         helpPanel.SetActive(false);
+        InventoryPanel.SetActive(false);
     }
 
     public void OnClickStart()
@@ -65,5 +66,9 @@ public class MainWindow : GenericWindow
         InventoryPanel.SetActive(!InventoryPanel.activeSelf);
     }
 
-
+    public void CloseInventory()
+    {
+        if (InventoryPanel.activeSelf)
+            InventoryPanel.SetActive(false);
+    }
 }

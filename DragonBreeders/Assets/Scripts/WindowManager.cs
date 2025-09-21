@@ -6,7 +6,8 @@ public enum Windows
     Start,
     Game,
     Map,
-    EggVault
+    EggVault,
+    Shop
 }
 
 public class WindowManager : MonoBehaviour

@@ -779,3 +779,4 @@ MonoBehaviour:
   icon: {fileID: 2133229578123332492}
   amountText: {fileID: 5026169307962954083}
   itemName: {fileID: 1511992458462307194}
+  amountParent: {fileID: 1026567089972480926}

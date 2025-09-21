@@ -659,6 +659,7 @@ public class GameManager : MonoBehaviour
         inventory.AddItem(newItem, 1);
 
         Debug.Log($"æ∆¿Ã≈€ »πµÊ: {newItem.GetName()}");
+        Debug.Log(newItem.itemName + " °Ê " + newItem.icon.name);
         alarmText.text = $"≈Ω«Ë º∫∞¯! {newItem.GetName()} ¿ª(∏¶) »πµÊ«ﬂΩ¿¥œ¥Ÿ.";
     }
 

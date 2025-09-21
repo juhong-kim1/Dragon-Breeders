@@ -1,3 +1,4 @@
+using UnityEditorInternal;
 using UnityEngine;
 
 public enum Languages
@@ -18,6 +19,7 @@ public static class DataTableIds
     public static readonly string Debuff = "DebuffTable";
     public static readonly string Nurture = "DragonNurtureTable";
     public static readonly string Item = "ItemTable";
+    public static readonly string Shop = "ShopTable";
 }
 
 
