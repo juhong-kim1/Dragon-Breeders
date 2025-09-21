@@ -270,7 +270,7 @@ public class DragonHealth : MonoBehaviour
     {
         if (stats == null) return;
 
-        int gainedExp = stats.CalculateExperience();
+        int gainedExp = stats.CalculateStats();
 
         stats.ChangeStat(StatType.Experience, gainedExp);
 

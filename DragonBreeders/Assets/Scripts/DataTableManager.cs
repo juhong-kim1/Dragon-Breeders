@@ -15,16 +15,16 @@ public static class DataTableManger
     private static void Init()
     {
 #if UNITY_EDITOR
-        //foreach (var id in DataTableIds.StringTableIds)
-        //{
-        //    var table = new StringTable();
-        //    table.Load(id);
-        //    tables.Add(id, table);
-        //}
+        foreach (var id in DataTableIds.StringTableIds)
+        {
+            var table = new StringTable();
+            table.Load(id);
+            tables.Add(id, table);
+        }
 #else
-        //var stringTable = new StringTable();
-        //stringTable.Load(DataTableIds.String);
-        //tables.Add(DataTableIds.String, stringTable);
+        var stringTable = new StringTable();
+        stringTable.Load(DataTableIds.String);
+        tables.Add(DataTableIds.String, stringTable);
 #endif
 
         var dragonStatTable = new DragonStatTable();
@@ -46,13 +46,13 @@ public static class DataTableManger
 
     }
 
-    //public static StringTable StringTable
-    //{
-    //    get
-    //    {
-    //        return Get<StringTable>(DataTableIds.String);
-    //    }
-    //}
+    public static StringTable StringTable
+    {
+        get
+        {
+            return Get<StringTable>(DataTableIds.String);
+        }
+    }
 
     public static DragonStatTable DragonStatTable
     {

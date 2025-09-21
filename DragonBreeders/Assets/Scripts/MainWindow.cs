@@ -7,12 +7,14 @@ public class MainWindow : GenericWindow
     public Button menuButton;
     public Button statButton;
     public Button helpButton;
+    public Button inventoryButton;
 
     public GameObject mapWindowObject;
 
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject statPanel;
     [SerializeField] private GameObject helpPanel;
+    [SerializeField] private GameObject InventoryPanel;
 
     public TutorialManager tutorialManager;
     public GameManager gameManager;
@@ -22,6 +24,7 @@ public class MainWindow : GenericWindow
         menuButton.onClick.AddListener(ToggleMenu);
         statButton.onClick.AddListener(ToggleStat);
         helpButton.onClick.AddListener(ToggleHelp);
+        inventoryButton.onClick.AddListener(ToggleInventory);
         menuPanel.SetActive(false);
         statPanel.SetActive(false);
         helpPanel.SetActive(false);
@@ -55,6 +58,11 @@ public class MainWindow : GenericWindow
     private void ToggleHelp()
     {
         helpPanel.SetActive(!helpPanel.activeSelf);
+    }
+
+    private void ToggleInventory()
+    { 
+        InventoryPanel.SetActive(!InventoryPanel.activeSelf);
     }
 
 

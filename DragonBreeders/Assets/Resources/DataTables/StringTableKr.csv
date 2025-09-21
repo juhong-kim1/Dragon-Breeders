@@ -1,0 +1,261 @@
+ID,STRING
+DRAGON_ID,드래곤 아이디
+DRAGON_NAME,드래곤 이름
+SPECIES_TYPE,종족 타입
+ELEMENT_TYPE,속성 타입
+GROWTH_TYPE,성장 단계 타입
+MAXHP,최대 체력
+MAXFTG,최대 피로도
+MAXHYG,최대 청결
+MAXFOOD,최대 배부름
+MAXFRN,최대 친밀도
+SCALE_SIZE,크기 배율
+EVOEXP,다음 성장까지 필요 경험치
+DEP_FOOD,음식 소모 속도
+DEP_HYG,청결 소모 속도
+DEP_FRN,친밀도 소모 속도
+DRAGON_NAME_1010101,플레임 드레이크
+DRAGON_NAME_1010102,플레임 드레이크
+DRAGON_NAME_1010103,플레임 드레이크
+DRAGON_NAME_1010201,워터 드레이크
+DRAGON_NAME_1010202,워터 드레이크
+DRAGON_NAME_1010203,워터 드레이크
+DRAGON_NAME_1010301,포레스트 드레이크
+DRAGON_NAME_1010302,포레스트 드레이크
+DRAGON_NAME_1010303,포레스트 드레이크
+DRAGON_NAME_1010401,제피르 드레이크
+DRAGON_NAME_1010402,제피르 드레이크
+DRAGON_NAME_1010403,제피르 드레이크
+DRAGON_NAME_1020101,레드 데저트 드래곤
+DRAGON_NAME_1020102,레드 데저트 드래곤
+DRAGON_NAME_1020103,레드 데저트 드래곤
+DRAGON_NAME_1020201,블루 데저트 드래곤
+DRAGON_NAME_1020202,블루 데저트 드래곤
+DRAGON_NAME_1020203,블루 데저트 드래곤
+DRAGON_NAME_1020301,그린 데저트 드래곤
+DRAGON_NAME_1020302,그린 데저트 드래곤
+DRAGON_NAME_1020303,그린 데저트 드래곤
+DRAGON_NAME_1020401,화이트 데저트 드래곤
+DRAGON_NAME_1020402,화이트 데저트 드래곤
+DRAGON_NAME_1020403,화이트 데저트 드래곤
+DRAGON_NAME_1030101,블레이즈 와이번
+DRAGON_NAME_1030102,블레이즈 와이번
+DRAGON_NAME_1030103,블레이즈 와이번
+DRAGON_NAME_1030201,아쿠아 와이번
+DRAGON_NAME_1030202,아쿠아 와이번
+DRAGON_NAME_1030203,아쿠아 와이번
+DRAGON_NAME_1030301,리프 와이번
+DRAGON_NAME_1030302,리프 와이번
+DRAGON_NAME_1030303,리프 와이번
+DRAGON_NAME_1030401,게일 와이번
+DRAGON_NAME_1030402,게일 와이번
+DRAGON_NAME_1030403,게일 와이번
+DRAGON_NAME_1040101,엠버 고르곤
+DRAGON_NAME_1040102,엠버 고르곤
+DRAGON_NAME_1040103,엠버 고르곤
+DRAGON_NAME_1040201,세이렌 고르곤
+DRAGON_NAME_1040202,세이렌 고르곤
+DRAGON_NAME_1040203,세이렌 고르곤
+DRAGON_NAME_1040301,테라 고르곤
+DRAGON_NAME_1040302,테라 고르곤
+DRAGON_NAME_1040303,테라 고르곤
+DRAGON_NAME_1040401,스톰 고르곤
+DRAGON_NAME_1040402,스톰 고르곤
+DRAGON_NAME_1040403,스톰 고르곤
+NURTURE_ID,육성 아이디
+NURTURE_NAME_4030101,먹이주기
+NURTURE_NAME_4040201,목욕하기
+NURTURE_NAME_4050401,놀아주기
+NURTURE_NAME_4020301,휴식
+NURTURE_NAME_4000501,훈련
+NURTURE_NAME_4000502,탐험
+NURTURE_NAME,육성 이름
+DEPLETE_HYG,청결 소모량
+RECEIVE_FTG,피로도 누적량
+REC_TYPE,회복 능력치
+REC_PERCENT,기본 회복율 [%]
+EXPGROWTH,획득 성장 경험치
+RATE_DISEASE,질병 발동 확률
+RATE_INJURY,부상 발동 확률
+TIME,소요 시간
+ACTIVATION_TYPE,활성 조건
+UNLOCK_TYPE,해금 조건
+ITEM_ID,아이템 아이디
+ITEM_NAME_5020201,토마토
+ITEM_NAME_5020202,키조개
+ITEM_NAME_5020203,양상추
+ITEM_NAME_5020204,감자
+ITEM_NAME_5020205,새우
+ITEM_NAME_5020206,양송이 버섯
+ITEM_NAME_5020207,가지
+ITEM_NAME_5020208,파
+ITEM_NAME_5020209,치즈
+ITEM_NAME_5020210,양갈비
+ITEM_NAME_5020211,연어
+ITEM_NAME_5020212,오렌지
+ITEM_NAME_5020213,블루베리
+ITEM_NAME_5020214,소금
+ITEM_NAME_5020215,후추
+ITEM_NAME_5020216,조기
+ITEM_NAME_5020217,랍스터
+ITEM_NAME_5020218,소세지
+ITEM_NAME_5020219,토마호크
+ITEM_NAME_5020220,닭다리살
+ITEM_NAME_5020221,홍합
+ITEM_NAME_5020222,폭립
+ITEM_NAME_5020223,버터
+ITEM_NAME_5020224,통닭
+ITEM_NAME_5020225,우유
+ITEM_NAME_5020226,마늘
+ITEM_NAME_5020227,애호박
+ITEM_NAME_5020228,양파
+ITEM_NAME_5020229,키조개 버터 구이
+ITEM_NAME_5020230,과일샐러드
+ITEM_NAME_5020231,소세지 볶음
+ITEM_NAME_5020232,랍스터 버터 구이
+ITEM_NAME_5020233,조기튀김
+ITEM_NAME_5020234,토마호크 스테이크
+ITEM_NAME_5020235,감자 버터 구이
+ITEM_NAME_5020236,그라탕
+ITEM_NAME_5020237,닭꼬치
+ITEM_NAME_5020238,양송이스프
+ITEM_NAME_5020239,홍합탕
+ITEM_NAME_5020240,통닭구이
+ITEM_NAME_5020241,라따뚜이
+ITEM_NAME_5020242,감바스
+ITEM_NAME_5020243,양갈비 구이
+ITEM_NAME_5020244,연어구이
+ITEM_NAME_5020245,바베큐 폭립
+ITEM_NAME_5040001,견습생 비누
+ITEM_NAME_5040301,낡은 비누
+ITEM_NAME_5040302,거품 비누
+ITEM_NAME_5040303,고급 샴푸
+ITEM_NAME_5050001,견습생 브러쉬
+ITEM_NAME_5050301,거친 브러쉬
+ITEM_NAME_5050302,부드러운 브러쉬
+ITEM_NAME_5050303,황금 브러쉬
+ITEM_NAME_5060001,견습생 공
+ITEM_NAME_5060501,나뭇가지
+ITEM_NAME_5060502,고무 공
+ITEM_NAME_5060503,테니스 공
+ITEM_NAME_5060504,부러진 뼈다귀
+ITEM_NAME_5060505,플라잉 디스크
+ITEM_NAME_5010001,고대의 화염의 알
+ITEM_NAME_5010002,고대의 물의 알
+ITEM_NAME_5010003,고대의 풀의 알
+ITEM_NAME_5010004,고대의 바람의 알
+ITEM_NAME_5030601,감기약
+ITEM_NAME_5030701,해독제
+ITEM_NAME_5030801,해열제
+ITEM_NAME_5030901,구충제
+ITEM_NAME_5031001,연고
+ITEM_NAME_5031101,붕대
+ITEM_NAME_5031201,부목
+ITEM_NAME_5070001,코인
+ITEM_NAME,아이템 이름
+ITEM_TYPE,아이템 타입
+EFFECT1_TYPE,효과 1 타입
+EFFECT1_VALUE,효과 1 값
+EFFECT2_TYPE,효과 2 타입
+EFFECT2_VALUE,효과 2 값
+DROPPED,드랍 여부
+COOKABLE,요리 가능 여부
+INVENTORY,인벤토리 소지 여부
+USEMETHOD,사용 경로
+CONSUMABLE,사용 시 소모 여부
+MAXSTACK,최대 중첩 개수
+ITEM_DESCRIPTION_5020201,신선한 붉은 토마토. (배부름 +3)
+ITEM_DESCRIPTION_5020202,아삭한 식감의 양배추. (배부름 +3)
+ITEM_DESCRIPTION_5020203,밭에서 자란 튼실한 감자. (배부름 +3)
+ITEM_DESCRIPTION_5020204,바다에서 잡아온 싱싱한 새우. (배부름 +3)
+ITEM_DESCRIPTION_5020205,은은한 향의 버섯. 스프나 볶음에 제격이다. (배부름 +3)
+ITEM_DESCRIPTION_5020206,영양소가 풍부한 보랏빛 가지. 구우면 부드럽고 달큰하다. (배부름 +3)
+ITEM_DESCRIPTION_5020207,향과 감칠맛을 더해주는 파. (배부름 +3)
+ITEM_DESCRIPTION_5020208,진한 풍미의 고소한 치즈. (배부름 +3)
+ITEM_DESCRIPTION_5020209,기름기 적고 향이 좋은 고급 고기. (배부름 +5)
+ITEM_DESCRIPTION_5020210,부드럽고 고소한 맛의 연어. (배부름 +5)
+ITEM_DESCRIPTION_5020211,비타민이 풍부하고 상큼한 오렌지. (배부름 +2)
+ITEM_DESCRIPTION_5020212,작은 보라빛 블루베리. 달콤하고 건강에 좋다. (배부름 +2)
+ITEM_DESCRIPTION_5020213,모든 요리에 기본이 되는 식재료. (배부름 +2)
+ITEM_DESCRIPTION_5020214,매콤한 향신료. 풍미를 살려준다. (배부름 +2)
+ITEM_DESCRIPTION_5020215,구워 먹기 좋은 소형 생선. (배부름 +3)
+ITEM_DESCRIPTION_5020216,쫄깃하고 달콤한 살이 일품인 고급 해산물. (배부름 +5)
+ITEM_DESCRIPTION_5020217,간편하게 즐기는 육가공 식품. (배부름 +4)
+ITEM_DESCRIPTION_5020218,뼈가 붙은 고급 스테이크용 소고기. (배부름 +5)
+ITEM_DESCRIPTION_5020219,육즙 가득한 닭고기. (배부름 +4)
+ITEM_DESCRIPTION_5020220,달콤짭짤한 소스를 발라 구운 갈비. (배부름 +5)
+ITEM_DESCRIPTION_5020221,고소하고 부드러운 맛을 더해주는 버터. (배부름 +3)
+ITEM_DESCRIPTION_5020222,겉을 바삭하게 조리한 닭고기. (배부름 +5)
+ITEM_DESCRIPTION_5020223,칼슘이 가득하고 신선한 목장 우유. (배부름 +3)
+ITEM_DESCRIPTION_5020224,강한 향과 맛을 내는 마늘. (배부름 +3)
+ITEM_DESCRIPTION_5020225,부드럽고 담백한 애호박. (배부름 +3)
+ITEM_DESCRIPTION_5020226,아삭하고 신선한 양파 (배부름 +3).
+ITEM_DESCRIPTION_5020227,"신선한 과일과 야채로 만든 건강식 샐러드. (배부름 +14, 체력 +10)"
+ITEM_DESCRIPTION_5020228,"소세지와 신선한 채소를 볶아낸 간단하고 든든한 요리. (배부름 +19, 친밀도 +5)"
+ITEM_DESCRIPTION_5020229,"고급 랍스터를 버터로 구운 요리. (배부름 +25, 피로도 -6)"
+ITEM_DESCRIPTION_5020230,"바삭하고 고소한 조기 튀김. (배부름 +16, 피로도-10)"
+ITEM_DESCRIPTION_5020231,"두툼한 뼈째 고기를 풍미 있게 구운 프리미엄 스테이크. (배부름 +35, 체력 +12)"
+ITEM_DESCRIPTION_5020232,"감자를 버터와 함께 구워 부드럽고 고소한 맛을 낸 요리. (배부름 +15, 친밀도 +7)"
+ITEM_DESCRIPTION_5020233,"치즈와 크림을 곁들여 오븐에 구운 부드럽고 따뜻한 요리. (배부름 +20, 친밀도 +5)"
+ITEM_DESCRIPTION_5020234,"양념한 닭고기를 꼬치에 끼워 구운 음식. (배부름 +22, 체력 +4)"
+ITEM_DESCRIPTION_5020235,"양송이버섯의 향을 살린 부드럽고 담백한 크림 수프. (배부름 +14, 체력 +15)"
+ITEM_DESCRIPTION_5020236,"닭 한 마리를 통째로 구워내 육즙과 풍미를 살린 요리. (배부름 +25, 체력 +6)"
+ITEM_DESCRIPTION_5020237,"다양한 채소를 오븐에 구운 요리. (배부름 +15, 친밀도 +10)"
+ITEM_DESCRIPTION_5020238,"새우를 올리브 오일과 마늘에 풍미 있게 볶아낸 요리. (배부름 +24, 체력 +8)"
+ITEM_DESCRIPTION_5020239,"육즙 가득한 양갈비를 구워 고급스럽게 즐기는 스테이크. (배부름 +30, 친밀도 +10)"
+ITEM_DESCRIPTION_5020240,"신선한 연어를 겉은 바삭, 속은 촉촉하게 구운 요리. (배부름 +28, 친밀도 +6)"
+ITEM_DESCRIPTION_5020241,"부드럽게 조리한 돼지갈비에 진한 바베큐 소스를 입힌 요리. (배부름 +35, 피로도 -12)"
+ITEM_DESCRIPTION_5040001,비누 기본 제공 아이템.
+ITEM_DESCRIPTION_5040301,오래돼 거품이 잘 안 나는 비누. (청결 +4)
+ITEM_DESCRIPTION_5040302,풍성한 거품이 나는 비누. (청결 +7)
+ITEM_DESCRIPTION_5040303,향기롭고 윤기나는 럭셔리 샴푸. (청결 +12)
+ITEM_DESCRIPTION_5050001,브러쉬 기본 제공 아이템.
+ITEM_DESCRIPTION_5050301,"곧 망가질 것 같은 브러쉬. (청결 +3, 친밀도 +1)"
+ITEM_DESCRIPTION_5050302,"촘촘하고 섬세한 브러쉬. (청결 +5, 친밀도 +2)"
+ITEM_DESCRIPTION_5050303,"금으로 장식된 최고급 브러쉬. (청결 +8, 친밀도 +4)"
+ITEM_DESCRIPTION_5060001,놀아주기 기본 제공 아이템.
+ITEM_DESCRIPTION_5060501,던져서 놀기 좋은 나뭇가지. (친밀도 +3)
+ITEM_DESCRIPTION_5060502,말랑말랑 튀어오르는 공. (친밀도 +6)
+ITEM_DESCRIPTION_5060503,던지기 놀이에 최적화된 공. (친밀도 +10)
+ITEM_DESCRIPTION_5060504,낡았지만 물어 뜯기 좋은 뼈다귀. (친밀도 +8)
+ITEM_DESCRIPTION_5060505,멀리 던져서 노는 원반 장난감. (친밀도 +14)
+ITEM_DESCRIPTION_5030601,감기를 낫게 해주는 약.
+ITEM_DESCRIPTION_5030701,식중독을 치료하는 약.
+ITEM_DESCRIPTION_5030801,고열을 내려주는 약.
+ITEM_DESCRIPTION_5030901,기생충을 없애주는 약.
+ITEM_DESCRIPTION_5031001,긁힌 상처에 바르는 치료제.
+ITEM_DESCRIPTION_5031101,상처를 감싸 출혈을 막아주는 의약품.
+ITEM_DESCRIPTION_5031201,부러진 뼈를 고정해주는 도구.
+ITEM_DESCRIPTION_5070001,게임 내에서 사용되는 기본 화폐. 아이템 상점이나 병원에서 사용 가능하다.
+ITEM_DESCRIPTION,아이템 설명
+ITEM_IMAGE,아이템 이미지
+RECIPE_ID,레시피 아이디
+INGREDIENT1_ID,재료 1 ID
+INGREDIENT1_AMOUNT,재료 1 필요 개수
+INGREDIENT2_ID,재료 2 ID
+INGREDIENT2_AMOUNT,재료 2 필요 개수
+INGREDIENT3_ID,재료 3 ID
+INGREDIENT3_AMOUNT,재료 3 필요 개수
+INGREDIENT4_ID,재료 4 ID
+INGREDIENT4_AMOUNT,재료 4 필요 개수
+RESULT_ID,결과물 ID
+RESULT_AMOUNT,결과물 개수
+COOKTIME,제작 시간 (s)
+COOKING_DESCRIPTION,요리 설명
+COOKING_DESCRIPTION_7030101,"신선한 키조개를 버터에 구워 풍미를 살린 해산물 요리. (배부름 +16, 피로도 -10)"
+COOKING_DESCRIPTION_7010101,"신선한 과일과 야채로 만든 건강식 샐러드. (배부름 +14, 체력 +10)"
+COOKING_DESCRIPTION_7010102,"소세지와 신선한 채소를 볶아낸 간단하고 든든한 요리. (배부름 +19, 친밀도 +5)"
+COOKING_DESCRIPTION_7030102,"고급 랍스터를 버터로 구운 요리. (배부름 +25, 피로도 -6)"
+COOKING_DESCRIPTION_7010103,"바삭하고 고소한 조기 튀김. (배부름 +16, 피로도-10)"
+COOKING_DESCRIPTION_7010104,"두툼한 뼈째 고기를 풍미 있게 구운 프리미엄 스테이크. (배부름 +35, 체력 +12)"
+COOKING_DESCRIPTION_7020101,"감자를 버터와 함께 구워 부드럽고 고소한 맛을 낸 요리. (배부름 +15, 친밀도 +7)"
+COOKING_DESCRIPTION_7010105,"치즈와 크림을 곁들여 오븐에 구운 부드럽고 따뜻한 요리. (배부름 +20, 친밀도 +5)"
+COOKING_DESCRIPTION_7030103,"양념한 닭고기를 꼬치에 끼워 구운 음식. (배부름 +22, 체력 +4)"
+COOKING_DESCRIPTION_7010106,"양송이버섯의 향을 살린 부드럽고 담백한 크림 수프. (배부름 +14, 체력 +15)"
+COOKING_DESCRIPTION_7050101,"신선한 홍합을 끓여낸 시원하고 깔끔한 국물 요리. (배부름 +15, 피로도 -11)"
+COOKING_DESCRIPTION_7010107,"닭 한 마리를 통째로 구워내 육즙과 풍미를 살린 요리. (배부름 +25, 체력 +6)"
+COOKING_DESCRIPTION_7010108,"다양한 채소를 오븐에 구운 요리. (배부름 +15, 친밀도 +10)"
+COOKING_DESCRIPTION_7050102,"새우를 올리브 오일과 마늘에 풍미 있게 볶아낸 요리. (배부름 +24, 체력 +8)"
+COOKING_DESCRIPTION_7010109,"육즙 가득한 양갈비를 구워 고급스럽게 즐기는 스테이크. (배부름 +30, 친밀도 +10)"
+COOKING_DESCRIPTION_7010110,"신선한 연어를 겉은 바삭, 속은 촉촉하게 구운 요리. (배부름 +28, 친밀도 +6)"
+COOKING_DESCRIPTION_7010111,"부드럽게 조리한 돼지갈비에 진한 바베큐 소스를 입힌 요리. (배부름 +35, 피로도 -12)"

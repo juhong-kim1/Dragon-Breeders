@@ -11,7 +11,6 @@ public static class DataTableIds
     public static readonly string[] StringTableIds =
     {
         "StringTableKr",
-        "StringTableEn",
     };
     public static string String => StringTableIds[(int)Variables.Language];
 

@@ -66,7 +66,7 @@ public class DragonStats
         return false;
     }
 
-    public int CalculateExperience()
+    public int CalculateStats()
     {
         return (stamina + hunger + clean + intimacy);
     }

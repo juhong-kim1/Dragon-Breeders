@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 
 public class ItemTableData
@@ -16,20 +17,19 @@ public class ItemTableData
     public int USEMETHOD { get; set; }
     public int CONSUMABLE { get; set; }
     public int CONSUMPTION { get; set; }
-    public float MAXSTACK { get; set; }
+    public int MAXSTACK { get; set; }
     public string ITEM_DESCRIPTION { get; set; }
     public string ITEM_IMAGE { get; set; }
     public int ORDER { get; set; }
-    public List<int> DROP_BIOME { get; set; }
-    public float DROP_RATE { get; set; }
-    public int MINDROP {  get; set; }
-    public int MAXDROP {  get; set; }
-
 
     public override string ToString()
     {
         return $"{ITEM_ID} / {ITEM_NAME}";
     }
+
+    public string StringName => DataTableManger.StringTable.Get(ITEM_NAME);
+    public string StringDescription => DataTableManger.StringTable.Get(ITEM_DESCRIPTION);
+    public Sprite SpriteIcon => Resources.Load<Sprite>($"ItemImages/{ITEM_IMAGE}");
 }
 
 
@@ -70,5 +70,10 @@ public class ItemTable : DataTable
             return null;
         }
         return table[id];
+    }
+
+    public List<ItemTableData> GetAll()
+    {
+        return new List<ItemTableData>(table.Values);
     }
 }

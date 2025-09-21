@@ -81,6 +81,8 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI dragonFeedback;
 
+    public Inventory inventory;
+
     private void Start()
     {
         releaseButton.gameObject.SetActive(false);
@@ -484,13 +486,32 @@ public class GameManager : MonoBehaviour
                     };
                     vault.AddEgg(egg4);
                     break;
-
             }
-
-
-
         }
 
+        if (Random.Range(0f, 100f) > 30f)
+        {
+            var allItems = DataTableManger.ItemTable.GetAll();
+            if (allItems != null && allItems.Count > 0)
+            {
+                var randomItemData = allItems[Random.Range(0, allItems.Count)];
+
+
+                Item newItem = new Item
+                {
+                    itemID = randomItemData.ITEM_ID,
+                    itemName = DataTableManger.StringTable.Get(randomItemData.ITEM_NAME),
+                    itemType = randomItemData.ITEM_TYPE,
+                    icon = Resources.Load<Sprite>($"ItemImages/{randomItemData.ITEM_IMAGE}"),
+                    description = DataTableManger.StringTable.Get(randomItemData.ITEM_DESCRIPTION)
+                };
+
+                inventory.AddItem(newItem, 1);
+
+                Debug.Log($"æ∆¿Ã≈€ »πµÊ: {newItem.GetName()}");
+                alarmText.text = $"≈Ω«Ë º∫∞¯! {newItem.GetName()} ¿ª(∏¶) »πµÊ«ﬂΩ¿¥œ¥Ÿ.";
+            }
+        }
 
         canExplore = false;
         exploreTimer = 0f;
@@ -579,7 +600,7 @@ public class GameManager : MonoBehaviour
         if (dragonHealth.currentGrowth == DragonGrowthState.Adult)
         {
             Destroy(dragonHealth.gameObject);
-            playerManager.famePoint += 100;
+            playerManager.famePoint += dragonHealth.stats.CalculateStats();
             EggSlot.isDragonActive = false;
 
         }
@@ -606,6 +627,39 @@ public class GameManager : MonoBehaviour
         feedProgressBar.fillAmount = 0f;
         exploreProgressBar.fillAmount = 0f;    
         restProgressBar.fillAmount = 0f;
+    }
+
+    public void AddItemCheatButton()
+    {
+        if (inventory == null) { Debug.LogError("Inventory∞° «“¥Áµ«¡ˆ æ ¿Ω!"); return; }
+
+        var allItems = DataTableManger.ItemTable.GetAll();
+        if (allItems == null || allItems.Count == 0) { Debug.LogError("ItemTable¿Ã ∫ÒæÓ¿÷¿Ω"); return; }
+
+        var randomItemData = allItems[Random.Range(0, allItems.Count)];
+
+        string itemName = DataTableManger.StringTable.Get(randomItemData.ITEM_NAME);
+        if (itemName == null) itemName = randomItemData.ITEM_NAME;
+
+        string itemDescription = DataTableManger.StringTable.Get(randomItemData.ITEM_DESCRIPTION);
+        if (itemDescription == null) itemDescription = randomItemData.ITEM_DESCRIPTION;
+
+        Sprite icon = Resources.Load<Sprite>($"ItemImages/{randomItemData.ITEM_IMAGE}");
+        if (icon == null) { Debug.LogError($"Sprite ∑ŒµÂ Ω«∆–: {randomItemData.ITEM_IMAGE}"); return; }
+
+        Item newItem = new Item
+        {
+            itemID = randomItemData.ITEM_ID,
+            itemName = itemName,
+            itemType = randomItemData.ITEM_TYPE,
+            icon = icon,
+            description = itemDescription
+        };
+
+        inventory.AddItem(newItem, 1);
+
+        Debug.Log($"æ∆¿Ã≈€ »πµÊ: {newItem.GetName()}");
+        alarmText.text = $"≈Ω«Ë º∫∞¯! {newItem.GetName()} ¿ª(∏¶) »πµÊ«ﬂΩ¿¥œ¥Ÿ.";
     }
 
     public void ExperienceCheatButton()
@@ -647,7 +701,7 @@ public class GameManager : MonoBehaviour
         if (dragonHealth == null) return;
 
         //Destroy(dragonHealth.gameObject);
-        playerManager.famePoint += 100;
+        playerManager.famePoint += dragonHealth.stats.CalculateStats();
         EggSlot.isDragonActive = false;
 
         isDragonReleased = true;
