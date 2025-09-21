@@ -1,20 +1,35 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public InventorySlot[] slots;
+    public List<InventorySlot> slots = new List<InventorySlot>();
+    public InventorySlot slotPrefab;
+    public Transform slotParent;
 
     public void AddItem(IItem itemData, int amount = 1)
     {
-        for (int i = 0; i < slots.Length; i++)
+        foreach (var slot in slots)
         {
-            if (slots[i] != null && slots[i].IsEmpty())
+            if (!slot.IsEmpty() && slot.item.GetID() == itemData.GetID())
             {
-                slots[i].SetItem(itemData);
-                Debug.Log($"아이템 추가 성공: {itemData.GetName()} x{amount} → Slot {i}");
+                slot.AddAmount(amount);
                 return;
             }
         }
-        Debug.Log("인벤토리가 가득 찼습니다!");
+        foreach (var slot in slots)
+        {
+            if (slot.IsEmpty())
+            {
+                slot.SetItem(itemData);
+                Debug.Log($"아이템 추가 성공: {itemData.GetName()} → 기존 슬롯");
+                return;
+            }
+        }
+
+        InventorySlot newSlot = Instantiate(slotPrefab, slotParent);
+        newSlot.SetItem(itemData);
+        slots.Add(newSlot);
+        Debug.Log($"아이템 추가 성공: {itemData.GetName()} → 새 슬롯 생성");
     }
 }
