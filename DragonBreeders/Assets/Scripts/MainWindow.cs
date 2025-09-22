@@ -16,6 +16,7 @@ public class MainWindow : GenericWindow
     [SerializeField] private GameObject helpPanel;
     [SerializeField] private GameObject InventoryPanel;
 
+    [SerializeField] private InventoryManager inventoryManager;
     public TutorialManager tutorialManager;
     public GameManager gameManager;
 

@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public DragonHealth dragonHealth;
     public PlayerManager playerManager;
+    public InventoryManager inventoryManager;
     public EggVault vault;
 
     public GameObject[] dragonPrefabs;
@@ -81,8 +82,6 @@ public class GameManager : MonoBehaviour
     private bool isDragonReleased = false;
 
     public TextMeshProUGUI dragonFeedback;
-
-    public Inventory inventory;
 
     private void Start()
     {
@@ -504,8 +503,6 @@ public class GameManager : MonoBehaviour
                     description = DataTableManger.StringTable.Get(randomItemData.ITEM_DESCRIPTION)
                 };
 
-                inventory.AddItem(newItem, 1);
-
                 Debug.Log($"아이템 획득: {newItem.GetName()}");
                 alarmText.text = $"탐험 성공! {newItem.GetName()} 을(를) 획득했습니다.";
             }
@@ -629,36 +626,21 @@ public class GameManager : MonoBehaviour
 
     public void AddItemCheatButton()
     {
-        if (inventory == null) { Debug.LogError("Inventory가 할당되지 않음!"); return; }
-
         var allItems = DataTableManger.ItemTable.GetAll();
-        if (allItems == null || allItems.Count == 0) { Debug.LogError("ItemTable이 비어있음"); return; }
 
-        var randomItemData = allItems[Random.Range(0, allItems.Count)];
-
-        string itemName = DataTableManger.StringTable.Get(randomItemData.ITEM_NAME);
-        if (itemName == null) itemName = randomItemData.ITEM_NAME;
-
-        string itemDescription = DataTableManger.StringTable.Get(randomItemData.ITEM_DESCRIPTION);
-        if (itemDescription == null) itemDescription = randomItemData.ITEM_DESCRIPTION;
-
-        Sprite icon = Resources.Load<Sprite>($"ItemImages/{randomItemData.ITEM_IMAGE}");
-        if (icon == null) { Debug.LogError($"Sprite 로드 실패: {randomItemData.ITEM_IMAGE}"); return; }
-
-        Item newItem = new Item
+        if (allItems.Count > 0)
         {
-            itemID = randomItemData.ITEM_ID,
-            itemName = itemName,
-            itemType = randomItemData.ITEM_TYPE,
-            icon = icon,
-            description = itemDescription
-        };
+            // 랜덤으로 하나 선택
+            int randomIndex = Random.Range(0, allItems.Count);
+            var randomItem = allItems[randomIndex];
 
-        inventory.AddItem(newItem, 1);
-
-        Debug.Log($"아이템 획득: {newItem.GetName()}");
-        Debug.Log(newItem.itemName + " → " + newItem.icon.name);
-        alarmText.text = $"탐험 성공! {newItem.GetName()} 을(를) 획득했습니다.";
+            inventoryManager.AddItem(randomItem.ITEM_ID, 1);
+            Debug.Log($"랜덤 아이템 추가: {randomItem.ITEM_NAME} (ID: {randomItem.ITEM_ID})");
+        }
+        else
+        {
+            Debug.LogError("아이템 테이블이 비어있습니다!");
+        }
     }
 
     public void ExperienceCheatButton()

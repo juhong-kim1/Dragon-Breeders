@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    public Inventory playerInventory;
     public TextMeshProUGUI coinText;
 
     public int coin;
