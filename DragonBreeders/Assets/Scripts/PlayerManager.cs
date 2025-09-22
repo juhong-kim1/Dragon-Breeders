@@ -1,23 +1,36 @@
 using TMPro;
 using UnityEngine;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerManager : MonoBehaviour
 {
-    public Inventory playerInventory;
-    public TextMeshProUGUI coinText;
+    public int coin = 1000;
+    public Inventory inventory;
 
-    public int coin;
-    public int famePoint = 0;
+    public int famePoint;
+    public TextMeshProUGUI coinTextInventory;
+    public TextMeshProUGUI coinTextShop;
 
-    void Start()
+    private void Start()
     {
-        coin = 1000;
-        //UpdateCoinUI();
+        coin = 10000;
+        UpdateCoinUI();
     }
 
-    //public void UpdateCoinUI()
-    //{
-    //    int coinAmount = playerInventory.GetAmountByID(5070001);
-    //    coinText.text = coinAmount.ToString();
-    //}
+    public bool TrySpendCoin(int amount)
+    {
+        if (coin >= amount)
+        {
+            coin -= amount;
+            UpdateCoinUI();
+            return true;
+        }
+        return false;
+    }
+
+    public void UpdateCoinUI()
+    {
+        coinTextInventory.text = coin.ToString();
+        coinTextShop.text = coin.ToString();
+    }
 }

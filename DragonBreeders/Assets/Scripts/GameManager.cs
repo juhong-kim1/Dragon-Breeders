@@ -88,6 +88,8 @@ public class GameManager : MonoBehaviour
     {
         releaseButton.gameObject.SetActive(false);
         alarmPanel.gameObject.SetActive(false);
+
+        coinText.text = playerManager.coin.ToString();
     }
 
     public void Update()

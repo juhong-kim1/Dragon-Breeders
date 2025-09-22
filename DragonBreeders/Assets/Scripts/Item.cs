@@ -7,6 +7,7 @@ public interface IItem
     int GetItemType();
     Sprite GetIcon();
     string GetDescription();
+    int GetPrice();
 }
 
 public class Item : IItem
@@ -16,10 +17,12 @@ public class Item : IItem
     public int itemType;
     public Sprite icon;
     public string description;
+    public int price;
 
     public int GetID() => itemID;
     public string GetName() => itemName;
     public int GetItemType() => itemType;
     public Sprite GetIcon() => icon;
     public string GetDescription() => description;
+    public int GetPrice() => price;
 }

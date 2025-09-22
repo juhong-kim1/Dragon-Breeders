@@ -56,4 +56,26 @@ public class Inventory : MonoBehaviour
         }
         return 0;
     }
+
+    public void RemoveItem(int itemID, int amount = 1)
+    {
+        foreach (var slot in slots)
+        {
+            if (!slot.IsEmpty() && slot.item.GetID() == itemID)
+            {
+                int currentAmount = slot.GetAmount();
+                int remaining = currentAmount - amount;
+
+                if (remaining > 0)
+                {
+                    slot.SetItem(slot.item, remaining);
+                }
+                else
+                {
+                    slot.ClearItem();
+                }
+                return;
+            }
+        }
+    }
 }
