@@ -1972,6 +1972,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 182337241}
+  - component: {fileID: 182337242}
   m_Layer: 0
   m_Name: InventoryManager
   m_TagString: Untagged
@@ -1994,6 +1995,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &182337242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182337240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54e24beaf09af749855089fa184b608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemDatabase: {fileID: 1862939299}
+  inventoryUI: {fileID: 299013249}
 --- !u!1 &184023071
 GameObject:
   m_ObjectHideFlags: 0
@@ -3162,7 +3177,7 @@ GameObject:
   - component: {fileID: 299013247}
   - component: {fileID: 299013246}
   - component: {fileID: 299013245}
-  - component: {fileID: 299013248}
+  - component: {fileID: 299013249}
   m_Layer: 5
   m_Name: InventoryPanel
   m_TagString: Untagged
@@ -3245,7 +3260,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 299013242}
   m_CullTransparentMesh: 1
---- !u!114 &299013248
+--- !u!114 &299013249
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3254,13 +3269,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 299013242}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8c8c3d70dd842a4c99c94eb58aa83fd, type: 3}
+  m_Script: {fileID: 11500000, guid: 482761efdc7cff1408eebf5eb8ef88ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slots: []
   slotPrefab: {fileID: 3117663956587860879, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
   slotParent: {fileID: 829327275}
-  initialSlots: 6
+  initialPoolSize: 30
+  itemDatabase: {fileID: 1862939299}
+  inventoryManager: {fileID: 182337242}
 --- !u!1001 &299927745
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11419,7 +11435,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c46d16dab96e3a49885f97ce1058e55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInventory: {fileID: 0}
   coinText: {fileID: 61879294}
   coin: 0
   famePoint: 0
@@ -14759,6 +14774,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dragonHealth: {fileID: 0}
   playerManager: {fileID: 1094925222}
+  inventoryManager: {fileID: 182337242}
   vault: {fileID: 2111678529}
   dragonPrefabs:
   - {fileID: 168864, guid: 281a986484325de459dc1b3709335bc5, type: 3}
@@ -14827,7 +14843,6 @@ MonoBehaviour:
   releaseButton: {fileID: 914000330}
   levelUpParticle: {fileID: 627873669}
   dragonFeedback: {fileID: 1857771466}
-  inventory: {fileID: 299013248}
 --- !u!4 &1382034689
 Transform:
   m_ObjectHideFlags: 0
@@ -19727,6 +19742,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1862939298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1862939300}
+  - component: {fileID: 1862939299}
+  m_Layer: 0
+  m_Name: ItemDataBase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1862939299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862939298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bcaa7407fae7d74f81968ac62376876, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1862939300
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862939298}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -416.40375, y: 1485.1648, z: 4.9166007}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1865694617
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21739,6 +21798,7 @@ MonoBehaviour:
   statPanel: {fileID: 6962485876577765616}
   helpPanel: {fileID: 360507823}
   InventoryPanel: {fileID: 299013242}
+  inventoryManager: {fileID: 0}
   tutorialManager: {fileID: 625649542}
   gameManager: {fileID: 1382034688}
 --- !u!1001 &1979608413
@@ -25263,3 +25323,4 @@ SceneRoots:
   - {fileID: 625649541}
   - {fileID: 1094925223}
   - {fileID: 182337241}
+  - {fileID: 1862939300}
