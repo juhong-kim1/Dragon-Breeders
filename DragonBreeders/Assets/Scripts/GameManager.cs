@@ -380,32 +380,32 @@ public class GameManager : MonoBehaviour
 
     public void OnClickTrain()
     {
-        if (dragonHealth.isPassOut) { Debug.Log("기절 중, 훈련 불가"); return; }
-        if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) { Debug.Log("유아기에선 훈련 불가"); alarmText.text = "유아기에선 훈련 불가"; return; }
+        //if (dragonHealth.isPassOut) { Debug.Log("기절 중, 훈련 불가"); return; }
+        //if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) { Debug.Log("유아기에선 훈련 불가"); alarmText.text = "유아기에선 훈련 불가"; return; }
 
-        var data = DataTableManger.NurtureTable.Get(50014);
-        if (data == null) return;
+        //var data = DataTableManger.NurtureTable.Get(50014);
+        //if (data == null) return;
 
-        if (!CanExecuteNurture(data))
-        {
-            Debug.Log("훈련 조건 불충족: 피로도가 65% 이상");
-            alarmText.text = "훈련 조건 불충족: 피로도가 65% 이상";
-            return;
-        }
+        //if (!CanExecuteNurture(data))
+        //{
+        //    Debug.Log("훈련 조건 불충족: 피로도가 65% 이상");
+        //    alarmText.text = "훈련 조건 불충족: 피로도가 65% 이상";
+        //    return;
+        //}
 
-        dragonHealth.stats.ChangeStat(StatType.Experience, data.EXPGROWTH);
-        dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
-        dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
+        //dragonHealth.stats.ChangeStat(StatType.Experience, data.EXPGROWTH);
+        //dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
+        //dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
 
 
-        alarmText.text = "훈련완료, 경험치 14 획득";
+        //alarmText.text = "훈련완료, 경험치 14 획득";
 
-        if (Random.Range(0f, 100f) < data.RATE_INJURY)
-        {
-            StatusType[] injuries = { StatusType.Scratches, StatusType.Bleeding, StatusType.Fracture };
-            StatusType randomInjury = injuries[Random.Range(0, injuries.Length)];
-            dragonHealth.status.AddStatus(randomInjury);
-        }
+        //if (Random.Range(0f, 100f) < data.RATE_INJURY)
+        //{
+        //    StatusType[] injuries = { StatusType.Scratches, StatusType.Bleeding, StatusType.Fracture };
+        //    StatusType randomInjury = injuries[Random.Range(0, injuries.Length)];
+        //    dragonHealth.status.AddStatus(randomInjury);
+        //}
     }
 
     public void OnClickExplore()
