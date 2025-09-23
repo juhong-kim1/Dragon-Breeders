@@ -1,0 +1,5 @@
+SKILL_ID,SKILL_NAME,SKILL_TYPE,SKILL_CD,SKILL_POWER,SKILL_DESCRIPTION,SKILL_EFFECT,SKILL_HIT,ORDER
+100101,드래곤엄니,1,0,30,드래곤류 기본 공격,,Hit 15,10
+100102,파이어브레스,1,2,70,드래곤류 스킬 공격,Projectile 7 fire,Hit 7,10
+100201,공격,2,0,25,몬스터 기본 공격,,Hit 11,10
+100202,특수공격,2,1,50,몬스터 스킬 공격,Projectile 1 magic,Hit 1,10

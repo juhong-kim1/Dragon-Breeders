@@ -48,6 +48,14 @@ public static class DataTableManger
         shopTable.Load(DataTableIds.Shop);
         tables.Add(DataTableIds.Shop, shopTable);
 
+        var monsterTable = new MonsterTable();
+        monsterTable.Load(DataTableIds.Monster);
+        tables.Add(DataTableIds.Monster, monsterTable);
+
+        var skillTable = new SkillTable();
+        skillTable.Load(DataTableIds.Skill);
+        tables.Add(DataTableIds.Skill, skillTable);
+
     }
 
     public static StringTable StringTable
@@ -97,6 +105,22 @@ public static class DataTableManger
             return Get<ShopTable>(DataTableIds.Shop);
         }
 
+    }
+
+    public static MonsterTable MonsterTable
+    {
+        get
+        {
+            return Get<MonsterTable>(DataTableIds.Monster);
+        }
+    }
+
+    public static SkillTable SkillTable
+    {
+        get
+        {
+            return Get<SkillTable>(DataTableIds.Skill);
+        }
     }
 
     public static T Get<T>(string id) where T : DataTable

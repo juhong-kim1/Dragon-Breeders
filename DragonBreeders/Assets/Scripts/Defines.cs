@@ -18,6 +18,8 @@ public static class DataTableIds
     public static readonly string Nurture = "DragonNurtureTable";
     public static readonly string Item = "ItemTable";
     public static readonly string Shop = "ShopTable";
+    public static readonly string Monster = "MonsterTable";
+    public static readonly string Skill = "SkillTable";
 }
 
 
