@@ -14,24 +14,24 @@ public enum StatType
 public class DragonStats
 {
     [Header("CoreStats")]
-    public int stamina = 100;
-    public int fatigue = 0;
-    public int hunger = 100;
-    public int intimacy = 0;
-    public int clean = 100;
+    public float stamina = 100f;
+    public float fatigue = 0f;
+    public float hunger = 100f;
+    public float intimacy = 0f;
+    public float clean = 100f;
 
     [Header("MaxValues")]
-    public int maxStamina = 250;
-    public int maxFatigue = 100;
-    public int maxHunger = 100;
-    public int maxIntimacy = 100;
-    public int maxClean = 100;
+    public float maxStamina = 250f;
+    public float maxFatigue = 100f;
+    public float maxHunger = 100f;
+    public float maxIntimacy = 100f;
+    public float maxClean = 100f;
 
     [Header("GrowthSystem")]
     public float experience = 0;
     public float experienceMax = 100;
 
-    public void ChangeStat(StatType statType, int amount)
+    public void ChangeStat(StatType statType, float amount)
     {
         switch (statType)
         {
@@ -66,10 +66,10 @@ public class DragonStats
         return false;
     }
 
-    public int CalculateStats()
-    {
-        return (stamina + hunger + clean + intimacy);
-    }
+    //public int CalculateStats()
+    //{
+    //    return (stamina + hunger + clean + intimacy);
+    //}
 
     public bool CanGrowUp()
     {

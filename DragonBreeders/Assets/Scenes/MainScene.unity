@@ -3137,6 +3137,10 @@ PrefabInstance:
       propertyPath: itemDiscription
       value: 
       objectReference: {fileID: 521825179}
+    - target: {fileID: 7141696439010853042, guid: af7a9d337ea109e488a962df30563d31, type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 182337242}
     - target: {fileID: 8754273496659431433, guid: af7a9d337ea109e488a962df30563d31, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -7660,6 +7664,10 @@ PrefabInstance:
       propertyPath: itemDiscription
       value: 
       objectReference: {fileID: 521825179}
+    - target: {fileID: 7141696439010853042, guid: af7a9d337ea109e488a962df30563d31, type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 182337242}
     - target: {fileID: 8754273496659431433, guid: af7a9d337ea109e488a962df30563d31, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -12982,6 +12990,10 @@ PrefabInstance:
       propertyPath: itemDiscription
       value: 
       objectReference: {fileID: 521825179}
+    - target: {fileID: 7141696439010853042, guid: af7a9d337ea109e488a962df30563d31, type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 182337242}
     - target: {fileID: 8754273496659431433, guid: af7a9d337ea109e488a962df30563d31, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -15099,6 +15111,10 @@ PrefabInstance:
       propertyPath: itemDiscription
       value: 
       objectReference: {fileID: 521825179}
+    - target: {fileID: 7141696439010853042, guid: af7a9d337ea109e488a962df30563d31, type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 182337242}
     - target: {fileID: 8754273496659431433, guid: af7a9d337ea109e488a962df30563d31, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -26520,6 +26536,10 @@ PrefabInstance:
       propertyPath: itemDiscription
       value: 
       objectReference: {fileID: 521825179}
+    - target: {fileID: 7141696439010853042, guid: af7a9d337ea109e488a962df30563d31, type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 182337242}
     - target: {fileID: 8754273496659431433, guid: af7a9d337ea109e488a962df30563d31, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -29179,6 +29199,10 @@ PrefabInstance:
       propertyPath: itemDiscription
       value: 
       objectReference: {fileID: 521825179}
+    - target: {fileID: 7141696439010853042, guid: af7a9d337ea109e488a962df30563d31, type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 182337242}
     - target: {fileID: 8754273496659431433, guid: af7a9d337ea109e488a962df30563d31, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

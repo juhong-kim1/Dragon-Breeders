@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour
         if (!canExplore)
         {
             exploreTimer += Time.deltaTime;
-            var exploreData = DataTableManger.NurtureTable.Get(50000);
+            var exploreData = DataTableManger.NurtureTable.Get(4000502);
             exploreProgressBar.fillAmount = Mathf.Clamp01(exploreTimer / exploreData.TIME);
 
             if (exploreData != null && exploreTimer >= exploreData.TIME)
@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
         {
             restTimer += Time.deltaTime;
 
-            var restData = DataTableManger.NurtureTable.Get(50200);
+            var restData = DataTableManger.NurtureTable.Get(4020301);
             restProgressBar.fillAmount = Mathf.Clamp01(restTimer / restData.TIME);
 
             if (restData != null && restTimer >= restData.TIME)
@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour
         if (!canFeed)
         {
             feedTimer += Time.deltaTime;
-            var feedData = DataTableManger.NurtureTable.Get(50300);
+            var feedData = DataTableManger.NurtureTable.Get(4030101);
             feedProgressBar.fillAmount = Mathf.Clamp01(feedTimer / feedData.TIME);
 
 
@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
         if (!canBath)
         {
             bathTimer += Time.deltaTime;
-            var bathData = DataTableManger.NurtureTable.Get(50400);
+            var bathData = DataTableManger.NurtureTable.Get(4040201);
             bathProgressBar.fillAmount = Mathf.Clamp01(bathTimer / bathData.TIME);
             if (bathData != null && bathTimer >= bathData.TIME)
             {
@@ -197,7 +197,7 @@ public class GameManager : MonoBehaviour
         if (!canPlay)
         {
             playTimer += Time.deltaTime;
-            var playData = DataTableManger.NurtureTable.Get(50500);
+            var playData = DataTableManger.NurtureTable.Get(4050401);
             playProgressBar.fillAmount = Mathf.Clamp01(playTimer / playData.TIME);
             if (playData != null && playTimer >= playData.TIME)
             {
@@ -220,27 +220,27 @@ public class GameManager : MonoBehaviour
 
         growthStateText.text = $"{dragonHealth.currentGrowth}";
 
-        currentStaminaValue.text = $"{stats.stamina}";
-        currentFatigueValue.text = $"{stats.fatigue}";
-        currentHungryValue.text = $"{stats.hunger}";
-        currentIntimacyValue.text = $"{stats.intimacy}";
-        currentCleanValue.text = $"{stats.clean}";
-        currentExperienceValue.text = $"{stats.experience}";
+        currentStaminaValue.text = $"{(int)stats.stamina}";
+        currentFatigueValue.text = $"{(int)stats.fatigue}";
+        currentHungryValue.text = $"{(int)stats.hunger}";
+        currentIntimacyValue.text = $"{(int)stats.intimacy}";
+        currentCleanValue.text = $"{(int)stats.clean}";
+        currentExperienceValue.text = $"{(int)stats.experience}";
 
 
 
-        maxStaminaValue.text = $"{stats.maxStamina}";
-        maxFatigueValue.text = $"{stats.maxFatigue}";
-        maxHungryValue.text = $"{stats.maxHunger}";
-        maxIntimacyValue.text = $"{stats.maxIntimacy}";
-        maxCleanValue.text = $"{stats.maxClean}";
-        maxExperienceValue.text = $"{stats.experienceMax}";
+        maxStaminaValue.text = $"{(int)stats.maxStamina}";
+        maxFatigueValue.text = $"{(int)stats.maxFatigue}";
+        maxHungryValue.text = $"{(int)stats.maxHunger}";
+        maxIntimacyValue.text = $"{(int)stats.maxIntimacy}";
+        maxCleanValue.text = $"{(int)stats.maxClean}";
+        maxExperienceValue.text = $"{(int)stats.experienceMax}";
 
-        fatigueSlider.value = Mathf.Clamp01((float)stats.fatigue / stats.maxFatigue);
-        staminaSlider.value = Mathf.Clamp01((float)stats.stamina / stats.maxStamina);
-        hungrySlider.value = Mathf.Clamp01((float)stats.hunger / stats.maxHunger);
-        intimacySlider.value = Mathf.Clamp01((float)stats.intimacy / stats.maxIntimacy);
-        cleanSlider.value = Mathf.Clamp01((float)stats.clean / stats.maxClean);
+        fatigueSlider.value = Mathf.Clamp01(stats.fatigue / stats.maxFatigue);
+        staminaSlider.value = Mathf.Clamp01(stats.stamina / stats.maxStamina);
+        hungrySlider.value = Mathf.Clamp01(stats.hunger / stats.maxHunger);
+        intimacySlider.value = Mathf.Clamp01(stats.intimacy / stats.maxIntimacy);
+        cleanSlider.value = Mathf.Clamp01(stats.clean / stats.maxClean);
         experienceSlider.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
         experienceSliderToMain.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
 
@@ -268,25 +268,25 @@ public class GameManager : MonoBehaviour
 
         growthStateText.text = $"{dragon.currentGrowth}";
 
-        currentStaminaValue.text = $"{stats.stamina}";
-        currentFatigueValue.text = $"{stats.fatigue}";
-        currentHungryValue.text = $"{stats.hunger}";
-        currentIntimacyValue.text = $"{stats.intimacy}";
-        currentCleanValue.text = $"{stats.clean}";
-        currentExperienceValue.text = $"{stats.experience}";
+        currentStaminaValue.text = $"{(int)stats.stamina}";
+        currentFatigueValue.text = $"{(int)stats.fatigue}";
+        currentHungryValue.text = $"{(int)stats.hunger}";
+        currentIntimacyValue.text = $"{(int)stats.intimacy}";
+        currentCleanValue.text = $"{(int)stats.clean}";
+        currentExperienceValue.text = $"{(int)stats.experience}";
 
-        maxStaminaValue.text = $"{stats.maxStamina}";
-        maxFatigueValue.text = $"{stats.maxFatigue}";
-        maxHungryValue.text = $"{stats.maxHunger}";
-        maxIntimacyValue.text = $"{stats.maxIntimacy}";
-        maxCleanValue.text = $"{stats.maxClean}";
-        maxExperienceValue.text = $"{stats.experienceMax}";
+        maxStaminaValue.text = $"{(int)stats.maxStamina}";
+        maxFatigueValue.text = $"{(int)stats.maxFatigue}";
+        maxHungryValue.text = $"{(int)stats.maxHunger}";
+        maxIntimacyValue.text = $"{(int)stats.maxIntimacy}";
+        maxCleanValue.text = $"{(int)stats.maxClean}";
+        maxExperienceValue.text = $"{(int)stats.experienceMax}";
 
-        staminaSlider.value = Mathf.Clamp01((float)stats.stamina / stats.maxStamina);
-        fatigueSlider.value = Mathf.Clamp01((float)stats.fatigue / stats.maxFatigue);
-        hungrySlider.value = Mathf.Clamp01((float)stats.hunger / stats.maxHunger);
-        intimacySlider.value = Mathf.Clamp01((float)stats.intimacy / stats.maxIntimacy);
-        cleanSlider.value = Mathf.Clamp01((float)stats.clean / stats.maxClean);
+        staminaSlider.value = Mathf.Clamp01(stats.stamina / stats.maxStamina);
+        fatigueSlider.value = Mathf.Clamp01(stats.fatigue / stats.maxFatigue);
+        hungrySlider.value = Mathf.Clamp01(stats.hunger / stats.maxHunger);
+        intimacySlider.value = Mathf.Clamp01(stats.intimacy / stats.maxIntimacy);
+        cleanSlider.value = Mathf.Clamp01(stats.clean / stats.maxClean);
         experienceSlider.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
     }
 
@@ -296,7 +296,7 @@ public class GameManager : MonoBehaviour
         if (dragonHealth.isPassOut) return;
         if (!canFeed) { Debug.Log("먹이주기 쿨 진행 중"); return; }
 
-        var data = DataTableManger.NurtureTable.Get(50300);
+        var data = DataTableManger.NurtureTable.Get(4030101);
         if (data == null) return;
 
         if (!CanExecuteNurture(data))
@@ -307,8 +307,11 @@ public class GameManager : MonoBehaviour
         }
 
         levelUpParticle.Play();
-        int hungerRecovery = dragonHealth.stats.maxHunger * data.REC_PERCENT / 100;
+        int hungerRecovery = (int)(dragonHealth.stats.maxHunger * data.REC_PERCENT / 100);
         dragonHealth.stats.ChangeStat(StatType.Hunger, hungerRecovery);
+
+        // 경험치 추가
+        dragonHealth.GainExperience(data.EXPGROWTH);
 
         alarmText.text = "먹이주기 완료, 배부름이 25% 증가";
 
@@ -323,11 +326,14 @@ public class GameManager : MonoBehaviour
         if (dragonHealth.isPassOut) return;
         if (!canBath) { Debug.Log("목욕 쿨 진행 중"); return; }
 
-        var data = DataTableManger.NurtureTable.Get(50400);
+        var data = DataTableManger.NurtureTable.Get(4040201);
         if (data == null) return;
 
-        int cleanRecovery = dragonHealth.stats.maxClean * data.REC_PERCENT / 100;
+        int cleanRecovery = (int)(dragonHealth.stats.maxClean * data.REC_PERCENT / 100);
         dragonHealth.stats.ChangeStat(StatType.Clean, cleanRecovery);
+
+        // 경험치 추가
+        dragonHealth.GainExperience(data.EXPGROWTH);
 
         alarmText.text = "목욕 완료, 청결도 30% 회복";
 
@@ -338,9 +344,9 @@ public class GameManager : MonoBehaviour
     public void OnClickPlay()
     {
         if (dragonHealth.isPassOut) return;
-        if(!canPlay) { Debug.Log("놀아주기 쿨 진행 중"); return; }
+        if (!canPlay) { Debug.Log("놀아주기 쿨 진행 중"); return; }
 
-        var data = DataTableManger.NurtureTable.Get(50500);
+        var data = DataTableManger.NurtureTable.Get(4050401);
         if (data == null) return;
 
         if (!CanExecuteNurture(data))
@@ -352,10 +358,13 @@ public class GameManager : MonoBehaviour
 
         dragonHealth.GetComponent<DragonBehavior>().PlayPlayAnimation();
 
-        int intimacyRecovery = dragonHealth.stats.maxIntimacy * data.REC_PERCENT / 100;
+        float intimacyRecovery = dragonHealth.stats.maxIntimacy * data.REC_PERCENT / 100;
         dragonHealth.stats.ChangeStat(StatType.Intimacy, intimacyRecovery);
         dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
         dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
+
+        // 경험치 추가
+        dragonHealth.GainExperience(data.EXPGROWTH);
 
         alarmText.text = "놀아주기 완료, 친밀도 10% 증가";
 
@@ -370,14 +379,13 @@ public class GameManager : MonoBehaviour
         if (dragonHealth.isPassOut)
         {
             dragonHealth.Recover();
-            dragonHealth.GainExperienceFromStats();
 
             canRest = false;
             restTimer = 0f;
         }
         else
         {
-            var data = DataTableManger.NurtureTable.Get(50200);
+            var data = DataTableManger.NurtureTable.Get(4020301);
             if (data == null) return;
 
             if (!CanExecuteNurture(data))
@@ -387,9 +395,11 @@ public class GameManager : MonoBehaviour
                 return;
             }
 
-            int fatigueRecovery = dragonHealth.stats.maxFatigue * data.REC_PERCENT / 100;
+            float fatigueRecovery = dragonHealth.stats.maxFatigue * data.REC_PERCENT / 100;
             dragonHealth.stats.ChangeStat(StatType.Fatigue, -fatigueRecovery);
-            dragonHealth.GainExperienceFromStats();
+
+            // 경험치 추가
+            dragonHealth.GainExperience(data.EXPGROWTH);
 
             alarmText.text = "피로도 100% 회복 성공";
 
@@ -407,7 +417,7 @@ public class GameManager : MonoBehaviour
         //if (dragonHealth.isPassOut) { Debug.Log("기절 중, 훈련 불가"); return; }
         //if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) { Debug.Log("유아기에선 훈련 불가"); alarmText.text = "유아기에선 훈련 불가"; return; }
 
-        //var data = DataTableManger.NurtureTable.Get(50014);
+        //var data = DataTableManger.NurtureTable.Get(4000501);
         //if (data == null) return;
 
         //if (!CanExecuteNurture(data))
@@ -417,12 +427,13 @@ public class GameManager : MonoBehaviour
         //    return;
         //}
 
-        //dragonHealth.stats.ChangeStat(StatType.Experience, data.EXPGROWTH);
         //dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
         //dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
 
+        //// 경험치 추가
+        //dragonHealth.GainExperience(data.EXPGROWTH);
 
-        //alarmText.text = "훈련완료, 경험치 14 획득";
+        //alarmText.text = $"훈련 완료, 경험치 {data.EXPGROWTH} 획득";
 
         //if (Random.Range(0f, 100f) < data.RATE_INJURY)
         //{
@@ -436,13 +447,13 @@ public class GameManager : MonoBehaviour
     {
         if (dragonHealth.isPassOut) { Debug.Log("기절 중, 탐험 불가"); return; }
         if (!canExplore) { Debug.Log("탐험 쿨 진행 중"); return; }
-        if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) {Debug.Log("유아기에선 탐험 불가"); alarmText.text = "유아기에선 탐험 불가"; return; }
+        if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) { Debug.Log("유아기에선 탐험 불가"); alarmText.text = "유아기에선 탐험 불가"; return; }
 
 
-        var data = DataTableManger.NurtureTable.Get(50000);
+        var data = DataTableManger.NurtureTable.Get(4000502);
         if (data == null) return;
 
-        if(!CanExecuteNurture(data))
+        if (!CanExecuteNurture(data))
         {
             Debug.Log("탐험 조건 불충족: 피로도가 65% 이상");
             alarmText.text = "탐험 조건 불충족: 피로도가 65% 이상";
@@ -453,6 +464,9 @@ public class GameManager : MonoBehaviour
 
         dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
         dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
+
+        // 경험치 추가
+        dragonHealth.GainExperience(data.EXPGROWTH);
 
         if (Random.Range(0f, 100f) < data.RATE_DISEASE)
         {
@@ -465,7 +479,7 @@ public class GameManager : MonoBehaviour
 
         if (Random.Range(0f, 100f) > 50f) //itemData.Get(5010001).DROP_RATE
         {
-            int random = Random.Range(0, 4); 
+            int random = Random.Range(0, 4);
             int randomTypeDragon = Random.Range(0, 4);
 
             Debug.Log("랜덤 알 생성");
@@ -621,7 +635,7 @@ public class GameManager : MonoBehaviour
         if (dragonHealth.currentGrowth == DragonGrowthState.Adult)
         {
             Destroy(dragonHealth.gameObject);
-            playerManager.famePoint += dragonHealth.stats.CalculateStats();
+            playerManager.famePoint += 100;
             EggSlot.isDragonActive = false;
 
         }
@@ -646,7 +660,7 @@ public class GameManager : MonoBehaviour
         playProgressBar.fillAmount = 0f;
         bathProgressBar.fillAmount = 0f;
         feedProgressBar.fillAmount = 0f;
-        exploreProgressBar.fillAmount = 0f;    
+        exploreProgressBar.fillAmount = 0f;
         restProgressBar.fillAmount = 0f;
     }
 
@@ -671,8 +685,7 @@ public class GameManager : MonoBehaviour
 
     public void ExperienceCheatButton()
     {
-        dragonHealth.stats.ChangeStat(StatType.Experience, 100);
-        dragonHealth.GainExperienceFromStats();
+        dragonHealth.GainExperience(100);
     }
 
     private void CheckFPS()
@@ -740,17 +753,17 @@ public class GameManager : MonoBehaviour
 
         SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
 
-        dragonHealth.transform.localPosition = new Vector3(-0.6f,0f,13f);
+        dragonHealth.transform.localPosition = new Vector3(-0.6f, 0f, 13f);
         dragonHealth.transform.localRotation = Quaternion.Euler(0f, 210f, 0f);
 
     }
 
     public void MoveSceneOnOff()
     {
-            mainCamera.gameObject.SetActive(!mainCamera.gameObject.activeSelf);
-            mainCanvas.gameObject.SetActive(!mainCanvas.gameObject.activeSelf);
-            directionalLight.gameObject.SetActive(!directionalLight.gameObject.activeSelf);
-            light1.gameObject.SetActive(!light1.gameObject.activeSelf);
-            light2.gameObject.SetActive(!light2.gameObject.activeSelf);
+        mainCamera.gameObject.SetActive(!mainCamera.gameObject.activeSelf);
+        mainCanvas.gameObject.SetActive(!mainCanvas.gameObject.activeSelf);
+        directionalLight.gameObject.SetActive(!directionalLight.gameObject.activeSelf);
+        light1.gameObject.SetActive(!light1.gameObject.activeSelf);
+        light2.gameObject.SetActive(!light2.gameObject.activeSelf);
     }
 }

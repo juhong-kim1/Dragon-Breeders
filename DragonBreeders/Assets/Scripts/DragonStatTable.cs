@@ -3,28 +3,33 @@ using UnityEngine;
 
 public class DragonStatTableData
 {
-    public int ID { get; set; }
+    public int DRAGON_ID { get; set; }
     public string DRAGON_NAME { get; set; }
     public int SPECIES_TYPE { get; set; }
     public int ELEMENT_TYPE { get; set; }
     public int GROWTH_TYPE { get; set; }
-    public int MAXHP { get; set; }
-    public int MAXFTG { get; set; }
-    public int MAXHYG { get; set; }
-    public int MAXFOOD { get; set; }
-    public int MAXFRN { get; set; }
-    public int EXPED_SPECIALTY_ID { get; set; }
+    public float MAXHP { get; set; }
+    public float MAXFTG { get; set; }
+    public float MAXHYG { get; set; }
+    public float MAXFOOD { get; set; }
+    public float MAXFRN { get; set; }
     public float SCALE_SIZE { get; set; }
-    public int EXP_REQ { get; set; }
-    public float DEPRATE_FOOD { get; set; }
-    public float DEPRATE_HYG { get; set; }
-    public float DEPRATE_FRN { get; set; }
-    public string DRAGON_IMAGE { get; set; }
-    public int ORDER { get; set; }
+    public int EVOEXP { get; set; }
+    public float DEP_FOOD { get; set; }
+    public float DEP_HYG { get; set; }
+    public float DEP_FRN { get; set; }
+    public float ATT_MULT { get; set; }
+    public float DEF_MULT { get; set; }
+    public float GROWTH_MULT { get; set; }
+    public int SKILL1_ID { get; set; }
+    public string SKILL1_ANIM { get; set; }
+    public int SKILL2_ID { get; set; }
+    public string SKILL2_ANIM { get; set; }
+    public int ORDER_1 { get; set; }
 
     public override string ToString()
     {
-        return $"{ID} / {DRAGON_NAME} / 성장:{GROWTH_TYPE} / HP:{MAXHP}";
+        return $"{DRAGON_ID} / {DRAGON_NAME} / 성장:{GROWTH_TYPE} / HP:{MAXHP}";
     }
 }
 
@@ -37,7 +42,6 @@ public class DragonStatTable : DataTable
         table.Clear();
         var path = string.Format(FormatPath, filename);
         var textAsset = Resources.Load<TextAsset>(path);
-
         if (textAsset == null)
         {
             return;
@@ -46,9 +50,9 @@ public class DragonStatTable : DataTable
         var list = LoadCSV<DragonStatTableData>(textAsset.text);
         foreach (var dragon in list)
         {
-            if (!table.ContainsKey(dragon.ID))
+            if (!table.ContainsKey(dragon.DRAGON_ID))
             {
-                table.Add(dragon.ID, dragon);
+                table.Add(dragon.DRAGON_ID, dragon);
             }
             else
             {

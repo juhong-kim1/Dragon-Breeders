@@ -27,10 +27,13 @@ public class DragonHealth : MonoBehaviour
     private float growSpeed = 1.2f;
 
     private float hungryTimer = 0f;
-    private float hungryMaxTime = 10f; //기존 3
+    private float hungryMaxTime = 60f;
 
     private float cleanTimer = 0f;
-    private float cleanMaxTime = 20f; //기존 15
+    private float cleanMaxTime = 60f;
+
+    private float intimacyTimer = 0f;
+    private float intimacyMaxTime = 60f;
 
     public bool isPassOut = false;
     public bool hasTriggerPassOut = false;
@@ -89,7 +92,7 @@ public class DragonHealth : MonoBehaviour
         stats.maxHunger = currentTableData.MAXFOOD;
         stats.maxClean = currentTableData.MAXHYG;
         stats.maxIntimacy = currentTableData.MAXFRN;
-        stats.experienceMax = currentTableData.EXP_REQ;
+        stats.experienceMax = currentTableData.EVOEXP;
 
         if (stats.stamina <= 0) stats.stamina = stats.maxStamina;
         if (stats.hunger <= 0) stats.hunger = stats.maxHunger;
@@ -103,9 +106,6 @@ public class DragonHealth : MonoBehaviour
         {
             targetScale = Vector3.one * currentTableData.SCALE_SIZE;
         }
-
-        hungryMaxTime = currentTableData.DEPRATE_FOOD * 4f;
-        cleanMaxTime = currentTableData.DEPRATE_HYG * 15f;
     }
 
     private int GetGrowthTypeFromState(DragonGrowthState state)
@@ -160,11 +160,11 @@ public class DragonHealth : MonoBehaviour
         hungryTimer += Time.deltaTime;
         if (hungryTimer >= hungryMaxTime)
         {
-            stats.ChangeStat(StatType.Hunger, -10);
+            stats.ChangeStat(StatType.Hunger, -currentTableData.DEP_FOOD);
 
             if (stats.hunger <= 0)
             {
-                stats.ChangeStat(StatType.Fatigue, 15);
+                stats.ChangeStat(StatType.Fatigue, -currentTableData.DEP_FOOD);
             }
 
             hungryTimer = 0f;
@@ -173,8 +173,15 @@ public class DragonHealth : MonoBehaviour
         cleanTimer += Time.deltaTime;
         if (cleanTimer >= cleanMaxTime)
         {
-            stats.ChangeStat(StatType.Clean, -2);
+            stats.ChangeStat(StatType.Clean, -currentTableData.DEP_HYG);
             cleanTimer = 0f;
+        }
+
+        intimacyTimer += Time.deltaTime;
+        if (intimacyTimer >= intimacyMaxTime)
+        {
+            stats.ChangeStat(StatType.Intimacy, -currentTableData.DEP_FRN);
+            intimacyTimer = 0f;
         }
     }
 
@@ -216,7 +223,7 @@ public class DragonHealth : MonoBehaviour
         var data = DataTableManger.NurtureTable.Get(50200);
         if (data == null) return;
 
-        int fatigueRecovery = stats.maxFatigue * data.REC_PERCENT / 100;
+        float fatigueRecovery = stats.maxFatigue * data.REC_PERCENT / 100;
        stats.ChangeStat(StatType.Fatigue, -fatigueRecovery);
         animator.Rebind();
     }
@@ -266,15 +273,13 @@ public class DragonHealth : MonoBehaviour
     //    }
     //}
 
-    public void GainExperienceFromStats()
+    public void GainExperience(float amount)
     {
         if (stats == null) return;
 
-        int gainedExp = stats.CalculateStats();
+        stats.ChangeStat(StatType.Experience, amount);
 
-        stats.ChangeStat(StatType.Experience, gainedExp);
-
-        Debug.Log($"경험치 획득: {gainedExp}, 현재 경험치: {stats.experience}/{stats.experienceMax}");
+        Debug.Log($"경험치 획득: {amount}, 현재 경험치: {stats.experience}/{stats.experienceMax}");
 
         if (stats.CanGrowUp())
         {

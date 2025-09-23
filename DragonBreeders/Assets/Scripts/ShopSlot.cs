@@ -70,6 +70,7 @@ public class ShopSlot : MonoBehaviour
             }
 
             Debug.Log($"구매 완료: {item.GetName()}, 남은 코인: {playerManager.coin}");
+            ClearSlot();
         }
         else
         {
