@@ -12,6 +12,7 @@ public class MapWindow : GenericWindow
 
     public Button[] locationButtons = new Button[5];
     public Button[] difficultyButtons = new Button[3];
+    public Button[] xButtons = new Button[3];
 
     private int locationIndex;
 
@@ -29,6 +30,14 @@ public class MapWindow : GenericWindow
     [SerializeField] private Image difficultyPanelImage;
     [SerializeField] private Image trainingStartPanelImage;
 
+    private readonly Color32[] locationColors = {
+    new Color32(209,241,88,255),
+    new Color32(30,140,254,255),
+    new Color32(58,203,92,255),
+    new Color32(118,223,79,255),
+    new Color32(230,220,230,255)
+};
+
     private void Start()
     {
         menuButton.onClick.AddListener(ToggleMenu);
@@ -40,16 +49,18 @@ public class MapWindow : GenericWindow
         {
             int index = i;
 
-            locationIndex = i;
             locationButtons[i].onClick.AddListener(() => ToggleLocation(index));
         }
 
         for (int i = 0; i < difficultyButtons.Length; ++i)
         {
-            difficultyButtons[i].onClick.AddListener(() => ToggleDifficulty(locationIndex));
+            difficultyButtons[i].onClick.AddListener(() => ToggleDifficulty());
         }
 
-        //desertButton.onClick.AddListener(ToggleLocation);
+        for (int i = 0; i < xButtons.Length; ++i)
+        {
+            xButtons[i].onClick.AddListener(() => ToggleXButton());
+        }
 
         menuPanel.SetActive(false);
         statPanel.SetActive(false);
@@ -107,55 +118,28 @@ public class MapWindow : GenericWindow
     }
 
     private void ToggleTraining()
-    { 
+    {
         trainingLocationPanel.SetActive(!trainingLocationPanel.activeSelf);
     }
 
     private void ToggleLocation(int index)
     {
+        locationIndex = index;
         difficultyPanel.SetActive(true);
-
-        switch (index)
-        {
-            case 0:
-                difficultyPanelImage.color = new Color32(222,250,118,255);
-                break;
-            case 1:
-                difficultyPanelImage.color = new Color32(30, 140, 254, 255);
-                break;
-            case 2:
-                difficultyPanelImage.color = new Color32(58, 203, 92, 255);
-                break;
-            case 3:
-                difficultyPanelImage.color = new Color32(118, 223, 79, 255);
-                break;
-            case 4:
-                difficultyPanelImage.color = new Color32(230, 220, 230, 255);
-                break;
-        }
+        difficultyPanelImage.color = locationColors[index];
     }
 
-    private void ToggleDifficulty(int index)
+    private void ToggleDifficulty()
     {
         trainingStartPanel.SetActive(true);
+        trainingStartPanelImage.color = locationColors[locationIndex];
+    }
 
-        switch (index)
-        {
-            case 0:
-                trainingStartPanelImage.color = new Color32(222, 250, 118, 255);
-                break;
-            case 1:
-                trainingStartPanelImage.color = new Color32(30, 140, 254, 255);
-                break;
-            case 2:
-                trainingStartPanelImage.color = new Color32(58, 203, 92, 255);
-                break;
-            case 3:
-                trainingStartPanelImage.color = new Color32(118, 223, 79, 255);
-                break;
-            case 4:
-                trainingStartPanelImage.color = new Color32(230, 220, 230, 255);
-                break;
-        }
+    private void ToggleXButton()
+    {
+        trainingStartPanel.SetActive(false);
+        difficultyPanel.SetActive(false);
+        trainingLocationPanel.SetActive(false);
+    
     }
 }
