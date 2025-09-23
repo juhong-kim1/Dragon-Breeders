@@ -8001,6 +8001,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9ebfa97efb57f74482a0a84062d8518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 282840813}
+  mainCanvas: {fileID: 1917397562}
   backButton: {fileID: 992183491}
   menuButton: {fileID: 14151270}
   statButton: {fileID: 625679409}
@@ -17496,6 +17498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb170b483836b4b805153cd9079f1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  returningToTraining: 0
   dragonHealth: {fileID: 0}
   playerManager: {fileID: 1094925222}
   inventoryManager: {fileID: 182337242}
@@ -17567,6 +17570,11 @@ MonoBehaviour:
   releaseButton: {fileID: 914000330}
   levelUpParticle: {fileID: 627873669}
   dragonFeedback: {fileID: 1857771466}
+  mainCamera: {fileID: 282840813}
+  mainCanvas: {fileID: 1917397562}
+  directionalLight: {fileID: 170076734}
+  light1: {fileID: 848246461}
+  light2: {fileID: 1966117082}
 --- !u!4 &1382034689
 Transform:
   m_ObjectHideFlags: 0
@@ -21779,7 +21787,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1745923660}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 618681090}
+        m_TargetAssemblyTypeName: MapWindow, Assembly-CSharp
+        m_MethodName: OnClickTrainingStart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1745923660
 MonoBehaviour:
   m_ObjectHideFlags: 0

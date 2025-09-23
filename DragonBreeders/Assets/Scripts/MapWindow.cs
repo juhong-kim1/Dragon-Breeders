@@ -1,9 +1,12 @@
-using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MapWindow : GenericWindow
 {
+    public Camera mainCamera;
+    public Canvas mainCanvas;
+
     public Button backButton;
     public Button menuButton;
     public Button statButton;
@@ -94,7 +97,7 @@ public class MapWindow : GenericWindow
 
     public void OnClickTrainingStart()
     {
-        manager.Open(Windows.EggVault);
+        gameManager.MoveBattleScene();
     }
 
     private void ToggleMenu()
@@ -140,6 +143,5 @@ public class MapWindow : GenericWindow
         trainingStartPanel.SetActive(false);
         difficultyPanel.SetActive(false);
         trainingLocationPanel.SetActive(false);
-    
     }
 }

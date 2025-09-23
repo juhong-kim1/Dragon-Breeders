@@ -1,9 +1,14 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
+    public bool returningToTraining = false;
+
     public DragonHealth dragonHealth;
     public PlayerManager playerManager;
     public InventoryManager inventoryManager;
@@ -82,6 +87,25 @@ public class GameManager : MonoBehaviour
     private bool isDragonReleased = false;
 
     public TextMeshProUGUI dragonFeedback;
+
+    public Camera mainCamera;
+    public Canvas mainCanvas;
+    public Light directionalLight;
+    public Light light1;
+    public Light light2;
+
+    public void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -708,5 +732,25 @@ public class GameManager : MonoBehaviour
         {
             isPlaying = false;
         }
+    }
+
+    public void MoveBattleScene()
+    {
+        MoveSceneOnOff();
+
+        SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
+
+        dragonHealth.transform.localPosition = new Vector3(-0.6f,0f,13f);
+        dragonHealth.transform.localRotation = Quaternion.Euler(0f, 210f, 0f);
+
+    }
+
+    public void MoveSceneOnOff()
+    {
+            mainCamera.gameObject.SetActive(!mainCamera.gameObject.activeSelf);
+            mainCanvas.gameObject.SetActive(!mainCanvas.gameObject.activeSelf);
+            directionalLight.gameObject.SetActive(!directionalLight.gameObject.activeSelf);
+            light1.gameObject.SetActive(!light1.gameObject.activeSelf);
+            light2.gameObject.SetActive(!light2.gameObject.activeSelf);
     }
 }

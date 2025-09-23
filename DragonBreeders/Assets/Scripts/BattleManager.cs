@@ -1,16 +1,32 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public Button stopButton;
+
+    public GameObject stopPanel;
+
+    private void Start()
     {
-        
+        stopButton.onClick.AddListener(() => ToggleStopButton());
+        stopPanel.gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnClickQuitOut()
     {
-        
+        GameManager.Instance.MoveSceneOnOff();
+
+
+        SceneManager.UnloadSceneAsync("BattleScene");
     }
+
+
+    public void ToggleStopButton()
+    {
+        stopPanel.SetActive(!stopPanel.activeSelf);
+    }
+
+
 }
