@@ -399,7 +399,7 @@ MonoBehaviour:
   purchaseButtonText: {fileID: 2733052830462657352}
   purchaseButton: {fileID: 6883986303177718549}
   itemDiscription: {fileID: 0}
-  inventory: {fileID: 0}
+  inventoryManager: {fileID: 0}
   playerManager: {fileID: 0}
 --- !u!114 &4345648614936625821
 MonoBehaviour:
@@ -632,35 +632,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3660774565416465926, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3660774565416465926, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3660774565416465926, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 7.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3660774565416465926, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8531085174374344774, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8531085174374344774, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8531085174374344774, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 7.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8531085174374344774, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -12.8478
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8891127145396447445, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_Pivot.x

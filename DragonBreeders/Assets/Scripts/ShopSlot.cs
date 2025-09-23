@@ -12,7 +12,9 @@ public class ShopSlot : MonoBehaviour
     public Button purchaseButton;
     public TextMeshProUGUI itemDiscription;
 
-    public Inventory inventory;
+    private int itemPrice;
+
+    public InventoryManager inventoryManager;
     public PlayerManager playerManager;
 
     public void Start()
@@ -23,6 +25,7 @@ public class ShopSlot : MonoBehaviour
     public void SetItem(IItem newItem, int price)
     {
         item = newItem;
+        itemPrice = price;
 
         if (icon != null && item != null)
         {
@@ -51,17 +54,26 @@ public class ShopSlot : MonoBehaviour
     {
         if (item == null) return;
 
-        if (playerManager.TrySpendCoin(item.GetPrice()))
+        if (playerManager != null && playerManager.coin >= itemPrice)
         {
-            inventory.AddItem(item);
+            playerManager.coin -= itemPrice;
+
+            playerManager.UpdateCoinUI();
+
+            inventoryManager.AddItem(item.GetID(), 1);
+
             AlarmManager.Instance.ShowAlarm($"{item.GetName()} 구매완료!");
-            ClearSlot();
-            purchaseButtonText.text = "구매 완료";
-            Debug.Log("구매 완료");
+
+            if (purchaseButtonText != null)
+            {
+                purchaseButtonText.text = "구매 완료";
+            }
+
+            Debug.Log($"구매 완료: {item.GetName()}, 남은 코인: {playerManager.coin}");
         }
         else
         {
-            AlarmManager.Instance.ShowAlarm($"코인이 부족합니다");
+            AlarmManager.Instance.ShowAlarm("코인이 부족합니다");
             Debug.Log("코인 부족");
         }
     }

@@ -4,19 +4,20 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     public TextMeshProUGUI coinText;
+    public TextMeshProUGUI coinTextShop;
 
     public int coin;
     public int famePoint = 0;
 
     void Start()
     {
-        coin = 1000;
-        //UpdateCoinUI();
+        coin = 10000;
+        UpdateCoinUI();
     }
 
-    //public void UpdateCoinUI()
-    //{
-    //    int coinAmount = playerInventory.GetAmountByID(5070001);
-    //    coinText.text = coinAmount.ToString();
-    //}
+    public void UpdateCoinUI()
+    {
+        coinText.text = coin.ToString();
+        coinTextShop.text = coin.ToString();
+    }
 }
