@@ -3,6 +3,23 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public enum TrainingPlace
+{ 
+    None = 0,
+    Desert,
+    Marine,
+    Forest,
+    GrassField,
+    SnowField,
+}
+
+public enum Difficulty
+{ 
+    Low,
+    Medium,
+    High,
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -49,6 +66,9 @@ public class GameManager : MonoBehaviour
     public Slider experienceSlider;
 
     public Slider experienceSliderToMain;
+
+    public TrainingPlace TrainingPlace;
+    public Difficulty Difficulty;
 
     public TextMeshProUGUI[] mapStatTexts;
 
@@ -443,114 +463,114 @@ public class GameManager : MonoBehaviour
         //}
     }
 
-    public void OnClickExplore()
-    {
-        if (dragonHealth.isPassOut) { Debug.Log("기절 중, 탐험 불가"); return; }
-        if (!canExplore) { Debug.Log("탐험 쿨 진행 중"); return; }
-        if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) { Debug.Log("유아기에선 탐험 불가"); alarmText.text = "유아기에선 탐험 불가"; return; }
+    //public void OnClickExplore()
+    //{
+    //    if (dragonHealth.isPassOut) { Debug.Log("기절 중, 탐험 불가"); return; }
+    //    if (!canExplore) { Debug.Log("탐험 쿨 진행 중"); return; }
+    //    if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) { Debug.Log("유아기에선 탐험 불가"); alarmText.text = "유아기에선 탐험 불가"; return; }
 
 
-        var data = DataTableManger.NurtureTable.Get(4000502);
-        if (data == null) return;
+    //    var data = DataTableManger.NurtureTable.Get(4000502);
+    //    if (data == null) return;
 
-        if (!CanExecuteNurture(data))
-        {
-            Debug.Log("탐험 조건 불충족: 피로도가 65% 이상");
-            alarmText.text = "탐험 조건 불충족: 피로도가 65% 이상";
-            return;
-        }
+    //    if (!CanExecuteNurture(data))
+    //    {
+    //        Debug.Log("탐험 조건 불충족: 피로도가 65% 이상");
+    //        alarmText.text = "탐험 조건 불충족: 피로도가 65% 이상";
+    //        return;
+    //    }
 
-        Debug.Log("탐험 시작");
+    //    Debug.Log("탐험 시작");
 
-        dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
-        dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
+    //    dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
+    //    dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
 
-        // 경험치 추가
-        dragonHealth.GainExperience(data.EXPGROWTH);
+    //    // 경험치 추가
+    //    dragonHealth.GainExperience(data.EXPGROWTH);
 
-        if (Random.Range(0f, 100f) < data.RATE_DISEASE)
-        {
-            StatusType[] diseases = { StatusType.Cold, StatusType.FoodPoisoning, StatusType.HighFever, StatusType.Infection };
-            StatusType randomDisease = diseases[Random.Range(0, diseases.Length)];
-            dragonHealth.status.AddStatus(randomDisease);
-        }
+    //    if (Random.Range(0f, 100f) < data.RATE_DISEASE)
+    //    {
+    //        StatusType[] diseases = { StatusType.Cold, StatusType.FoodPoisoning, StatusType.HighFever, StatusType.Infection };
+    //        StatusType randomDisease = diseases[Random.Range(0, diseases.Length)];
+    //        dragonHealth.status.AddStatus(randomDisease);
+    //    }
 
-        var itemData = DataTableManger.ItemTable;
+    //    var itemData = DataTableManger.ItemTable;
 
-        if (Random.Range(0f, 100f) > 50f) //itemData.Get(5010001).DROP_RATE
-        {
-            int random = Random.Range(0, 4);
-            int randomTypeDragon = Random.Range(0, 4);
+    //    if (Random.Range(0f, 100f) > 50f) //itemData.Get(5010001).DROP_RATE
+    //    {
+    //        int random = Random.Range(0, 4);
+    //        int randomTypeDragon = Random.Range(0, 4);
 
-            Debug.Log("랜덤 알 생성");
-            alarmText.text = "탐험 성공! 랜덤 알을 얻었습니다.";
+    //        Debug.Log("랜덤 알 생성");
+    //        alarmText.text = "탐험 성공! 랜덤 알을 얻었습니다.";
 
-            switch (random)
-            {
-                case 0:
-                    Egg egg1 = new Egg
-                    {
-                        eggName = "Grass Egg",
-                        icon = icon[random],
-                        dragonPrefab = dragonPrefabs[randomTypeDragon]
-                    };
-                    vault.AddEgg(egg1);
-                    break;
-                case 1:
-                    Egg egg2 = new Egg
-                    {
-                        eggName = "FIre Egg",
-                        icon = icon[random],
-                        dragonPrefab = dragonPrefabs[randomTypeDragon + 4]
-                    };
-                    vault.AddEgg(egg2);
-                    break;
-                case 2:
-                    Egg egg3 = new Egg
-                    {
-                        eggName = "Water Egg",
-                        icon = icon[random],
-                        dragonPrefab = dragonPrefabs[randomTypeDragon + 8]
-                    };
-                    vault.AddEgg(egg3);
-                    break;
-                case 3:
-                    Egg egg4 = new Egg
-                    {
-                        eggName = "Wind Egg",
-                        icon = icon[random],
-                        dragonPrefab = dragonPrefabs[randomTypeDragon + 12]
-                    };
-                    vault.AddEgg(egg4);
-                    break;
-            }
-        }
+    //        switch (random)
+    //        {
+    //            case 0:
+    //                Egg egg1 = new Egg
+    //                {
+    //                    eggName = "Grass Egg",
+    //                    icon = icon[random],
+    //                    dragonPrefab = dragonPrefabs[randomTypeDragon]
+    //                };
+    //                vault.AddEgg(egg1);
+    //                break;
+    //            case 1:
+    //                Egg egg2 = new Egg
+    //                {
+    //                    eggName = "FIre Egg",
+    //                    icon = icon[random],
+    //                    dragonPrefab = dragonPrefabs[randomTypeDragon + 4]
+    //                };
+    //                vault.AddEgg(egg2);
+    //                break;
+    //            case 2:
+    //                Egg egg3 = new Egg
+    //                {
+    //                    eggName = "Water Egg",
+    //                    icon = icon[random],
+    //                    dragonPrefab = dragonPrefabs[randomTypeDragon + 8]
+    //                };
+    //                vault.AddEgg(egg3);
+    //                break;
+    //            case 3:
+    //                Egg egg4 = new Egg
+    //                {
+    //                    eggName = "Wind Egg",
+    //                    icon = icon[random],
+    //                    dragonPrefab = dragonPrefabs[randomTypeDragon + 12]
+    //                };
+    //                vault.AddEgg(egg4);
+    //                break;
+    //        }
+    //    }
 
-        if (Random.Range(0f, 100f) > 30f)
-        {
-            var allItems = DataTableManger.ItemTable.GetAll();
-            if (allItems != null && allItems.Count > 0)
-            {
-                var randomItemData = allItems[Random.Range(0, allItems.Count)];
+    //    if (Random.Range(0f, 100f) > 30f)
+    //    {
+    //        var allItems = DataTableManger.ItemTable.GetAll();
+    //        if (allItems != null && allItems.Count > 0)
+    //        {
+    //            var randomItemData = allItems[Random.Range(0, allItems.Count)];
 
 
-                Item newItem = new Item
-                {
-                    itemID = randomItemData.ITEM_ID,
-                    itemName = DataTableManger.StringTable.Get(randomItemData.ITEM_NAME),
-                    itemType = randomItemData.ITEM_TYPE,
-                    icon = Resources.Load<Sprite>($"ItemImages/{randomItemData.ITEM_IMAGE}"),
-                    description = DataTableManger.StringTable.Get(randomItemData.ITEM_DESCRIPTION)
-                };
+    //            Item newItem = new Item
+    //            {
+    //                itemID = randomItemData.ITEM_ID,
+    //                itemName = DataTableManger.StringTable.Get(randomItemData.ITEM_NAME),
+    //                itemType = randomItemData.ITEM_TYPE,
+    //                icon = Resources.Load<Sprite>($"ItemImages/{randomItemData.ITEM_IMAGE}"),
+    //                description = DataTableManger.StringTable.Get(randomItemData.ITEM_DESCRIPTION)
+    //            };
 
-                Debug.Log($"아이템 획득: {newItem.GetName()}");
-                alarmText.text = $"탐험 성공! {newItem.GetName()} 을(를) 획득했습니다.";
-            }
-        }
+    //            Debug.Log($"아이템 획득: {newItem.GetName()}");
+    //            alarmText.text = $"탐험 성공! {newItem.GetName()} 을(를) 획득했습니다.";
+    //        }
+    //    }
 
-        canExplore = false;
-        exploreTimer = 0f;
-    }
+    //    canExplore = false;
+    //    exploreTimer = 0f;
+    //}
 
     bool CanExecuteNurture(NurtureTableData data)
     {

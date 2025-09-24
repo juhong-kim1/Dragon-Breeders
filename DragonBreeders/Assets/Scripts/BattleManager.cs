@@ -25,6 +25,7 @@ public class BattleManager : MonoBehaviour
 
     public BattleState currentState;
     private DragonHealth playerDragon;
+    private MonsterHealth monster;
     private MonsterTableData currentEnemy;
     private SkillTableData dragonAttackSkill;
     private SkillTableData dragonSpecialSkill;
@@ -242,6 +243,21 @@ public class BattleManager : MonoBehaviour
         //    skillButton.GetComponentInChildren<TextMeshProUGUI>().text = dragonSpecialSkill.SKILL_NAME;
         //}
     }
+
+    private float PlayerDamage(float skill)
+    {
+        float combatPower = playerDragon.stats.experience * playerDragon.currentTableData.GROWTH_MULT;
+
+        float damage = combatPower * playerDragon.currentTableData.ATT_MULT;
+
+        return damage * skill;
+    }
+
+    private float MonsterDamage(float skill)
+    {
+        return monster.attack * skill;
+    }
+
 
     private void SetButtonsInteractable(bool interactable)
     {
