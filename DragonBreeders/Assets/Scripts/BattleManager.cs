@@ -47,12 +47,12 @@ public class BattleManager : MonoBehaviour
         attackButton.onClick.AddListener(OnPlayerAttack);
         skillButton.onClick.AddListener(OnPlayerSkill);
 
+        TrainingPlace = GameManager.Instance.TrainingPlace;
+        Difficulty = GameManager.Instance.Difficulty;
+
         InitializeBattle();
 
         Debug.Log($"배틀 준비, 플레이어 현재 HP {playerDragon.stats.stamina}/{playerDragon.stats.maxStamina}, 드래곤 현재 HP {monster.stamina}/{monster.maxStamina}");
-
-        TrainingPlace = GameManager.Instance.TrainingPlace;
-        Difficulty = GameManager.Instance.Difficulty;
     }
 
     private void InitializeBattle()
@@ -208,11 +208,7 @@ public class BattleManager : MonoBehaviour
         {
             currentState = BattleState.Won;
 
-            //int expReward = 25 * currentEnemy.MON_TYPE;
-            //playerDragon.GainExperience(expReward);
-
-            //int coinReward = monster.stamina;
-            // GameManager.Instance.playerManager.coin += coinReward;
+            var Nuture = DataTableManger.NurtureTable;
 
             switch (Difficulty)
             { 
@@ -220,13 +216,13 @@ public class BattleManager : MonoBehaviour
                     Debug.Log("잘못 된 난이도입니다.");
                     break;
                 case Difficulty.Low:
-                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, DataTableManger.NurtureTable.Get(4000501).EXPGROWTH);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, Nuture.Get(4000501).EXPGROWTH);
                     break;
                 case Difficulty.Medium:
-                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, DataTableManger.NurtureTable.Get(4000502).EXPGROWTH);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, Nuture.Get(4000502).EXPGROWTH);
                 break;
                 case Difficulty.High:
-                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, DataTableManger.NurtureTable.Get(4000503).EXPGROWTH);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, Nuture.Get(4000503).EXPGROWTH);
                 break;
             }
 
@@ -318,7 +314,7 @@ public class BattleManager : MonoBehaviour
 
     public void OnClickQuitOut()
     {
-        GameManager.Instance.dragonHealth.gameObject.transform.localPosition = Vector3.one;
+        GameManager.Instance.dragonHealth.gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
         GameManager.Instance.dragonHealth.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 
         GameManager.Instance.MoveSceneOnOff();

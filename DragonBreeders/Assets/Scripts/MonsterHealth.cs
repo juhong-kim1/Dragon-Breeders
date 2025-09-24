@@ -32,6 +32,12 @@ public class MonsterHealth : MonoBehaviour
     {
         monsterTableData = DataTableManger.MonsterTable.Get((int)monsterType);
 
+        if (monsterTableData == null)
+        {
+            Debug.LogError($"[MonsterHealth] MonsterTableData가 없습니다! monsterType: {monsterType}");
+            return;
+        }
+
         maxStamina = monsterTableData.MONHP;
         stamina = maxStamina;
         attack = monsterTableData.MONATT;
