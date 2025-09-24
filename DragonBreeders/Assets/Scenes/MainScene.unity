@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000002, guid: 8f985a912591e8d47848e0046e405226, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 7ffc13c1452d44748b01fc09aa5cd525, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -7891,7 +7891,6 @@ MonoBehaviour:
   eggVaultWindowObject: {fileID: 755439477}
   mainWindowObject: {fileID: 1976413704}
   tutorialManager: {fileID: 625649542}
-  gameManager: {fileID: 1382034688}
   menuPanel: {fileID: 1585995947}
   statPanel: {fileID: 1420606431}
   helpPanel: {fileID: 1615288819}

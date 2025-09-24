@@ -5292,6 +5292,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51820737f7bb8e34084aabe8a0b8bbad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  difficulty: 1
+  regions: 030000000400000005000000
+  maxStamina: 0
   stamina: 0
   attack: 0
   defense: 0
@@ -11917,6 +11920,8 @@ MonoBehaviour:
   enemyHPSlider: {fileID: 664992901}
   currentState: 0
   monster: {fileID: 746744326}
+  monsterPrefabs:
+  - {fileID: 746744325}
 --- !u!4 &1826588933
 Transform:
   m_ObjectHideFlags: 0

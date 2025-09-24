@@ -66,11 +66,6 @@ public class DragonStats
         return false;
     }
 
-    //public int CalculateStats()
-    //{
-    //    return (stamina + hunger + clean + intimacy);
-    //}
-
     public bool CanGrowUp()
     {
         return experience >= experienceMax;
@@ -78,7 +73,6 @@ public class DragonStats
 
     public void ConsumeGrowthExperience()
     {
-        experience -= experienceMax;
-        if (experience < 0) experience = 0;
+        experienceMax += GameManager.Instance.dragonHealth.currentTableData.EVOEXP;
     }
 }

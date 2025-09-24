@@ -1,8 +1,9 @@
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using TMPro;
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum BattleState
 {
@@ -31,7 +32,10 @@ public class BattleManager : MonoBehaviour
     private SkillTableData enemyAttackSkill;
     private SkillTableData enemySpecialSkill;
 
-    public GameObject mosterPrefabs;
+    private TrainingPlace TrainingPlace;
+    private Difficulty Difficulty;
+
+    public GameObject[] monsterPrefabs;
 
     private int skillCooldown = 0;
 
@@ -46,6 +50,9 @@ public class BattleManager : MonoBehaviour
         InitializeBattle();
 
         Debug.Log($"배틀 준비, 플레이어 현재 HP {playerDragon.stats.stamina}/{playerDragon.stats.maxStamina}, 드래곤 현재 HP {monster.stamina}/{monster.maxStamina}");
+
+        TrainingPlace = GameManager.Instance.TrainingPlace;
+        Difficulty = GameManager.Instance.Difficulty;
     }
 
     private void InitializeBattle()
@@ -205,7 +212,25 @@ public class BattleManager : MonoBehaviour
             //playerDragon.GainExperience(expReward);
 
             //int coinReward = monster.stamina;
-           // GameManager.Instance.playerManager.coin += coinReward;
+            // GameManager.Instance.playerManager.coin += coinReward;
+
+            switch (Difficulty)
+            { 
+                case Difficulty.None:
+                    Debug.Log("잘못 된 난이도입니다.");
+                    break;
+                case Difficulty.Low:
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, DataTableManger.NurtureTable.Get(4000501).EXPGROWTH);
+                    break;
+                case Difficulty.Medium:
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, DataTableManger.NurtureTable.Get(4000502).EXPGROWTH);
+                break;
+                case Difficulty.High:
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, DataTableManger.NurtureTable.Get(4000503).EXPGROWTH);
+                break;
+            }
+
+
             GameManager.Instance.playerManager.UpdateCoinUI();
             AlarmManager.Instance.ShowAlarm("승리하였습니다! 지역 선택으로 돌아갑니다.");
         }
@@ -262,17 +287,40 @@ public class BattleManager : MonoBehaviour
     }
 
     private void RandomMonsterInstantiate()
-    { 
-        //for (int i = 1; i < )
-    
-    
-    
-    
+    {
+        List<GameObject> candidates = new List<GameObject>();
+        foreach (var prefab in monsterPrefabs)
+        {
+            MonsterHealth mh = prefab.GetComponent<MonsterHealth>();
+            if (mh != null && mh.difficulty == (int)Difficulty && mh.regions.Contains((int)TrainingPlace))
+            {
+                candidates.Add(prefab);
+            }
+
+        }
+
+        if (candidates.Count == 0)
+        {
+            Debug.LogError($"[BattleManager] 조건에 맞는 몬스터 없음! Difficulty: {Difficulty}, TrainingPlace: {TrainingPlace}");
+            return;
+        }
+
+        GameObject chosenPrefab = candidates[Random.Range(0, candidates.Count)];
+        GameObject monsterObj = Instantiate(chosenPrefab, transform);
+
+        monsterObj.transform.localPosition = new Vector3(-10.14f,5f,-8.9f);
+        monsterObj.transform.localRotation = Quaternion.Euler(0f, -48.74f, 0f);
+        monsterObj.transform.localScale = new Vector3(2f, 2f, 2f);
+
+        monster = monsterObj.GetComponent<MonsterHealth>();
     }
 
 
     public void OnClickQuitOut()
     {
+        GameManager.Instance.dragonHealth.gameObject.transform.localPosition = Vector3.one;
+        GameManager.Instance.dragonHealth.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+
         GameManager.Instance.MoveSceneOnOff();
         SceneManager.UnloadSceneAsync("BattleScene");
     }

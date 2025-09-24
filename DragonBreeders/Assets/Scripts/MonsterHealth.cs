@@ -16,7 +16,7 @@ public enum MonsterType
 
 public class MonsterHealth : MonoBehaviour
 {
-    private int difficulty;
+    public int difficulty;
     public List<int> regions;
 
     public float maxStamina;
