@@ -77,8 +77,14 @@ public class DropTable : DataTable
     {
         return new List<DropTableData>(table.Values);
     }
+
     public List<DropTableData> GetDropsByBiome(int biome)
     {
-        return table.Values.Where(drop => drop.CanDropInBiome(biome)).ToList();
+        return table.Values.Where(drop => drop.CanDropInBiome(biome) && !IsCoin(drop.ITEM_ID)).ToList();
+    }
+
+    private bool IsCoin(int itemId)
+    {
+        return itemId == 5070001;
     }
 }

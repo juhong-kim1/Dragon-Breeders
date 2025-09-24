@@ -12617,6 +12617,7 @@ MonoBehaviour:
   DragonDamage: {fileID: 2125235735}
   MonsterDamage: {fileID: 441331816}
   endBattlePanel: {fileID: 1338691870}
+  rewardItemCount: 3
 --- !u!4 &1826588933
 Transform:
   m_ObjectHideFlags: 0

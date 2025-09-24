@@ -1,10 +1,31 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
+
+[System.Serializable]
+public class RewardItem
+{
+    public int itemId;
+    public int quantity;
+    public ItemTableData itemData;
+
+    public RewardItem(int itemId, int quantity)
+    {
+        this.itemId = itemId;
+        this.quantity = quantity;
+        this.itemData = DataTableManger.ItemTable.Get(itemId);
+    }
+
+    public override string ToString()
+    {
+        string itemName = itemData?.StringName ?? "Unknown Item";
+        return $"{itemName} x{quantity}";
+    }
+}
 
 public enum BattleState
 {
@@ -57,6 +78,8 @@ public class BattleManager : MonoBehaviour
 
     public GameObject endBattlePanel;
 
+    [SerializeField] private int rewardItemCount = 3;
+
     private void Start()
     {
         stopButton.onClick.AddListener(() => ToggleStopButton());
@@ -75,7 +98,7 @@ public class BattleManager : MonoBehaviour
 
         InitializeBattle();
 
-        Debug.Log($"¹èÆ² ÁØºñ, ÇÃ·¹ÀÌ¾î ÇöÀç HP {playerDragon.stats.stamina}/{playerDragon.stats.maxStamina}, µå·¡°ï ÇöÀç HP {monster.stamina}/{monster.maxStamina}");
+        Debug.Log($"ë°°í‹€ ì¤€ë¹„, í”Œë ˆì´ì–´ í˜„ì¬ HP {playerDragon.stats.stamina}/{playerDragon.stats.maxStamina}, ë“œë˜ê³¤ í˜„ì¬ HP {monster.stamina}/{monster.maxStamina}");
     }
 
     private void InitializeBattle()
@@ -85,14 +108,14 @@ public class BattleManager : MonoBehaviour
         playerDragon = GameManager.Instance.dragonHealth;
         if (playerDragon == null)
         {
-            Debug.LogError("µå·¡°ïÀÌ ³ÎÀÔ´Ï´Ù.");
+            Debug.LogError("ë“œë˜ê³¤ì´ ë„ì…ë‹ˆë‹¤.");
             return;
         }
 
         RandomMonsterInstantiate();
         if (monster == null)
         {
-            Debug.LogError("¸ó½ºÅÍ°¡ ³ÎÀÔ´Ï´Ù.");
+            Debug.LogError("ëª¬ìŠ¤í„°ê°€ ë„ì…ë‹ˆë‹¤.");
             return;
         }
 
@@ -101,7 +124,7 @@ public class BattleManager : MonoBehaviour
 
         UpdateUI();
 
-        ShowAlarm("¹èÆ² ÁØºñ ¿Ï·á!");
+        ShowAlarm("ë°°í‹€ ì¤€ë¹„ ì™„ë£Œ!");
 
         ShowBattleStart();
 
@@ -142,7 +165,7 @@ public class BattleManager : MonoBehaviour
         if (skillCooldown > 0)
             skillCooldown--;
 
-        ShowAlarm("³» Â÷·Ê!");
+        ShowAlarm("ë‚´ ì°¨ë¡€!");
         SetButtonsInteractable(true);
     }
 
@@ -156,7 +179,7 @@ public class BattleManager : MonoBehaviour
 
         GameManager.Instance.dragonHealth.GetComponent<DragonBehavior>().PlayAttackAnimation();
 
-        Debug.Log("ÇÃ·¹ÀÌ¾îÅÃ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇàÇØ¾ßÇÔ");
+        Debug.Log("í”Œë ˆì´ì–´íƒì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰í•´ì•¼í•¨");
     }
 
     public void OnPlayerSkill()
@@ -169,12 +192,12 @@ public class BattleManager : MonoBehaviour
 
         GameManager.Instance.dragonHealth.GetComponent<DragonBehavior>().PlaySkillAnimation();
 
-        Debug.Log("ÇÃ·¹ÀÌ½ºÅ³¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇàÇØ¾ßÇÔ");
+        Debug.Log("í”Œë ˆì´ìŠ¤í‚¬ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰í•´ì•¼í•¨");
     }
 
     private IEnumerator EnemyTurn()
     {
-        ShowAlarm("»ó´ë Â÷·Ê!");
+        ShowAlarm("ìƒëŒ€ ì°¨ë¡€!");
 
         currentState = BattleState.EnemyTurn;
         yield return new WaitForSeconds(2f);
@@ -213,24 +236,28 @@ public class BattleManager : MonoBehaviour
             var Nuture = DataTableManger.NurtureTable;
 
             switch (Difficulty)
-            { 
+            {
                 case Difficulty.None:
-                    Debug.Log("Àß¸ø µÈ ³­ÀÌµµÀÔ´Ï´Ù.");
+                    Debug.Log("ì˜ëª» ëœ ë‚œì´ë„ì…ë‹ˆë‹¤.");
                     break;
                 case Difficulty.Low:
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, Nuture.Get(4000501).EXPGROWTH);
                     break;
                 case Difficulty.Medium:
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, Nuture.Get(4000502).EXPGROWTH);
-                break;
+                    break;
                 case Difficulty.High:
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, Nuture.Get(4000503).EXPGROWTH);
-                break;
+                    break;
             }
+
+            List<RewardItem> rewards = GenerateBattleRewards();
+            GiveBattleRewards(rewards);
+            ShowRewardMessage(rewards);
 
             monster.PlayDieAnimation();
             GameManager.Instance.playerManager.UpdateCoinUI();
-            ShowAlarm("½Â¸®ÇÏ¿´½À´Ï´Ù!");
+            ShowAlarm("ìŠ¹ë¦¬í•˜ì˜€ìŠµë‹ˆë‹¤!");
             yield return new WaitForSeconds(5f);
             endBattlePanel.SetActive(true);
         }
@@ -238,10 +265,134 @@ public class BattleManager : MonoBehaviour
         {
             monster.PlayWinAnimation();
             currentState = BattleState.Lost;
-            ShowAlarm("ÆĞ¹èÇÏ¿´½À´Ï´Ù!");
+            ShowAlarm("íŒ¨ë°°í•˜ì˜€ìŠµë‹ˆë‹¤!");
             yield return new WaitForSeconds(5f);
             OnClickQuitOut();
         }
+    }
+
+    private List<RewardItem> GenerateBattleRewards()
+    {
+        List<RewardItem> rewards = new List<RewardItem>();
+
+        List<DropTableData> availableDrops = DataTableManger.DropTable.GetDropsByBiome((int)TrainingPlace);
+
+        if (availableDrops.Count == 0)
+        {
+            Debug.LogWarning($"ë°”ì´ì˜´ {TrainingPlace}ì—ì„œ ë“œë¡­ ê°€ëŠ¥í•œ ì•„ì´í…œì´ ì—†ìŠµë‹ˆë‹¤!");
+            return rewards;
+        }
+
+        Debug.Log($"ë°”ì´ì˜´ {TrainingPlace}ì—ì„œ {availableDrops.Count}ê°œ ì•„ì´í…œ ë“œë¡­ ê°€ëŠ¥");
+
+        List<DropTableData> uniqueItems = new List<DropTableData>();
+        List<int> addedItemIds = new List<int>();
+
+        foreach (var drop in availableDrops)
+        {
+            if (!addedItemIds.Contains(drop.ITEM_ID))
+            {
+                uniqueItems.Add(drop);
+                addedItemIds.Add(drop.ITEM_ID);
+            }
+        }
+
+        if (uniqueItems.Count < rewardItemCount)
+        {
+            Debug.LogWarning($"ë°”ì´ì˜´ {TrainingPlace}ì— ì„œë¡œ ë‹¤ë¥¸ ì•„ì´í…œì´ {uniqueItems.Count}ê°œë°–ì— ì—†ìŠµë‹ˆë‹¤!");
+        }
+
+        List<DropTableData> weightedList = CreateWeightedDropList(uniqueItems);
+        List<int> usedItemIds = new List<int>();
+
+        int itemsToGenerate = Mathf.Min(rewardItemCount, uniqueItems.Count);
+
+        for (int i = 0; i < itemsToGenerate; i++)
+        {
+            DropTableData selectedDrop = SelectRandomDrop(weightedList, usedItemIds);
+
+            if (selectedDrop == null)
+            {
+                Debug.LogWarning("ë” ì´ìƒ ì„ íƒí•  ìˆ˜ ìˆëŠ” ì•„ì´í…œì´ ì—†ìŠµë‹ˆë‹¤!");
+                break;
+            }
+
+            int quantity = Random.Range(selectedDrop.MINDROP, selectedDrop.MAXDROP + 1);
+
+            RewardItem reward = new RewardItem(selectedDrop.ITEM_ID, quantity);
+            rewards.Add(reward);
+
+            Debug.Log($"ë³´ìƒ {i + 1}: {reward}");
+
+            usedItemIds.Add(selectedDrop.ITEM_ID);
+        }
+
+        return rewards;
+    }
+
+    private List<DropTableData> CreateWeightedDropList(List<DropTableData> drops)
+    {
+        List<DropTableData> weightedList = new List<DropTableData>();
+
+        foreach (var drop in drops)
+        {
+            for (int i = 0; i < drop.DROP_RATE; i++)
+            {
+                weightedList.Add(drop);
+            }
+        }
+
+        return weightedList;
+    }
+
+    private DropTableData SelectRandomDrop(List<DropTableData> weightedList, List<int> usedItemIds)
+    {
+        if (weightedList.Count == 0) return null;
+
+        List<DropTableData> availableDrops = new List<DropTableData>();
+
+        foreach (var drop in weightedList)
+        {
+            if (!usedItemIds.Contains(drop.ITEM_ID))
+            {
+                availableDrops.Add(drop);
+            }
+        }
+
+        if (availableDrops.Count == 0) return null;
+
+        int randomIndex = Random.Range(0, availableDrops.Count);
+        return availableDrops[randomIndex];
+    }
+
+    private void GiveBattleRewards(List<RewardItem> rewards)
+    {
+        if (GameManager.Instance?.inventoryManager == null)
+        {
+            Debug.LogError("GameManager ë˜ëŠ” InventoryManagerë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
+            return;
+        }
+
+        foreach (var reward in rewards)
+        {
+            GameManager.Instance.inventoryManager.AddItem(reward.itemId, reward.quantity);
+            Debug.Log($"í”Œë ˆì´ì–´ê°€ {reward}ë¥¼ íšë“í–ˆìŠµë‹ˆë‹¤!");
+        }
+
+        Debug.Log($"ì´ {rewards.Count}ê°œì˜ ë³´ìƒ ì•„ì´í…œì´ ì¸ë²¤í† ë¦¬ì— ì¶”ê°€ë˜ì—ˆìŠµë‹ˆë‹¤.");
+    }
+
+    private void ShowRewardMessage(List<RewardItem> rewards)
+    {
+        string rewardText = "ì „íˆ¬ ìŠ¹ë¦¬! íšë“ ì•„ì´í…œ:\n";
+        foreach (var reward in rewards)
+        {
+            string itemName = reward.itemData?.StringName ?? "Unknown Item";
+            rewardText += $"â€¢ {itemName} x{reward.quantity}\n";
+        }
+
+        ShowAlarm(rewardText);
+        Debug.Log(rewardText);
     }
 
     private void UpdateUI()
@@ -276,7 +427,7 @@ public class BattleManager : MonoBehaviour
         float combatPower = playerDragon.stats.experience * playerDragon.currentTableData.GROWTH_MULT;
 
         return combatPower * playerDragon.currentTableData.DEF_MULT;
-    
+
     }
 
     private void SetButtonsInteractable(bool interactable)
@@ -301,14 +452,14 @@ public class BattleManager : MonoBehaviour
 
         if (candidates.Count == 0)
         {
-            Debug.LogError($"[BattleManager] Á¶°Ç¿¡ ¸Â´Â ¸ó½ºÅÍ ¾øÀ½! Difficulty: {Difficulty}, TrainingPlace: {TrainingPlace}");
+            Debug.LogError($"[BattleManager] ì¡°ê±´ì— ë§ëŠ” ëª¬ìŠ¤í„° ì—†ìŒ! Difficulty: {Difficulty}, TrainingPlace: {TrainingPlace}");
             return;
         }
 
         GameObject chosenPrefab = candidates[Random.Range(0, candidates.Count)];
         GameObject monsterObj = Instantiate(chosenPrefab, transform);
 
-        monsterObj.transform.localPosition = new Vector3(-10.14f,5f,-8.9f);
+        monsterObj.transform.localPosition = new Vector3(-10.14f, 5f, -8.9f);
         monsterObj.transform.localRotation = Quaternion.Euler(0f, -48.74f, 0f);
         monsterObj.transform.localScale = new Vector3(2f, 2f, 2f);
 
@@ -317,11 +468,11 @@ public class BattleManager : MonoBehaviour
         if (monster != null)
         {
             monster.InitializeMonsterData();
-            Debug.Log($"[BattleManager] ¸ó½ºÅÍ ÃÊ±âÈ­ ¿Ï·á - HP: {monster.stamina}/{monster.maxStamina}");
+            Debug.Log($"[BattleManager] ëª¬ìŠ¤í„° ì´ˆê¸°í™” ì™„ë£Œ - HP: {monster.stamina}/{monster.maxStamina}");
         }
         else
         {
-            Debug.LogError("[BattleManager] »ı¼ºµÈ ¸ó½ºÅÍ¿¡¼­ MonsterHealth ÄÄÆ÷³ÍÆ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù!");
+            Debug.LogError("[BattleManager] ìƒì„±ëœ ëª¬ìŠ¤í„°ì—ì„œ MonsterHealth ì»´í¬ë„ŒíŠ¸ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
         }
 
     }
@@ -436,7 +587,7 @@ public class BattleManager : MonoBehaviour
         monster.stamina -= finalDamage;
         monster.stamina = Mathf.Max(0, monster.stamina);
 
- 
+
         ShowMonsterDamage(Mathf.RoundToInt(finalDamage));
         UpdateUI();
 
