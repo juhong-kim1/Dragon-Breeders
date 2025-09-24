@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -32,12 +32,19 @@ public class BattleManager : MonoBehaviour
     private SkillTableData enemyAttackSkill;
     private SkillTableData enemySpecialSkill;
 
+    public TextMeshProUGUI alarmText;
+    public TextMeshProUGUI battleStartText;
+
     private TrainingPlace TrainingPlace;
     private Difficulty Difficulty;
 
     public GameObject[] monsterPrefabs;
 
     private int skillCooldown = 0;
+    [SerializeField] private float displayTime = 2f;
+
+    private Coroutine currentAlarmCoroutine;
+    private Coroutine battleStartCoroutine;
 
     private void Start()
     {
@@ -78,6 +85,10 @@ public class BattleManager : MonoBehaviour
 
         UpdateUI();
 
+        ShowAlarm("배틀 준비 완료!");
+
+        ShowBattleStart();
+
         StartCoroutine(BattleSequence());
     }
 
@@ -102,7 +113,7 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator BattleSequence()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
         currentState = BattleState.PlayerTurn;
         PlayerTurn();
@@ -113,6 +124,7 @@ public class BattleManager : MonoBehaviour
         if (skillCooldown > 0)
             skillCooldown--;
 
+        ShowAlarm("내 차례!");
         SetButtonsInteractable(true);
     }
 
@@ -174,6 +186,8 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator EnemyTurn()
     {
+        ShowAlarm("상대 차례!");
+
         currentState = BattleState.EnemyTurn;
         yield return new WaitForSeconds(2f);
 
@@ -228,12 +242,12 @@ public class BattleManager : MonoBehaviour
 
 
             GameManager.Instance.playerManager.UpdateCoinUI();
-            AlarmManager.Instance.ShowAlarm("승리하였습니다! 지역 선택으로 돌아갑니다.");
+            ShowAlarm("승리하였습니다!");
         }
         else
         {
             currentState = BattleState.Lost;
-            AlarmManager.Instance.ShowAlarm("패배하였습니다! 지역 선택으로 돌아갑니다.");
+            ShowAlarm("패배하였습니다!");
         }
 
         yield return new WaitForSeconds(2f);
@@ -288,6 +302,7 @@ public class BattleManager : MonoBehaviour
         foreach (var prefab in monsterPrefabs)
         {
             MonsterHealth mh = prefab.GetComponent<MonsterHealth>();
+            Debug.Log($"monsterType: {mh.monsterType}, MonsterTableData: {mh.monsterTableData}");
             if (mh != null && mh.difficulty == (int)Difficulty && mh.regions.Contains((int)TrainingPlace))
             {
                 candidates.Add(prefab);
@@ -309,11 +324,23 @@ public class BattleManager : MonoBehaviour
         monsterObj.transform.localScale = new Vector3(2f, 2f, 2f);
 
         monster = monsterObj.GetComponent<MonsterHealth>();
+
+        if (monster != null)
+        {
+            monster.InitializeMonsterData();
+            Debug.Log($"[BattleManager] 몬스터 초기화 완료 - HP: {monster.stamina}/{monster.maxStamina}");
+        }
+        else
+        {
+            Debug.LogError("[BattleManager] 생성된 몬스터에서 MonsterHealth 컴포넌트를 찾을 수 없습니다!");
+        }
+
     }
 
 
     public void OnClickQuitOut()
     {
+        GameManager.Instance.isFighting = false;
         GameManager.Instance.dragonHealth.gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
         GameManager.Instance.dragonHealth.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 
@@ -324,5 +351,48 @@ public class BattleManager : MonoBehaviour
     public void ToggleStopButton()
     {
         stopPanel.SetActive(!stopPanel.activeSelf);
+    }
+
+    public void ShowAlarm(string message)
+    {
+        if (currentAlarmCoroutine != null)
+            StopCoroutine(currentAlarmCoroutine);
+
+        currentAlarmCoroutine = StartCoroutine(ShowAlarmCoroutine(message));
+    }
+
+    private IEnumerator ShowAlarmCoroutine(string message)
+    {
+        if (alarmText == null) yield break;
+
+        alarmText.text = message;
+        alarmText.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(displayTime);
+
+        alarmText.gameObject.SetActive(false);
+        alarmText.text = "";
+        currentAlarmCoroutine = null;
+    }
+
+    public void ShowBattleStart()
+    {
+        if (battleStartCoroutine != null)
+            StopCoroutine(battleStartCoroutine);
+
+        battleStartCoroutine = StartCoroutine(ShowBattleStartCoroutine());
+    }
+
+    private IEnumerator ShowBattleStartCoroutine()
+    {
+        if (alarmText == null) yield break;
+
+        battleStartText.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+
+        battleStartText.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(displayTime);
+        battleStartText.gameObject.SetActive(false);
     }
 }

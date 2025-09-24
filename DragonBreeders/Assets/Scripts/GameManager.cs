@@ -115,6 +115,8 @@ public class GameManager : MonoBehaviour
     public Light light1;
     public Light light2;
 
+    public bool isFighting = false;
+
     public void Awake()
     {
         if (Instance == null)
@@ -773,6 +775,8 @@ public class GameManager : MonoBehaviour
         MoveSceneOnOff();
 
         SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
+
+        isFighting = true;
 
         dragonHealth.transform.localPosition = new Vector3(-0.6f, 0f, 13f);
         dragonHealth.transform.localRotation = Quaternion.Euler(0f, 210f, 0f);

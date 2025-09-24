@@ -25,7 +25,7 @@ public class DragonTouch : MonoBehaviour
 
     private void CameraZoom()
     {
-        if (Input.touchCount == 2)
+        if (Input.touchCount == 2 && !GameManager.Instance.isFighting)
         {
             Touch touch0 = Input.GetTouch(0);
             Touch touch1 = Input.GetTouch(1);
@@ -48,7 +48,7 @@ public class DragonTouch : MonoBehaviour
 
     private void SwipeDragon()
     {
-        if (Input.touchCount == 1)
+        if (Input.touchCount == 1 && !GameManager.Instance.isFighting)
         {
             Touch touch = Input.GetTouch(0);
 

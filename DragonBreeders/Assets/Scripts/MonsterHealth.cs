@@ -30,8 +30,12 @@ public class MonsterHealth : MonoBehaviour
 
     private void Start()
     {
-        monsterTableData = DataTableManger.MonsterTable.Get((int)monsterType);
+        InitializeMonsterData();
+    }
 
+    public void InitializeMonsterData()
+    {
+        monsterTableData = DataTableManger.MonsterTable.Get((int)monsterType);
         if (monsterTableData == null)
         {
             Debug.LogError($"[MonsterHealth] MonsterTableData가 없습니다! monsterType: {monsterType}");
@@ -44,5 +48,7 @@ public class MonsterHealth : MonoBehaviour
         defense = monsterTableData.MONDEF;
         difficulty = monsterTableData.MON_TYPE;
 
+        Debug.Log($"[MonsterHealth] 몬스터 데이터 초기화 완료: {monsterType}");
     }
 }
+
