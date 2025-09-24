@@ -45,6 +45,10 @@ public class BattleManager : MonoBehaviour
 
     private Coroutine currentAlarmCoroutine;
     private Coroutine battleStartCoroutine;
+    private Coroutine showDamageCoroutine;
+
+    public TextMeshProUGUI DragonDamage;
+    public TextMeshProUGUI MonsterDamage;
 
     private void Start()
     {
@@ -56,6 +60,9 @@ public class BattleManager : MonoBehaviour
 
         TrainingPlace = GameManager.Instance.TrainingPlace;
         Difficulty = GameManager.Instance.Difficulty;
+
+        DragonDamage.enabled = false;
+        MonsterDamage.enabled = false;
 
         InitializeBattle();
 
@@ -143,7 +150,12 @@ public class BattleManager : MonoBehaviour
         monster.stamina -= finalDamage;
         monster.stamina = Mathf.Max(0, monster.stamina);
 
+        ShowDamage(finalDamage);
+
         string dragonName = DataTableManger.StringTable.Get(playerDragon.currentTableData.DRAGON_NAME);
+
+        GameManager.Instance.dragonHealth.GetComponent<DragonBehavior>().PlayAttackAnimation();
+        Debug.Log("플레이어택애니메이션 실행해야함");
 
         UpdateUI();
 
@@ -169,8 +181,13 @@ public class BattleManager : MonoBehaviour
         float finalDamage = damage / monster.defense;
         finalDamage = Mathf.Max(1, finalDamage);
 
+        monster.stamina -= finalDamage;
+
 
         skillCooldown = dragonSpecialSkill.SKILL_CD;
+
+        GameManager.Instance.dragonHealth.GetComponent<DragonBehavior>().PlaySkillAnimation();
+        Debug.Log("플레이스킬애니메이션 실행해야함");
 
         UpdateUI();
 
@@ -395,4 +412,28 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(displayTime);
         battleStartText.gameObject.SetActive(false);
     }
+
+
+    public void ShowDamage(float damage)
+    {
+        if(showDamageCoroutine != null)
+            StopCoroutine(showDamageCoroutine);
+
+        showDamageCoroutine = StartCoroutine(ShowDamageCoroutine(damage));
+
+    }
+
+    private IEnumerator ShowDamageCoroutine(float damage)
+    {
+        if (showDamageCoroutine == null) yield break;
+
+        MonsterDamage.enabled = true;
+        MonsterDamage.text = damage.ToString();
+
+        yield return new WaitForSeconds(displayTime);
+
+        MonsterDamage.enabled = false;
+
+    }
+
 }

@@ -18,13 +18,17 @@ public class DragonBehavior : MonoBehaviour
     private Animator animator;
     private DragonHealth dragonHealth;
 
-    public static readonly string[] Action = { "Action1", "Action2", "Action3", "Action4", "Action5" };
+    public static readonly string[] action = { "Action1", "Action2", "Action3", "Action4", "Action5" };
 
-    public static readonly string Play = "Play";
-    public static readonly string Rest = "Rest";
+    public static readonly string play = "Play";
+    public static readonly string rest = "Rest";
+
+    public static readonly string skill1 = "Skill1";
+    public static readonly string skill2 = "Skill2";
+
 
     public TextMeshProUGUI dragonFeedback;
-    public string[] touchMessage = { "±×¸£¸ª", "¸Û¸Û", "²¿¸£¸¤", "³¢À×", "¾È³çÇÏ¼¼¿ä\n µå·¡°ïÀÔ´Ï´Ù", "ÄÝ·Ï", "¢½" };
+    public string[] touchMessage = { "±×¸£¸ª", "¸Û¸Û", "²¿¸£¸¤", "³¢À×", "¾È³çÇÏ¼¼¿ä µå·¡°ïÀÔ´Ï´Ù", "ÄÝ·Ï", "¢½" };
 
     private float lastTouchTime = 0f;
     public float touchCooldown = 3f;
@@ -67,9 +71,9 @@ public class DragonBehavior : MonoBehaviour
                 {
                     if (hit.collider.gameObject == gameObject)
                     {
-                        int random = Random.Range(0, Action.Length);
+                        int random = Random.Range(0, action.Length);
 
-                        animator.SetTrigger(Action[random]);
+                        animator.SetTrigger(action[random]);
                         dragonHealth.stats.ChangeStat(StatType.Intimacy, 1);
                     }
 
@@ -111,11 +115,21 @@ public class DragonBehavior : MonoBehaviour
 
     public void PlayRestAnimation()
     {
-        animator.SetTrigger("Rest");
+        animator.SetTrigger(rest);
     }
 
     public void PlayPlayAnimation()
     {
-        animator.SetTrigger("Play");
+        animator.SetTrigger(play);
+    }
+
+    public void PlayAttackAnimation()
+    {
+        animator.SetTrigger(skill1);
+    }
+
+    public void PlaySkillAnimation()
+    {
+        animator.SetTrigger(skill2);
     }
 }

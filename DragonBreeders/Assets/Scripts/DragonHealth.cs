@@ -238,7 +238,7 @@ public class DragonHealth : MonoBehaviour
             status.RemoveStatus(StatusType.Fatigue);
             isFormChanging = true;
 
-            string Action = DragonBehavior.Action[2];
+            string Action = DragonBehavior.action[2];
 
             animator.SetTrigger(Action);
         }
@@ -295,7 +295,7 @@ public class DragonHealth : MonoBehaviour
 
         transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
 
-        string Action = DragonBehavior.Play;
+        string Action = DragonBehavior.play;
 
         animator.SetTrigger(Action);
 

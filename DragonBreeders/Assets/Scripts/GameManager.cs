@@ -781,6 +781,8 @@ public class GameManager : MonoBehaviour
         dragonHealth.transform.localPosition = new Vector3(-0.6f, 0f, 13f);
         dragonHealth.transform.localRotation = Quaternion.Euler(0f, 210f, 0f);
 
+        
+
     }
 
     public void MoveSceneOnOff()
