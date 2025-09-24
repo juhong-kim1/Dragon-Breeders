@@ -41,10 +41,12 @@ public class BattleManager : MonoBehaviour
     public GameObject[] monsterPrefabs;
 
     private int skillCooldown = 0;
+    private int enemySkillCooldown = 0;
     [SerializeField] private float displayTime = 2f;
 
     private Coroutine currentAlarmCoroutine;
     private Coroutine battleStartCoroutine;
+    private Coroutine showPlayerDamageCoroutine;
     private Coroutine showDamageCoroutine;
 
     public TextMeshProUGUI DragonDamage;
@@ -150,7 +152,7 @@ public class BattleManager : MonoBehaviour
         monster.stamina -= finalDamage;
         monster.stamina = Mathf.Max(0, monster.stamina);
 
-        ShowDamage(finalDamage);
+        ShowMonsterDamage(Mathf.RoundToInt(finalDamage));
 
         string dragonName = DataTableManger.StringTable.Get(playerDragon.currentTableData.DRAGON_NAME);
 
@@ -179,10 +181,11 @@ public class BattleManager : MonoBehaviour
         float damage = PlayerAttack(skillDamage);
 
         float finalDamage = damage / monster.defense;
-        finalDamage = Mathf.Max(1, finalDamage);
+        finalDamage = Mathf.Max(0, finalDamage);
 
         monster.stamina -= finalDamage;
 
+        ShowMonsterDamage(Mathf.RoundToInt(finalDamage));
 
         skillCooldown = dragonSpecialSkill.SKILL_CD;
 
@@ -208,7 +211,23 @@ public class BattleManager : MonoBehaviour
         currentState = BattleState.EnemyTurn;
         yield return new WaitForSeconds(2f);
 
-        SkillTableData chosenSkill = Random.Range(0f, 1f) > 0.7f ? enemySpecialSkill : enemyAttackSkill;
+        // 적 스킬 쿨타임 감소
+        if (enemySkillCooldown > 0)
+            enemySkillCooldown--;
+
+        // 스킬 선택 (쿨타임 고려)
+        SkillTableData chosenSkill;
+        bool useSpecialSkill = Random.Range(0f, 1f) > 0.7f && enemySkillCooldown <= 0;
+
+        if (useSpecialSkill)
+        {
+            chosenSkill = enemySpecialSkill;
+            enemySkillCooldown = enemySpecialSkill.SKILL_CD; // 스킬 사용 시 쿨타임 적용
+        }
+        else
+        {
+            chosenSkill = enemyAttackSkill;
+        }
 
         float baseDamage = chosenSkill.SKILL_POWER;
         float damage = MonsterAttack(baseDamage);
@@ -217,6 +236,8 @@ public class BattleManager : MonoBehaviour
         finalDamage = Mathf.Max(1, finalDamage);
 
         playerDragon.stats.ChangeStat(StatType.Stamina, -finalDamage);
+
+        ShowPlayerDamage(Mathf.RoundToInt(finalDamage));
 
         UpdateUI();
 
@@ -267,7 +288,7 @@ public class BattleManager : MonoBehaviour
             ShowAlarm("패배하였습니다!");
         }
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
 
         OnClickQuitOut();
     }
@@ -414,26 +435,42 @@ public class BattleManager : MonoBehaviour
     }
 
 
-    public void ShowDamage(float damage)
+    public void ShowMonsterDamage(int damage)
     {
-        if(showDamageCoroutine != null)
+        if (showDamageCoroutine != null)
             StopCoroutine(showDamageCoroutine);
 
-        showDamageCoroutine = StartCoroutine(ShowDamageCoroutine(damage));
-
+        showDamageCoroutine = StartCoroutine(ShowMonsterDamageCoroutine(damage));
     }
 
-    private IEnumerator ShowDamageCoroutine(float damage)
+    public void ShowPlayerDamage(int damage)
     {
-        if (showDamageCoroutine == null) yield break;
+        if (showPlayerDamageCoroutine != null)
+            StopCoroutine(showPlayerDamageCoroutine);
 
+        showPlayerDamageCoroutine = StartCoroutine(ShowPlayerDamageCoroutine(damage));
+    }
+
+    private IEnumerator ShowMonsterDamageCoroutine(int damage)
+    {
         MonsterDamage.enabled = true;
         MonsterDamage.text = damage.ToString();
 
         yield return new WaitForSeconds(displayTime);
 
         MonsterDamage.enabled = false;
+        showDamageCoroutine = null;
+    }
 
+    private IEnumerator ShowPlayerDamageCoroutine(int damage)
+    {
+        DragonDamage.enabled = true;
+        DragonDamage.text = damage.ToString();
+
+        yield return new WaitForSeconds(displayTime);
+
+        DragonDamage.enabled = false;
+        showPlayerDamageCoroutine = null;
     }
 
 }

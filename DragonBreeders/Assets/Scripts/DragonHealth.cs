@@ -204,7 +204,7 @@ public class DragonHealth : MonoBehaviour
 
     private void CheckPassOutStat()
     {
-        if (stats.IsStatPassOut(StatType.Fatigue))
+        if (stats.IsStatPassOut())
         {
             if (!isPassOut)
             {

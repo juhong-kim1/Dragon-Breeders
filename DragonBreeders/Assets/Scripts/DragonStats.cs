@@ -56,14 +56,9 @@ public class DragonStats
         }
     }
 
-    public bool IsStatPassOut(StatType statType)
+    public bool IsStatPassOut()
     {
-        switch (statType)
-        {
-            case StatType.Fatigue:
-                return fatigue >= maxFatigue;
-        }
-        return false;
+        return stamina <= 0;
     }
 
     public bool CanGrowUp()
