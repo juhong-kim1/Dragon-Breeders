@@ -56,6 +56,10 @@ public static class DataTableManger
         skillTable.Load(DataTableIds.Skill);
         tables.Add(DataTableIds.Skill, skillTable);
 
+        var dropTable = new DropTable();
+        dropTable.Load(DataTableIds.Drop);
+        tables.Add(DataTableIds.Drop, dropTable);
+
     }
 
     public static StringTable StringTable
@@ -120,6 +124,14 @@ public static class DataTableManger
         get
         {
             return Get<SkillTable>(DataTableIds.Skill);
+        }
+    }
+
+    public static DropTable DropTable
+    {
+        get
+        {
+            return Get<DropTable>(DataTableIds.Drop);
         }
     }
 

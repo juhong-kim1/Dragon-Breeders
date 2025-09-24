@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public enum BattleState
 {
@@ -52,6 +53,10 @@ public class BattleManager : MonoBehaviour
     public TextMeshProUGUI DragonDamage;
     public TextMeshProUGUI MonsterDamage;
 
+    private float attackDelay = 1.3f;
+
+    public GameObject endBattlePanel;
+
     private void Start()
     {
         stopButton.onClick.AddListener(() => ToggleStopButton());
@@ -65,6 +70,8 @@ public class BattleManager : MonoBehaviour
 
         DragonDamage.enabled = false;
         MonsterDamage.enabled = false;
+
+        endBattlePanel.gameObject.SetActive(false);
 
         InitializeBattle();
 
@@ -97,6 +104,8 @@ public class BattleManager : MonoBehaviour
         ShowAlarm("배틀 준비 완료!");
 
         ShowBattleStart();
+
+        monster.PlayStartAnimation();
 
         StartCoroutine(BattleSequence());
     }
@@ -143,32 +152,11 @@ public class BattleManager : MonoBehaviour
 
         SetButtonsInteractable(false);
 
-        float skillDamage = dragonAttackSkill.SKILL_POWER;
-        float damage = PlayerAttack(skillDamage);
-
-        float finalDamage = damage / monster.defense;
-        finalDamage = Mathf.Max(1, finalDamage);
-
-        monster.stamina -= finalDamage;
-        monster.stamina = Mathf.Max(0, monster.stamina);
-
-        ShowMonsterDamage(Mathf.RoundToInt(finalDamage));
-
-        string dragonName = DataTableManger.StringTable.Get(playerDragon.currentTableData.DRAGON_NAME);
+        StartCoroutine(ApplyDamageDelayed(attackDelay));
 
         GameManager.Instance.dragonHealth.GetComponent<DragonBehavior>().PlayAttackAnimation();
+
         Debug.Log("플레이어택애니메이션 실행해야함");
-
-        UpdateUI();
-
-        if (monster.stamina <= 0)
-        {
-            StartCoroutine(BattleEnd(true));
-        }
-        else
-        {
-            StartCoroutine(EnemyTurn());
-        }
     }
 
     public void OnPlayerSkill()
@@ -177,31 +165,11 @@ public class BattleManager : MonoBehaviour
 
         SetButtonsInteractable(false);
 
-        float skillDamage = dragonSpecialSkill.SKILL_POWER;
-        float damage = PlayerAttack(skillDamage);
-
-        float finalDamage = damage / monster.defense;
-        finalDamage = Mathf.Max(0, finalDamage);
-
-        monster.stamina -= finalDamage;
-
-        ShowMonsterDamage(Mathf.RoundToInt(finalDamage));
-
-        skillCooldown = dragonSpecialSkill.SKILL_CD;
+        StartCoroutine(ApplySkillDamageDelayed(attackDelay));
 
         GameManager.Instance.dragonHealth.GetComponent<DragonBehavior>().PlaySkillAnimation();
+
         Debug.Log("플레이스킬애니메이션 실행해야함");
-
-        UpdateUI();
-
-        if (monster.stamina <= 0)
-        {
-            StartCoroutine(BattleEnd(true));
-        }
-        else
-        {
-            StartCoroutine(EnemyTurn());
-        }
     }
 
     private IEnumerator EnemyTurn()
@@ -211,46 +179,28 @@ public class BattleManager : MonoBehaviour
         currentState = BattleState.EnemyTurn;
         yield return new WaitForSeconds(2f);
 
-        // 적 스킬 쿨타임 감소
         if (enemySkillCooldown > 0)
             enemySkillCooldown--;
 
-        // 스킬 선택 (쿨타임 고려)
         SkillTableData chosenSkill;
         bool useSpecialSkill = Random.Range(0f, 1f) > 0.7f && enemySkillCooldown <= 0;
 
         if (useSpecialSkill)
         {
             chosenSkill = enemySpecialSkill;
-            enemySkillCooldown = enemySpecialSkill.SKILL_CD; // 스킬 사용 시 쿨타임 적용
+            enemySkillCooldown = enemySpecialSkill.SKILL_CD;
+
+            monster.PlaySkillAnimation();
+
+            StartCoroutine(ApplyEnemySkillDamageDelayed(attackDelay));
         }
         else
         {
             chosenSkill = enemyAttackSkill;
-        }
 
-        float baseDamage = chosenSkill.SKILL_POWER;
-        float damage = MonsterAttack(baseDamage);
+            monster.PlayAttackAnimation();
 
-        float finalDamage = damage / PlayerDefense();
-        finalDamage = Mathf.Max(1, finalDamage);
-
-        playerDragon.stats.ChangeStat(StatType.Stamina, -finalDamage);
-
-        ShowPlayerDamage(Mathf.RoundToInt(finalDamage));
-
-        UpdateUI();
-
-        yield return new WaitForSeconds(2f);
-
-        if (playerDragon.stats.stamina <= 0)
-        {
-            StartCoroutine(BattleEnd(false));
-        }
-        else
-        {
-            currentState = BattleState.PlayerTurn;
-            PlayerTurn();
+            StartCoroutine(ApplyEnemyAttackDamageDelayed(attackDelay));
         }
     }
 
@@ -278,31 +228,32 @@ public class BattleManager : MonoBehaviour
                 break;
             }
 
-
+            monster.PlayDieAnimation();
             GameManager.Instance.playerManager.UpdateCoinUI();
             ShowAlarm("승리하였습니다!");
+            yield return new WaitForSeconds(5f);
+            endBattlePanel.SetActive(true);
         }
         else
         {
+            monster.PlayWinAnimation();
             currentState = BattleState.Lost;
             ShowAlarm("패배하였습니다!");
+            yield return new WaitForSeconds(5f);
+            OnClickQuitOut();
         }
-
-        yield return new WaitForSeconds(5f);
-
-        OnClickQuitOut();
     }
 
     private void UpdateUI()
     {
         if (playerDragon != null)
         {
-            playerHPSlider.value = playerDragon.stats.stamina / playerDragon.stats.maxStamina;
+            playerHPSlider.DOValue(playerDragon.stats.stamina / playerDragon.stats.maxStamina, 0.5f);
         }
 
         if (monster != null)
         {
-            enemyHPSlider.value = monster.stamina / monster.maxStamina;
+            enemyHPSlider.DOValue(monster.stamina / monster.maxStamina, 0.5f);
         }
     }
 
@@ -471,6 +422,113 @@ public class BattleManager : MonoBehaviour
 
         DragonDamage.enabled = false;
         showPlayerDamageCoroutine = null;
+    }
+
+    private IEnumerator ApplyDamageDelayed(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float skillDamage = dragonAttackSkill.SKILL_POWER;
+        float damage = PlayerAttack(skillDamage);
+        float finalDamage = damage / monster.defense;
+        finalDamage = Mathf.Max(1, finalDamage);
+
+        monster.stamina -= finalDamage;
+        monster.stamina = Mathf.Max(0, monster.stamina);
+
+ 
+        ShowMonsterDamage(Mathf.RoundToInt(finalDamage));
+        UpdateUI();
+
+        if (monster.stamina <= 0)
+        {
+            StartCoroutine(BattleEnd(true));
+        }
+        else
+        {
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
+    private IEnumerator ApplySkillDamageDelayed(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float skillDamage = dragonSpecialSkill.SKILL_POWER;
+        float damage = PlayerAttack(skillDamage);
+        float finalDamage = damage / monster.defense;
+        finalDamage = Mathf.Max(1, finalDamage);
+
+        monster.stamina -= finalDamage;
+        skillCooldown = dragonSpecialSkill.SKILL_CD;
+
+        ShowMonsterDamage(Mathf.RoundToInt(finalDamage));
+        UpdateUI();
+
+        if (monster.stamina <= 0)
+        {
+            StartCoroutine(BattleEnd(true));
+        }
+        else
+        {
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
+    private IEnumerator ApplyEnemyAttackDamageDelayed(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float baseDamage = enemyAttackSkill.SKILL_POWER;
+        float damage = MonsterAttack(baseDamage);
+        float finalDamage = damage / PlayerDefense();
+        finalDamage = Mathf.Max(1, finalDamage);
+
+        playerDragon.stats.ChangeStat(StatType.Stamina, -finalDamage);
+        ShowPlayerDamage(Mathf.RoundToInt(finalDamage));
+        UpdateUI();
+
+        Handheld.Vibrate();
+
+        yield return new WaitForSeconds(1f);
+
+        if (playerDragon.stats.stamina <= 0)
+        {
+            StartCoroutine(BattleEnd(false));
+        }
+        else
+        {
+            currentState = BattleState.PlayerTurn;
+            PlayerTurn();
+        }
+    }
+
+    private IEnumerator ApplyEnemySkillDamageDelayed(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float baseDamage = enemySpecialSkill.SKILL_POWER;
+        float damage = MonsterAttack(baseDamage);
+        float finalDamage = damage / PlayerDefense();
+        finalDamage = Mathf.Max(1, finalDamage);
+
+        playerDragon.stats.ChangeStat(StatType.Stamina, -finalDamage);
+        ShowPlayerDamage(Mathf.RoundToInt(finalDamage));
+        UpdateUI();
+
+        Handheld.Vibrate();
+
+        yield return new WaitForSeconds(1f);
+
+        if (playerDragon.stats.stamina <= 0)
+        {
+            StartCoroutine(BattleEnd(false));
+        }
+        else
+        {
+            currentState = BattleState.PlayerTurn;
+            PlayerTurn();
+        }
     }
 
 }

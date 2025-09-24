@@ -20,6 +20,7 @@ public static class DataTableIds
     public static readonly string Shop = "ShopTable";
     public static readonly string Monster = "MonsterTable";
     public static readonly string Skill = "SkillTable";
+    public static readonly string Drop = "DropTable";
 }
 
 
