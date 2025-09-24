@@ -28,7 +28,7 @@ public class DragonStats
     public float maxClean = 100f;
 
     [Header("GrowthSystem")]
-    public float experience = 0;
+    public float experience = 1;
     public float experienceMax = 100;
 
     public void ChangeStat(StatType statType, float amount)

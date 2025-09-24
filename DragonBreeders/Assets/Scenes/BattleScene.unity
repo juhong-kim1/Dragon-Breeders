@@ -5265,13 +5265,37 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 875073071404757921, guid: b19e63ffa2bd4f06a137cd7dd4b83a15, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 746744326}
   m_SourcePrefab: {fileID: 100100000, guid: b19e63ffa2bd4f06a137cd7dd4b83a15, type: 3}
 --- !u!4 &746744324 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 535702951195797787, guid: b19e63ffa2bd4f06a137cd7dd4b83a15, type: 3}
   m_PrefabInstance: {fileID: 746744323}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &746744325 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 875073071404757921, guid: b19e63ffa2bd4f06a137cd7dd4b83a15, type: 3}
+  m_PrefabInstance: {fileID: 746744323}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &746744326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746744325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51820737f7bb8e34084aabe8a0b8bbad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stamina: 0
+  attack: 0
+  defense: 0
+  monsterType: 90101
 --- !u!1001 &752851894
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11892,6 +11916,7 @@ MonoBehaviour:
   playerHPSlider: {fileID: 1936760189}
   enemyHPSlider: {fileID: 664992901}
   currentState: 0
+  monster: {fileID: 746744326}
 --- !u!4 &1826588933
 Transform:
   m_ObjectHideFlags: 0

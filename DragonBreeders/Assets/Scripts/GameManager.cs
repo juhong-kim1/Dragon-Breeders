@@ -15,6 +15,7 @@ public enum TrainingPlace
 
 public enum Difficulty
 { 
+    None = 0,
     Low,
     Medium,
     High,

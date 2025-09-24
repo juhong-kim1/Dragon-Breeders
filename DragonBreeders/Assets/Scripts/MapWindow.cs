@@ -22,7 +22,6 @@ public class MapWindow : GenericWindow
     public GameObject eggVaultWindowObject;
     public GameObject mainWindowObject;
     public TutorialManager tutorialManager;
-    public GameManager gameManager;
 
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject statPanel;
@@ -57,7 +56,9 @@ public class MapWindow : GenericWindow
 
         for (int i = 0; i < difficultyButtons.Length; ++i)
         {
-            difficultyButtons[i].onClick.AddListener(() => ToggleDifficulty());
+            int index = i;
+
+            difficultyButtons[i].onClick.AddListener(() => ToggleDifficulty(index));
         }
 
         for (int i = 0; i < xButtons.Length; ++i)
@@ -76,14 +77,14 @@ public class MapWindow : GenericWindow
     public void OnClickStart()
     {
         manager.Open(Windows.Start);
-        gameManager.alarmPanel.gameObject.SetActive(false);
+        GameManager.Instance.alarmPanel.gameObject.SetActive(false);
     }
 
     public void OnClickBack()
     {
         manager.Open(Windows.Game);
 
-        if (tutorialManager != null && gameManager.dragonHealth != null)
+        if (tutorialManager != null && GameManager.Instance.dragonHealth != null)
             tutorialManager.OnWindowOpened(mainWindowObject);
     }
 
@@ -97,7 +98,7 @@ public class MapWindow : GenericWindow
 
     public void OnClickTrainingStart()
     {
-        gameManager.MoveBattleScene();
+        GameManager.Instance.MoveBattleScene();
     }
 
     private void ToggleMenu()
@@ -127,13 +128,16 @@ public class MapWindow : GenericWindow
 
     private void ToggleLocation(int index)
     {
+        GameManager.Instance.TrainingPlace = (TrainingPlace)index + 1;
         locationIndex = index;
         difficultyPanel.SetActive(true);
         difficultyPanelImage.color = locationColors[index];
     }
 
-    private void ToggleDifficulty()
+    private void ToggleDifficulty(int index)
     {
+        GameManager.Instance.Difficulty = (Difficulty)index + 1;
+
         trainingStartPanel.SetActive(true);
         trainingStartPanelImage.color = locationColors[locationIndex];
     }
