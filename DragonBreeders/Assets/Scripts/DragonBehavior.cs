@@ -26,6 +26,8 @@ public class DragonBehavior : MonoBehaviour
     public static readonly string skill1 = "Skill1";
     public static readonly string skill2 = "Skill2";
 
+    public static readonly string recover = "Recover";
+
 
     public TextMeshProUGUI dragonFeedback;
     public string[] touchMessage = { "±×¸£¸ª", "¸Û¸Û", "²¿¸£¸¤", "³¢À×", "¾È³çÇÏ¼¼¿ä µå·¡°ïÀÔ´Ï´Ù", "ÄÝ·Ï", "¢½" };
@@ -131,5 +133,10 @@ public class DragonBehavior : MonoBehaviour
     public void PlaySkillAnimation()
     {
         animator.SetTrigger(skill2);
+    }
+
+    public void PlayRecoverAnimation()
+    {
+        animator.SetTrigger(recover);
     }
 }

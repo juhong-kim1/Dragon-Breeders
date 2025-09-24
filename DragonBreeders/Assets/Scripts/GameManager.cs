@@ -386,7 +386,6 @@ public class GameManager : MonoBehaviour
         dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
         dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
 
-        // 경험치 추가
         dragonHealth.GainExperience(data.EXPGROWTH);
 
         alarmText.text = "놀아주기 완료, 친밀도 10% 증가";
@@ -792,5 +791,14 @@ public class GameManager : MonoBehaviour
         directionalLight.gameObject.SetActive(!directionalLight.gameObject.activeSelf);
         light1.gameObject.SetActive(!light1.gameObject.activeSelf);
         light2.gameObject.SetActive(!light2.gameObject.activeSelf);
+    }
+
+    public void FullStaminaCheat()
+    {
+        float staminaToAdd = dragonHealth.stats.maxStamina - dragonHealth.stats.stamina;
+        dragonHealth.stats.ChangeStat(StatType.Stamina, staminaToAdd);
+        dragonHealth.GetComponent<DragonBehavior>().PlayRecoverAnimation();
+
+        dragonHealth.status.RemoveStatus(StatusType.PassOut);
     }
 }

@@ -80,6 +80,10 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField] private int rewardItemCount = 3;
 
+    public InventorySlot[] rewardSlots = new InventorySlot[3];
+
+    public Slider experienceSlider;
+
     private void Start()
     {
         stopButton.onClick.AddListener(() => ToggleStopButton());
@@ -233,6 +237,8 @@ public class BattleManager : MonoBehaviour
         {
             currentState = BattleState.Won;
 
+            DisplayExperience();
+
             var Nuture = DataTableManger.NurtureTable;
 
             switch (Difficulty)
@@ -254,12 +260,15 @@ public class BattleManager : MonoBehaviour
             List<RewardItem> rewards = GenerateBattleRewards();
             GiveBattleRewards(rewards);
             ShowRewardMessage(rewards);
-
+            GetCoin();
             monster.PlayDieAnimation();
             GameManager.Instance.playerManager.UpdateCoinUI();
             ShowAlarm("승리하였습니다!");
             yield return new WaitForSeconds(5f);
             endBattlePanel.SetActive(true);
+
+            DisplayRewards(rewards);
+            StartCoroutine(AnimateExperienceGain());
         }
         else
         {
@@ -375,11 +384,20 @@ public class BattleManager : MonoBehaviour
 
         foreach (var reward in rewards)
         {
-            GameManager.Instance.inventoryManager.AddItem(reward.itemId, reward.quantity);
+
+            if (IsEggItem(reward.itemId))
+            {
+                AddEggToVault(reward);
+            }
+            else
+            {
+                GameManager.Instance.inventoryManager.AddItem(reward.itemId, reward.quantity);
+            }
+
             Debug.Log($"플레이어가 {reward}를 획득했습니다!");
         }
 
-        Debug.Log($"총 {rewards.Count}개의 보상 아이템이 인벤토리에 추가되었습니다.");
+        Debug.Log($"총 {rewards.Count}개의 보상 아이템이 처리되었습니다.");
     }
 
     private void ShowRewardMessage(List<RewardItem> rewards)
@@ -679,6 +697,183 @@ public class BattleManager : MonoBehaviour
         {
             currentState = BattleState.PlayerTurn;
             PlayerTurn();
+        }
+    }
+
+    private void DisplayRewards(List<RewardItem> rewards)
+    {
+        for (int i = 0; i < rewardSlots.Length; i++)
+        {
+            if (rewardSlots[i] != null)
+            {
+                rewardSlots[i].ClearSlot();
+            }
+        }
+
+        for (int i = 0; i < rewards.Count && i < rewardSlots.Length; i++)
+        {
+            if (rewardSlots[i] != null && rewards[i].itemData != null)
+            {
+                IItem itemData = ConvertToIItem(rewards[i]);
+
+                if (itemData != null)
+                {
+                    rewardSlots[i].SetItem(itemData, rewards[i].quantity);
+                }
+                else
+                {
+                    Debug.LogError($"아이템 변환 실패: ID {rewards[i].itemId}");
+                }
+            }
+        }
+
+        Debug.Log($"보상 슬롯에 {rewards.Count}개 아이템 표시 완료");
+    }
+
+    private IItem ConvertToIItem(RewardItem reward)
+    {
+        if (reward.itemData == null) return null;
+
+        return new Item
+        {
+            itemID = reward.itemData.ITEM_ID,
+            itemName = reward.itemData.StringName,
+            itemType = reward.itemData.ITEM_TYPE,
+            icon = reward.itemData.SpriteIcon,
+            description = reward.itemData.StringDescription
+        };
+    }
+
+    private void GetCoin()
+    {
+        var coin = DataTableManger.DropTable.Get(7025001);
+
+        float random = Random.Range(0f, 100f);
+
+        if (random <= coin.DROP_RATE)
+        {
+            int randomCoin = Random.Range(coin.MINDROP, coin.MAXDROP + 1);
+
+            GameManager.Instance.playerManager.coin += randomCoin;
+            GameManager.Instance.playerManager.UpdateCoinUI();
+            ShowAlarm($"코인 {randomCoin} 획득!");
+        }
+        else
+        {
+            ShowAlarm("코인 어디갔어?!");
+        }
+    }
+
+    private void DisplayExperience()
+    {
+        if (experienceSlider == null || playerDragon == null) return;
+
+        float currentExp = playerDragon.stats.experience;
+        float maxExp = playerDragon.stats.experienceMax;
+
+
+        experienceSlider.value = currentExp / maxExp;
+    }
+
+    private IEnumerator AnimateExperienceGain()
+    {
+        if (experienceSlider == null || playerDragon == null) yield break;
+
+        float currentExp = playerDragon.stats.experience;
+        float maxExp = playerDragon.stats.experienceMax;
+
+        var nurtureData = DataTableManger.NurtureTable;
+        float expToGain = 0f;
+
+        switch (Difficulty)
+        {
+            case Difficulty.Low:
+                expToGain = nurtureData.Get(4000501).EXPGROWTH;
+                break;
+            case Difficulty.Medium:
+                expToGain = nurtureData.Get(4000502).EXPGROWTH;
+                break;
+            case Difficulty.High:
+                expToGain = nurtureData.Get(4000503).EXPGROWTH;
+                break;
+        }
+
+        float startValue = currentExp / maxExp;
+
+        float finalExp = playerDragon.stats.experience;
+        float finalValue = finalExp / maxExp;
+
+        experienceSlider.DOValue(finalValue, 2f).SetEase(Ease.OutQuart);
+
+        Debug.Log($"경험치 애니메이션: {currentExp} → {finalExp} (획득: {expToGain})");
+    }
+
+    private bool IsEggItem(int itemId)
+    {
+        return itemId == 6010201 || itemId == 6010202 || itemId == 6010203 || itemId == 6010204;
+    }
+
+    private void AddEggToVault(RewardItem reward)
+    {
+        if (GameManager.Instance?.vault == null)
+        {
+            Debug.LogError("EggVault를 찾을 수 없습니다!");
+            return;
+        }
+
+        Egg newEgg = CreateEggFromItemId(reward.itemId);
+
+        if (newEgg != null)
+        {
+            for (int i = 0; i < reward.quantity; i++)
+            {
+                GameManager.Instance.vault.AddEgg(newEgg);
+            }
+            Debug.Log($"알 부화소에 {newEgg.eggName} x{reward.quantity} 추가됨");
+        }
+    }
+
+    private Egg CreateEggFromItemId(int itemId)
+    {
+        if (GameManager.Instance == null) return null;
+
+        switch (itemId)
+        {
+            case 6010201:
+                return new Egg
+                {
+                    eggName = "Mystery Egg 1",
+                    icon = GameManager.Instance.icon[0],
+                    dragonPrefab = GameManager.Instance.dragonPrefabs[Random.Range(0, 4)]
+                };
+
+            case 6010202:
+                return new Egg
+                {
+                    eggName = "Mystery Egg 2",
+                    icon = GameManager.Instance.icon[1],
+                    dragonPrefab = GameManager.Instance.dragonPrefabs[Random.Range(4, 8)]
+                };
+
+            case 6010203:
+                return new Egg
+                {
+                    eggName = "Mystery Egg 3",
+                    icon = GameManager.Instance.icon[2],
+                    dragonPrefab = GameManager.Instance.dragonPrefabs[Random.Range(8, 12)]
+                };
+
+            case 6010204:
+                return new Egg
+                {
+                    eggName = "Mystery Egg 4",
+                    icon = GameManager.Instance.icon[3],
+                    dragonPrefab = GameManager.Instance.dragonPrefabs[Random.Range(12, 16)]
+                };
+
+            default:
+                Debug.LogError($"알려지지 않은 알 아이템 ID: {itemId}");
+                return null;
         }
     }
 
