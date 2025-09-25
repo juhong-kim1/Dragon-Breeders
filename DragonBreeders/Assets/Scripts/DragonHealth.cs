@@ -184,6 +184,8 @@ public class DragonHealth : MonoBehaviour
 
         hasTriggerPassOut = true;
         status.AddStatus(StatusType.PassOut);
+        stats.ChangeStat(StatType.Fatigue, -50f);
+        AlarmManager.Instance.ShowAlarm("드래곤이 의식을 잃었어요!");
         animator.SetTrigger(isPassOutTrigger);
     }
 

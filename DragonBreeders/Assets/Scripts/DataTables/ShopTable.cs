@@ -4,13 +4,13 @@ using UnityEngine;
 public class ShopTableData
 {
     public int SHOP_ID { get; set; }
-    public int ITEM_ID { get; set; }
+    public int ITEM_ID_SHOP { get; set; }
     public int SHOP_TYPE { get; set; }
     public int PRICE { get; set; }
     public int UNLOCK_TYPE { get; set; }
     public int ORDER { get; set; }
 
-    public override string ToString() => $"{SHOP_ID} / {ITEM_ID} / {PRICE}";
+    public override string ToString() => $"{SHOP_ID} / {ITEM_ID_SHOP} / {PRICE}";
 }
 
 public class ShopTable : DataTable
@@ -31,9 +31,9 @@ public class ShopTable : DataTable
         var list = LoadCSV<ShopTableData>(textAsset.text);
         foreach (var item in list)
         {
-            if (!table.ContainsKey(item.ITEM_ID))
+            if (!table.ContainsKey(item.ITEM_ID_SHOP))
             {
-                table.Add(item.ITEM_ID, item);
+                table.Add(item.ITEM_ID_SHOP, item);
             }
             else
             {

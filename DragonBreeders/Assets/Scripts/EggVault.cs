@@ -17,6 +17,27 @@ public class EggVault : MonoBehaviour
         }
         Debug.Log("보관소가 가득 찼습니다!");
     }
+
+    public bool IsEmpty()
+    {
+        foreach (var slot in slots)
+        {
+            if (slot != null && !slot.IsEmpty())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void AddRandomEggIfEmpty()
+    {
+        if (IsEmpty())
+        {
+            GameManager.Instance.OnClickEggCheat();
+            Debug.Log("보관소가 비어서 랜덤 알 추가됨");
+        }
+    }
 }
 
 

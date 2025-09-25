@@ -5,7 +5,7 @@ using UnityEngine;
 public class DropTableData
 {
     public int DROP_ID { get; set; }
-    public int ITEM_ID { get; set; }
+    public int ITEM_ID_DROP { get; set; }
     public string DROP_BIOME { get; set; }
     public int DROP_RATE { get; set; }
     public int MINDROP { get; set; }
@@ -29,7 +29,7 @@ public class DropTableData
 
     public override string ToString()
     {
-        return $"DROP_ID: {DROP_ID}, ITEM_ID: {ITEM_ID}, DROP_BIOME: {DROP_BIOME}, DROP_RATE: {DROP_RATE}%";
+        return $"DROP_ID: {DROP_ID}, ITEM_ID: {ITEM_ID_DROP}, DROP_BIOME: {DROP_BIOME}, DROP_RATE: {DROP_RATE}%";
     }
 }
 
@@ -80,7 +80,7 @@ public class DropTable : DataTable
 
     public List<DropTableData> GetDropsByBiome(int biome)
     {
-        return table.Values.Where(drop => drop.CanDropInBiome(biome) && !IsCoin(drop.ITEM_ID)).ToList();
+        return table.Values.Where(drop => drop.CanDropInBiome(biome) && !IsCoin(drop.ITEM_ID_DROP)).ToList();
     }
 
     private bool IsCoin(int itemId)

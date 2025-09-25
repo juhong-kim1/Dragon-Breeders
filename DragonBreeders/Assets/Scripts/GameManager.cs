@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public enum TrainingPlace
 { 
@@ -125,6 +126,8 @@ public class GameManager : MonoBehaviour
 
     public bool isFeeding = false;
     public bool isPlaying = false;
+
+    private int releaseToCoin = 3000;
 
     public void Awake()
     {
@@ -315,6 +318,24 @@ public class GameManager : MonoBehaviour
 
     public void GetFeed()
     {
+        if (dragonHealth == null)
+        {
+            AlarmManager.Instance.ShowAlarm("밥 먹일 드래곤이 없어요!");
+            return;
+        }
+
+        if (dragonHealth.isPassOut)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤이 죽기직전인가봐요!");
+            return;
+        }
+
+        if (!canFeed)
+        {
+            AlarmManager.Instance.ShowAlarm("방금 밥먹었어요!");
+            return;
+        }
+
         isFeeding = true;
 
         inventoryManager.RefreshFoodUI();
@@ -355,25 +376,49 @@ public class GameManager : MonoBehaviour
         AlarmManager.Instance.ShowAlarm("3차빌드 때 구현 하겠습니다");
         return;
 
-        if (dragonHealth.isPassOut) return;
-        if (!canBath) { Debug.Log("목욕 쿨 진행 중"); return; }
+        //if (dragonHealth.isPassOut) return;
+        //if (!canBath) { Debug.Log("목욕 쿨 진행 중"); return; }
 
-        var data = DataTableManger.NurtureTable.Get(4040201);
-        if (data == null) return;
+        //var data = DataTableManger.NurtureTable.Get(4040201);
+        //if (data == null) return;
 
-        int cleanRecovery = (int)(dragonHealth.stats.maxClean * data.REC_PERCENT / 100);
-        dragonHealth.stats.ChangeStat(StatType.Clean, cleanRecovery);
+        //int cleanRecovery = (int)(dragonHealth.stats.maxClean * data.REC_PERCENT / 100);
+        //dragonHealth.stats.ChangeStat(StatType.Clean, cleanRecovery);
 
-        dragonHealth.GainExperience(data.EXPGROWTH);
+        //dragonHealth.GainExperience(data.EXPGROWTH);
 
-        alarmText.text = "목욕 완료, 청결도 30% 회복";
+        //alarmText.text = "목욕 완료, 청결도 30% 회복";
 
-        canBath = false;
-        bathTimer = 0f;
+        //canBath = false;
+        //bathTimer = 0f;
     }
 
     public void GetPlay()
     {
+        if (dragonHealth == null)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤이랑 같이 노는게 좋지 않을까요?!");
+            return;
+        }
+
+        if (dragonHealth.isPassOut)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤이 KO 상태네요!");
+            return;
+        }
+
+        if (dragonHealth.stats.FullFatigue())
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤이 과로했습니다..");
+        }
+
+        if (!canPlay)
+        {
+            AlarmManager.Instance.ShowAlarm("아직 놀 수 없어요!");
+            return;
+        }
+
+
         isPlaying = true;
 
         inventoryManager.RefreshPlayUI();
@@ -767,7 +812,15 @@ public class GameManager : MonoBehaviour
         isDragonReleased = true;
 
         releaseButton.gameObject.SetActive(false);
+
+        playerManager.coin += releaseToCoin;
+
+        playerManager.UpdateCoinUI();
+
+        AlarmManager.Instance.ShowAlarm("잘가 드래곤~");
         Debug.Log("드래곤을 방생했습니다!");
+
+        vault.AddRandomEggIfEmpty();
     }
 
     private void GrowUpEffect()
@@ -824,18 +877,6 @@ public class GameManager : MonoBehaviour
 
     public void UseFoodItem(int itemId, int amount = 1)
     {
-        if (dragonHealth.isPassOut)
-        {
-            AlarmManager.Instance.ShowAlarm("드래곤이 죽기직전인가봐요!");
-            return;
-        }
-
-        if (!canFeed)
-        {
-            AlarmManager.Instance.ShowAlarm("방금 밥먹었어요!");
-            return;
-        }
-
         if (!inventoryManager.HasItem(itemId, amount))
         {
             AlarmManager.Instance.ShowAlarm("아이템이 부족합니다!");
@@ -875,23 +916,6 @@ public class GameManager : MonoBehaviour
 
     public void UsePlayItem(int itemId, int amount = 1)
     {
-        if (dragonHealth.isPassOut)
-        {
-            AlarmManager.Instance.ShowAlarm("드래곤이 KO 상태네요!");
-            return;
-        }
-
-        if (dragonHealth.stats.FullFatigue())
-        {
-            AlarmManager.Instance.ShowAlarm("드래곤이 과로했습니다..");
-        }
-
-        if (!canPlay)
-        {
-            AlarmManager.Instance.ShowAlarm("아직 놀 수 없어요!");
-            return;
-        }
-
         if (!inventoryManager.HasItem(itemId, amount))
         {
             AlarmManager.Instance.ShowAlarm("아이템이 부족합니다!");
@@ -929,5 +953,10 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log($"{itemName} 사용 완료 - 친밀도 {increaseIntimacy} 증가");
+    }
+
+    public void OnClickCollection()
+    {
+        AlarmManager.Instance.ShowAlarm("3차 빌드에서 구현 예정입니다.");
     }
 }

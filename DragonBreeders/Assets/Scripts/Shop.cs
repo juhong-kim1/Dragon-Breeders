@@ -28,7 +28,7 @@ public class Shop : MonoBehaviour
             }
 
             var shopData = randomItems[i];
-            var runtimeItem = CreateRuntimeItem(shopData.ITEM_ID, shopData.PRICE);
+            var runtimeItem = CreateRuntimeItem(shopData.ITEM_ID_SHOP, shopData.PRICE);
             shopSlots[i].SetItem(runtimeItem, shopData.PRICE);
         }
     }

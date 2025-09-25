@@ -171,7 +171,7 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         if (!GameManager.Instance.canPlay)
         {
-            GameManager.Instance.alarmText.text = "놀아주기 쿨타임 중입니다.";
+            AlarmManager.Instance.ShowAlarm("방금 놀아서 힘들어요!");
             CancelPlay();
             return;
         }

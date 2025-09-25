@@ -12,6 +12,11 @@ public class InventoryManager : MonoBehaviour
 
     private Dictionary<int, int> items = new Dictionary<int, int>();
 
+    private void Start()
+    {
+        AddDefaultItems();
+    }
+
     public void AddItem(int itemID, int amount = 1)
     {
         if (items.ContainsKey(itemID))
@@ -33,6 +38,8 @@ public class InventoryManager : MonoBehaviour
 
     public void RemoveItem(int itemID, int amount = 1)
     {
+        if (items.ContainsKey(5040001) || items.ContainsKey(5050001) || items.ContainsKey(5090001)) return;
+
         if (items.ContainsKey(itemID))
         {
             items[itemID] -= amount;
@@ -113,5 +120,13 @@ public class InventoryManager : MonoBehaviour
     public void TestClearInventory()
     {
         ClearInventory();
+    }
+
+    public void AddDefaultItems()
+    {
+        AddItem(5020201, 5);
+        AddItem(5040001, 99);
+        AddItem(5060001, 99);
+        AddItem(5050001, 99);
     }
 }

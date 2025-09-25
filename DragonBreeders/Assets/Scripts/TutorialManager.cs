@@ -3,6 +3,8 @@ using TMPro;
 
 public class TutorialManager : MonoBehaviour
 {
+    public TutorialManager Instance;
+
     public GameObject tutorialPanel;
     public TextMeshProUGUI tutorialText;
 
@@ -17,6 +19,19 @@ public class TutorialManager : MonoBehaviour
     private int currentStep = 0;
     private bool tutorialActive = false;
     private bool isTutorialClear = false;
+
+    public void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -98,10 +113,12 @@ public class TutorialManager : MonoBehaviour
 
     private void ShowStep(int step)
     {
+        var text = DataTableManger.StringTable;
+
         switch (step)
         {
             case 1:
-                tutorialText.text = "드래곤을 키우려면 먼저 알을 부화시켜야합니다. 먼저 지도 버튼을 눌러 지도로 이동하세요";
+                tutorialText.text = text.Get("TUTORIAL1");
                 break;
             case 2:
                 tutorialText.text = "지도로 왔습니다. 알보관소로 가서 알을 확인하세요.";

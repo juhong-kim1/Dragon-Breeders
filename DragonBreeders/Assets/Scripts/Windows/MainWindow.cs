@@ -84,6 +84,7 @@ public class MainWindow : GenericWindow
     private void ToggleFeed()
     { 
         feedPanel.SetActive(!feedPanel.activeSelf);
+        ClosePlay();
 
         if (feedPanel.activeSelf)
         {
@@ -103,6 +104,7 @@ public class MainWindow : GenericWindow
     public void TogglePlay()
     { 
         playPanel.SetActive(!playPanel.activeSelf);
+        CloseFeed();
 
         if (playPanel.activeSelf)
         { 

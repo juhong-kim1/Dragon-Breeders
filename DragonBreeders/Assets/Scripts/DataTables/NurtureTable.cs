@@ -8,7 +8,7 @@ public class NurtureTableData
     public int DEPLETE_FOOD { get; set; }
     public int DEPLETE_HYG { get; set; }
     public int RECEIVE_FTG { get; set; }
-    public int REC_TYPE { get; set; }
+    public int REC_TYPE_NURTURE { get; set; }
     public int REC_PERCENT { get; set; }
     public int EXPGROWTH { get; set; }
     public int RATE_DISEASE { get; set; }

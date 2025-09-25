@@ -308,10 +308,10 @@ public class BattleManager : MonoBehaviour
 
         foreach (var drop in availableDrops)
         {
-            if (!addedItemIds.Contains(drop.ITEM_ID))
+            if (!addedItemIds.Contains(drop.ITEM_ID_DROP))
             {
                 uniqueItems.Add(drop);
-                addedItemIds.Add(drop.ITEM_ID);
+                addedItemIds.Add(drop.ITEM_ID_DROP);
             }
         }
 
@@ -337,12 +337,12 @@ public class BattleManager : MonoBehaviour
 
             int quantity = Random.Range(selectedDrop.MINDROP, selectedDrop.MAXDROP + 1);
 
-            RewardItem reward = new RewardItem(selectedDrop.ITEM_ID, quantity);
+            RewardItem reward = new RewardItem(selectedDrop.ITEM_ID_DROP, quantity);
             rewards.Add(reward);
 
             Debug.Log($"보상 {i + 1}: {reward}");
 
-            usedItemIds.Add(selectedDrop.ITEM_ID);
+            usedItemIds.Add(selectedDrop.ITEM_ID_DROP);
         }
 
         return rewards;
@@ -371,7 +371,7 @@ public class BattleManager : MonoBehaviour
 
         foreach (var drop in weightedList)
         {
-            if (!usedItemIds.Contains(drop.ITEM_ID))
+            if (!usedItemIds.Contains(drop.ITEM_ID_DROP))
             {
                 availableDrops.Add(drop);
             }

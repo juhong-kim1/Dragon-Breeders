@@ -71,7 +71,8 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (isDragonActive)
         {
             Debug.Log("이미 드래곤을 사육중입니다.");
-            gameManager.alarmText.text = "이미 드래곤을 사육 중입니다.";
+
+            AlarmManager.Instance.ShowAlarm("먼저 만난 친구부터 키워주세요!");
             return;
         }
 
@@ -108,7 +109,7 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 }
             }
 
-            gameManager.alarmText.text = "드래곤 부화 성공!.";
+            AlarmManager.Instance.ShowAlarm("알에서 새 친구가 깨어났어요!");
             isDragonActive = true;
 
             ClearEgg();
