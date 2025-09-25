@@ -84,6 +84,9 @@ public class BattleManager : MonoBehaviour
 
     public Slider experienceSlider;
 
+    private bool firstPlayerTurn = true;
+    private bool secondPlayerTurn = true;
+
     private void Start()
     {
         stopButton.onClick.AddListener(() => ToggleStopButton());
@@ -169,7 +172,8 @@ public class BattleManager : MonoBehaviour
         if (skillCooldown > 0)
             skillCooldown--;
 
-        ShowAlarm("내 차례!");
+            ShowAlarm("내 차례!");
+
         SetButtonsInteractable(true);
     }
 
@@ -278,6 +282,8 @@ public class BattleManager : MonoBehaviour
 
             DisplayRewards(rewards);
             StartCoroutine(AnimateExperienceGain());
+
+            
         }
         else
         {

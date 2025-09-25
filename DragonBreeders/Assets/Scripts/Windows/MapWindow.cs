@@ -99,6 +99,8 @@ public class MapWindow : GenericWindow
     public void OnClickTrainingStart()
     {
         GameManager.Instance.MoveBattleScene();
+
+        TutorialManager.Instance.NextStep();
     }
 
     private void ToggleMenu()
@@ -132,6 +134,8 @@ public class MapWindow : GenericWindow
         locationIndex = index;
         difficultyPanel.SetActive(true);
         difficultyPanelImage.color = locationColors[index];
+
+        TutorialManager.Instance.NextStep();
     }
 
     private void ToggleDifficulty(int index)

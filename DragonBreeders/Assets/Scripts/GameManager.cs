@@ -906,6 +906,8 @@ public class GameManager : MonoBehaviour
         canFeed = false;
         feedTimer = 0f;
 
+        TutorialManager.Instance.NextStep();
+
         if (feedItemImage != null)
         {
             feedItemImage.enabled = false;
@@ -939,7 +941,7 @@ public class GameManager : MonoBehaviour
         dragonHealth.stats.ChangeStat(StatType.Intimacy, (nurtureData.REC_PERCENT * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
         dragonHealth.stats.ChangeStat(StatType.Fatigue, nurtureData.RECEIVE_FTG);
 
-
+        TutorialManager.Instance.NextStep();
 
         string itemName = itemData.StringName;
         AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 친밀도 +{increaseIntimacy}");

@@ -1,12 +1,16 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
-    public TutorialManager Instance;
+    public static TutorialManager Instance;
 
     public GameObject tutorialPanel;
     public TextMeshProUGUI tutorialText;
+
+    public GameObject battleTutorialPanel;
+    public TextMeshProUGUI battleTutorialText;
 
     public GameManager gameManager;
 
@@ -16,8 +20,14 @@ public class TutorialManager : MonoBehaviour
     public GameObject nestWindow;
     public GameObject retryButton;
 
+    public Button NextButton;
+
+    public bool isStatPanelOpen;
+    public bool isFeedPanelOpen;
+    public bool hasDragonEatFood;
+
     private int currentStep = 0;
-    private bool tutorialActive = false;
+    public bool tutorialActive = false;
     private bool isTutorialClear = false;
 
     public void Awake()
@@ -25,6 +35,13 @@ public class TutorialManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+
+            Canvas tutorialCanvas = GetComponentInParent<Canvas>();
+            if (tutorialCanvas != null)
+            {
+                DontDestroyOnLoad(tutorialCanvas.gameObject);
+            }
+
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -37,6 +54,8 @@ public class TutorialManager : MonoBehaviour
     {
         tutorialPanel.SetActive(false);
         isTutorialClear = PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
+
+        NextButton.onClick.AddListener(OnClickNextButton);
     }
     public void OnGameStart()
     {
@@ -81,31 +100,51 @@ public class TutorialManager : MonoBehaviour
         switch (currentStep)
         {
             case 1:
-                if (window == mapWindow)
-                    NextStep();
                 break;
             case 2:
-                if (window == eggVaultWindow)
+                Debug.Log("step 2");
+                if (window == mapWindow)
                     NextStep();
                 break;
             case 3:
-                if(gameManager.dragonHealth != null)
+                Debug.Log("step 3");
+                if (window == eggVaultWindow)
                     NextStep();
                 break;
             case 4:
-                if (window == nestWindow)
-                    NextStep();
+                Debug.Log("step 4");
                 break;
-            case 5:
-                if (window == mapWindow)
+            case 5: // 알 깨기
+                Debug.Log("step 5");
+                if (gameManager.dragonHealth != null)
+                {
+                    GameManager.Instance.dragonHealth.stats.experience += 100f;
                     NextStep();
+                }
                 break;
-            case 6:
+            case 6: // 메인윈도우로 돌아오기
+                Debug.Log("step 6");
                 if (window == mainWindow)
+                {
                     NextStep();
+                }
                 break;
             case 7:
-                if (window == mapWindow)
+                Debug.Log("step 7");
+                break;
+            case 8:
+                Debug.Log("step 8");
+                if (isFeedPanelOpen)
+                    NextStep();
+                break;
+            case 9:
+                Debug.Log("step 9");
+                if (isFeedPanelOpen)
+                    NextStep();
+                break;
+            case 10:
+                Debug.Log("step 10");
+                if (hasDragonEatFood)
                     NextStep();
                 break;
         }
@@ -119,25 +158,79 @@ public class TutorialManager : MonoBehaviour
         {
             case 1:
                 tutorialText.text = text.Get("TUTORIAL1");
+                Debug.Log("step 1");
                 break;
             case 2:
-                tutorialText.text = "지도로 왔습니다. 알보관소로 가서 알을 확인하세요.";
+                tutorialText.text = text.Get("TUTORIAL2");
+                Debug.Log("step 2");
+                NextButton.gameObject.SetActive(false);
                 break;
             case 3:
-                tutorialText.text = "알 이미지를 5초간 눌러 알을 부화시키세요.";
+                tutorialText.text = text.Get("TUTORIAL3");
+                Debug.Log("step 3");
                 break;
             case 4:
-                tutorialText.text = "알 부화에 성공했습니다. 뒤로 이동후 둥지로 돌아가세요";
+                tutorialText.text = text.Get("TUTORIAL4");
+                Debug.Log("step 4");
+                NextButton.gameObject.SetActive(true);
                 break;
             case 5:
-                tutorialText.text = "이제부터 드래곤 육성이 가능합니다. 목욕, 먹이 등의 버튼으로 스탯을 관리할수 있습니다.\n메뉴의 스탯버튼으로 현재 스탯 확인가능하며 도움버튼으로 버튼정보 확인할 수 있습니다.\n 지도로 이동하세요";
+                tutorialText.text = text.Get("TUTORIAL5");
+                Debug.Log("step 5");
+                NextButton.gameObject.SetActive(false);
                 break;
             case 6:
-                tutorialText.text = "탐험으로 랜덤 알을 얻을 수 있으며 첫번째 드래곤을 방생 시킨 후 다른 알을 부화시킬 수 있습니다.\n훈련 버튼으로 훈련이 가능합니다(추후 전투시스템 추가예정입니다).\n둥지로 돌아가세요.";
-                Debug.Log(tutorialText.text);
+                tutorialText.text = text.Get("TUTORIAL6");
+                Debug.Log("step 6");
+                var dragonStat = GameManager.Instance.dragonHealth.stats;
+                if(dragonStat.experience < 100f) GameManager.Instance.dragonHealth.stats.experience = 100f;
+                if (dragonStat.hunger > 90f) GameManager.Instance.dragonHealth.stats.hunger = 90f;
                 break;
             case 7:
-                tutorialText.text = "드래곤이 휴식할때 나머지 스탯을 더하여 경험치를 얻습니다.\n경험치가 쌓일 수록 유아기를 거쳐 성체까지 진화하며, 성체일때 방생하여 명성을 획득합니다.(추후에 시스템 추가 예정입니다.)\n 지도로 이동하면 안내가 종료됩니다.";
+                tutorialText.text = text.Get("TUTORIAL7");
+                Debug.Log("step 7");
+                NextButton.gameObject.SetActive(true);
+                break;
+            case 8:
+                tutorialText.text = text.Get("TUTORIAL8");
+                Debug.Log("step 8");
+                NextButton.gameObject.SetActive(false);
+                break;
+            case 9:
+                tutorialText.text = text.Get("TUTORIAL9");
+                Debug.Log("step 9");
+                break;
+            case 10:
+                tutorialText.text = text.Get("TUTORIAL10");
+                break;
+            case 11:
+                tutorialText.text = text.Get("TUTORIAL11"); //아이템을 사용해서 드래곤과 놀자
+                NextButton.gameObject.SetActive(true);
+                break;
+            case 12:
+                tutorialText.text = text.Get("TUTORIAL12");
+                NextButton.gameObject.SetActive(false);
+                break;
+            case 13:
+                tutorialText.text = text.Get("TUTORIAL13"); // 상점으로 가봐
+                NextButton.gameObject.SetActive(true);
+                break;
+            case 14:
+                tutorialText.text = text.Get("TUTORIAL14"); //감이 좀 잡혔을까?
+                break;
+            case 15:
+                tutorialText.text = text.Get("TUTORIAL15"); //마지막이야 지도로 가서 훈련을 해보자
+                break;
+            case 16:
+                tutorialText.text = text.Get("TUTORIAL16");
+                NextButton.gameObject.SetActive(false); //훈련지역은 5개로 나눠져있어, 맘에드는 지역을 골라봐
+                break;
+            case 17:
+                tutorialText.text = text.Get("TUTORIAL17"); // 하급 훈련부터 해보자
+                break;
+            case 18:
+                tutorialText.text = text.Get("TUTORIAL18");
+                NextButton.gameObject.SetActive(true);// 드래곤이 공격할 차례야 스킬을 써봐
                 break;
         }
     }
@@ -146,7 +239,7 @@ public class TutorialManager : MonoBehaviour
     {
         currentStep++;
 
-        if (currentStep > 7)
+        if (currentStep > 18)
         {
             EndTutorial();
             return;
@@ -166,5 +259,10 @@ public class TutorialManager : MonoBehaviour
     public void TutorialOff()
     { 
         tutorialPanel.SetActive(false);
+    }
+
+    public void OnClickNextButton()
+    {
+        NextStep();
     }
 }
