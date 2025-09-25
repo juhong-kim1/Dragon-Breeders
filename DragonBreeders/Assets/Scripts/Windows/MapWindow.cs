@@ -100,6 +100,7 @@ public class MapWindow : GenericWindow
     {
         GameManager.Instance.MoveBattleScene();
 
+        if(TutorialManager.Instance.currentStep == 17)
         TutorialManager.Instance.NextStep();
     }
 
@@ -135,6 +136,7 @@ public class MapWindow : GenericWindow
         difficultyPanel.SetActive(true);
         difficultyPanelImage.color = locationColors[index];
 
+        if(TutorialManager.Instance.currentStep == 16)
         TutorialManager.Instance.NextStep();
     }
 

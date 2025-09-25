@@ -20,13 +20,15 @@ public class TutorialManager : MonoBehaviour
     public GameObject nestWindow;
     public GameObject retryButton;
 
-    public Button NextButton;
+    public Button nextButton;
+    public Button clearTutorialButton;
+    public Button reTutorialButton;
 
     public bool isStatPanelOpen;
     public bool isFeedPanelOpen;
     public bool hasDragonEatFood;
 
-    private int currentStep = 0;
+    public int currentStep = 0;
     public bool tutorialActive = false;
     private bool isTutorialClear = false;
 
@@ -53,10 +55,14 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         tutorialPanel.SetActive(false);
+        clearTutorialButton.gameObject.SetActive(false);
         isTutorialClear = PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
 
-        NextButton.onClick.AddListener(OnClickNextButton);
+        nextButton.onClick.AddListener(OnClickNextButton);
+        clearTutorialButton.onClick.AddListener(OnClickNextButton);
+        reTutorialButton.onClick.AddListener(OnClickReTutorialButton);
     }
+
     public void OnGameStart()
     {
         if (!tutorialActive && !isTutorialClear)
@@ -163,7 +169,7 @@ public class TutorialManager : MonoBehaviour
             case 2:
                 tutorialText.text = text.Get("TUTORIAL2");
                 Debug.Log("step 2");
-                NextButton.gameObject.SetActive(false);
+                nextButton.gameObject.SetActive(false);
                 break;
             case 3:
                 tutorialText.text = text.Get("TUTORIAL3");
@@ -172,12 +178,12 @@ public class TutorialManager : MonoBehaviour
             case 4:
                 tutorialText.text = text.Get("TUTORIAL4");
                 Debug.Log("step 4");
-                NextButton.gameObject.SetActive(true);
+                nextButton.gameObject.SetActive(true);
                 break;
             case 5:
                 tutorialText.text = text.Get("TUTORIAL5");
                 Debug.Log("step 5");
-                NextButton.gameObject.SetActive(false);
+                nextButton.gameObject.SetActive(false);
                 break;
             case 6:
                 tutorialText.text = text.Get("TUTORIAL6");
@@ -189,12 +195,12 @@ public class TutorialManager : MonoBehaviour
             case 7:
                 tutorialText.text = text.Get("TUTORIAL7");
                 Debug.Log("step 7");
-                NextButton.gameObject.SetActive(true);
+                nextButton.gameObject.SetActive(true);
                 break;
             case 8:
                 tutorialText.text = text.Get("TUTORIAL8");
                 Debug.Log("step 8");
-                NextButton.gameObject.SetActive(false);
+                nextButton.gameObject.SetActive(false);
                 break;
             case 9:
                 tutorialText.text = text.Get("TUTORIAL9");
@@ -205,15 +211,15 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 11:
                 tutorialText.text = text.Get("TUTORIAL11"); //아이템을 사용해서 드래곤과 놀자
-                NextButton.gameObject.SetActive(true);
+                nextButton.gameObject.SetActive(true);
                 break;
             case 12:
                 tutorialText.text = text.Get("TUTORIAL12");
-                NextButton.gameObject.SetActive(false);
+                nextButton.gameObject.SetActive(false);
                 break;
             case 13:
                 tutorialText.text = text.Get("TUTORIAL13"); // 상점으로 가봐
-                NextButton.gameObject.SetActive(true);
+                nextButton.gameObject.SetActive(true);
                 break;
             case 14:
                 tutorialText.text = text.Get("TUTORIAL14"); //감이 좀 잡혔을까?
@@ -223,14 +229,14 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 16:
                 tutorialText.text = text.Get("TUTORIAL16");
-                NextButton.gameObject.SetActive(false); //훈련지역은 5개로 나눠져있어, 맘에드는 지역을 골라봐
+                nextButton.gameObject.SetActive(false); //훈련지역은 5개로 나눠져있어, 맘에드는 지역을 골라봐
                 break;
             case 17:
                 tutorialText.text = text.Get("TUTORIAL17"); // 하급 훈련부터 해보자
                 break;
             case 18:
                 tutorialText.text = text.Get("TUTORIAL18");
-                NextButton.gameObject.SetActive(true);// 드래곤이 공격할 차례야 스킬을 써봐
+                clearTutorialButton.gameObject.SetActive(true);// 드래곤이 공격할 차례야 스킬을 써봐
                 break;
         }
     }
@@ -252,17 +258,37 @@ public class TutorialManager : MonoBehaviour
     {
         tutorialActive = false;
         isTutorialClear = true;
+        PlayerPrefs.SetInt("TutorialCompleted", 1);
         tutorialPanel.SetActive(false);
         Debug.Log("튜토리얼 완료");
     }
 
     public void TutorialOff()
-    { 
+    {
+        tutorialActive = false;
         tutorialPanel.SetActive(false);
+
+        nextButton.gameObject.SetActive(true);
+        clearTutorialButton.gameObject.SetActive(false);
     }
 
-    public void OnClickNextButton()
+    private void OnClickNextButton()
     {
         NextStep();
+    }
+
+    private void OnClickReTutorialButton()
+    {
+        if (tutorialActive) return;
+
+        tutorialActive=true;
+        isTutorialClear=false;
+
+        PlayerPrefs.SetInt("TutorialCompleted", 0);
+        PlayerPrefs.Save();
+
+        tutorialPanel.SetActive(true);
+        currentStep = 1;
+        ShowStep(currentStep);
     }
 }

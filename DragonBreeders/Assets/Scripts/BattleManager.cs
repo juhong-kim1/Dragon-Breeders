@@ -84,9 +84,6 @@ public class BattleManager : MonoBehaviour
 
     public Slider experienceSlider;
 
-    private bool firstPlayerTurn = true;
-    private bool secondPlayerTurn = true;
-
     private void Start()
     {
         stopButton.onClick.AddListener(() => ToggleStopButton());
@@ -273,13 +270,13 @@ public class BattleManager : MonoBehaviour
             List<RewardItem> rewards = GenerateBattleRewards();
             GiveBattleRewards(rewards);
             ShowRewardMessage(rewards);
-            GetCoin();
             monster.PlayDieAnimation();
             GameManager.Instance.playerManager.UpdateCoinUI();
             ShowAlarm("승리하였습니다!");
             yield return new WaitForSeconds(5f);
             endBattlePanel.SetActive(true);
 
+            GetCoin();
             DisplayRewards(rewards);
             StartCoroutine(AnimateExperienceGain());
 
@@ -424,7 +421,7 @@ public class BattleManager : MonoBehaviour
             rewardText += $"• {itemName} x{reward.quantity}\n";
         }
 
-        ShowAlarm(rewardText);
+        //ShowAlarm(rewardText);
         Debug.Log(rewardText);
     }
 

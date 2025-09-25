@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public enum TrainingPlace
 { 
@@ -906,6 +905,7 @@ public class GameManager : MonoBehaviour
         canFeed = false;
         feedTimer = 0f;
 
+        if(TutorialManager.Instance.currentStep == 10)
         TutorialManager.Instance.NextStep();
 
         if (feedItemImage != null)
@@ -941,6 +941,7 @@ public class GameManager : MonoBehaviour
         dragonHealth.stats.ChangeStat(StatType.Intimacy, (nurtureData.REC_PERCENT * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
         dragonHealth.stats.ChangeStat(StatType.Fatigue, nurtureData.RECEIVE_FTG);
 
+        if(TutorialManager.Instance.currentStep == 12)
         TutorialManager.Instance.NextStep();
 
         string itemName = itemData.StringName;

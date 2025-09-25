@@ -63,8 +63,8 @@ public class MainWindow : GenericWindow
     private void ToggleStat()
     {
         statPanel.SetActive(!statPanel.activeSelf);
-        if (tutorialManager != null)
-            tutorialManager.NextStep();
+        if (TutorialManager.Instance.currentStep == 8)
+            TutorialManager.Instance.NextStep();
     }
 
     private void ToggleHelp()
@@ -87,6 +87,7 @@ public class MainWindow : GenericWindow
     { 
         feedPanel.SetActive(!feedPanel.activeSelf);
         
+        if(TutorialManager.Instance.currentStep == 9)
         TutorialManager.Instance.NextStep();
 
         ClosePlay();

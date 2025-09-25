@@ -42,7 +42,7 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 isPressing = false;
                 ResetProgress();
 
-                if (tutorialManager != null)
+                if (tutorialManager != null && tutorialManager.tutorialActive)
                     tutorialManager.NextStep();
             }
         }

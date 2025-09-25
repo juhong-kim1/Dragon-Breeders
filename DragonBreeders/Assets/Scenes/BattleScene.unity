@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 55e64e617a8bfff4ba846574e2651eb9, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -4699,12 +4699,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tutorialPanel: {fileID: 1528714408}
   tutorialText: {fileID: 1458108948}
+  battleTutorialPanel: {fileID: 0}
+  battleTutorialText: {fileID: 0}
   gameManager: {fileID: 0}
   mainWindow: {fileID: 0}
   mapWindow: {fileID: 0}
   eggVaultWindow: {fileID: 0}
   nestWindow: {fileID: 0}
   retryButton: {fileID: 0}
+  nextButton: {fileID: 0}
+  clearTutorialButton: {fileID: 0}
+  reTutorialButton: {fileID: 0}
+  isStatPanelOpen: 0
+  isFeedPanelOpen: 0
+  hasDragonEatFood: 0
+  currentStep: 0
+  tutorialActive: 0
 --- !u!4 &627873670 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3769969031047562847, guid: ffdfb7851a968494f8fe76ee88f3791a, type: 3}
@@ -13809,11 +13819,11 @@ RectTransform:
   - {fileID: 1936760188}
   - {fileID: 132235294}
   - {fileID: 810793493}
-  - {fileID: 1977453586}
   - {fileID: 1658310476}
   - {fileID: 2082253349}
   - {fileID: 1586070573}
   - {fileID: 1338691871}
+  - {fileID: 1977453586}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
