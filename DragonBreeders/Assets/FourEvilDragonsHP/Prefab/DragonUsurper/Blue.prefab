@@ -3998,7 +3998,7 @@ GameObject:
   - component: {fileID: 3542249449994234169}
   m_Layer: 0
   m_Name: Blue
-  m_TagString: Untagged
+  m_TagString: Dragons
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4109,6 +4109,7 @@ MonoBehaviour:
   isPassOut: 0
   hasTriggerPassOut: 0
   currentStatuses: 0
+  isFormChanging: 0
 --- !u!114 &3542249449994234169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4123,6 +4124,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentBehavior: 0
   currentGrowth: 0
+  dragonFeedback: {fileID: 0}
+  touchMessage:
+  - "\uADF8\uB974\uB989"
+  - "\uBA4D\uBA4D"
+  - "\uAF2C\uB974\uB975"
+  - "\uB07C\uC789"
+  - "\uC548\uB155\uD558\uC138\uC694\n \uB4DC\uB798\uACE4\uC785\uB2C8\uB2E4"
+  - "\uCF5C\uB85D"
+  - "\u2661"
+  touchCooldown: 3
 --- !u!1 &196352
 GameObject:
   m_ObjectHideFlags: 0

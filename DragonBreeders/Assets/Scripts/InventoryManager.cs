@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -6,6 +7,7 @@ public class InventoryManager : MonoBehaviour
     public ItemDatabase itemDatabase;
 
     public InventoryUI inventoryUI;
+    public InventoryUI foodInventoryUI;
 
     private Dictionary<int, int> items = new Dictionary<int, int>();
 
@@ -48,6 +50,27 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public void RefreshAllUIs()
+    {
+        if (inventoryUI != null)
+        {
+            inventoryUI.RefreshDisplay(GetAllItems());
+        }
+
+        if (foodInventoryUI != null && foodInventoryUI.gameObject.activeInHierarchy)
+        {
+            foodInventoryUI.RefreshDisplay(GetAllItems(), 2);
+        }
+    }
+
+    public void RefreshFoodUI()
+    {
+        if (foodInventoryUI != null)
+        {
+            foodInventoryUI.RefreshDisplay(GetAllItems(), 2);
+        }
+    }
+
     public int GetItemAmount(int itemID)
     {
         return items.ContainsKey(itemID) ? items[itemID] : 0;
@@ -76,13 +99,6 @@ public class InventoryManager : MonoBehaviour
         {
             inventoryUI.RefreshDisplay(GetAllItems());
         }
-    }
-
-    public void AddTestItems()
-    {
-        AddItem(5020201, 3);
-        AddItem(5020204, 5); 
-        AddItem(5040301, 2);
     }
 
     public void TestClearInventory()

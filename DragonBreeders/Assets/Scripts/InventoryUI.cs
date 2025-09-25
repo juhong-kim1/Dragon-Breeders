@@ -51,9 +51,31 @@ public class InventoryUI : MonoBehaviour
 
     public void RefreshDisplay(Dictionary<int, int> inventoryItems)
     {
+        RefreshDisplay(inventoryItems, -1);
+    }
+
+    public void RefreshDisplay(Dictionary<int, int> inventoryItems, int filterItemType)
+    {
         ReturnExtraSlotsToPool();
 
         var itemList = new List<KeyValuePair<int, int>>(inventoryItems);
+
+        if (filterItemType >= 0)
+        {
+            List<KeyValuePair<int, int>> filteredList = new List<KeyValuePair<int, int>>();
+
+            foreach (var item in itemList)
+            {
+                var itemData = itemDatabase.GetItemTableData(item.Key);
+                if (itemData != null && itemData.ITEM_TYPE == filterItemType)
+                {
+                    filteredList.Add(item);
+                }
+            }
+
+            itemList = filteredList;
+        }
+
         itemList.Sort((a, b) => a.Key.CompareTo(b.Key));
 
         int itemIndex = 0;
@@ -98,6 +120,8 @@ public class InventoryUI : MonoBehaviour
 
         Debug.Log($"인벤토리 UI 새로고침: {itemList.Count}개 아이템, {activeSlots.Count}개 슬롯");
     }
+
+
 
     private InventorySlot GetSlotFromPool()
     {

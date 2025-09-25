@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -116,6 +117,15 @@ public class GameManager : MonoBehaviour
     public Light light2;
 
     public bool isFighting = false;
+
+    public Transform foodSlotParent;
+    public InventorySlot foodSlotPrefab;
+    private List<InventorySlot> activeFoodSlots = new List<InventorySlot>();
+
+    public TextMeshProUGUI itemDiscription;
+    public Image feedItemImage;
+
+    public bool isFeeding = false;
 
     public void Awake()
     {
@@ -314,34 +324,77 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void OnClickFeed()
+    public void GetFeed()
     {
-        if (dragonHealth.isPassOut) return;
-        if (!canFeed) { Debug.Log("먹이주기 쿨 진행 중"); return; }
+        isFeeding = true;
 
-        var data = DataTableManger.NurtureTable.Get(4030101);
-        if (data == null) return;
+        inventoryManager.RefreshFoodUI();
 
-        if (!CanExecuteNurture(data))
+        Debug.Log("음식 아이템만 표시됨");
+
+
+        //if (dragonHealth.isPassOut) return;
+        //if (!canFeed) { Debug.Log("먹이주기 쿨 진행 중"); return; }
+
+        //var data = DataTableManger.NurtureTable.Get(4030101);
+        //if (data == null) return;
+
+        //if (!CanExecuteNurture(data))
+        //{
+        //    Debug.Log("먹이주기 조건 불충족: 배고픔이 100%");
+        //    alarmText.text = "먹이주기 조건 불충족: 배부름이 100%";
+        //    return;
+        //}
+
+        //levelUpParticle.Play();
+        //int hungerRecovery = (int)(dragonHealth.stats.maxHunger * data.REC_PERCENT / 100);
+        //dragonHealth.stats.ChangeStat(StatType.Hunger, hungerRecovery);
+
+        //// 경험치 추가
+        //dragonHealth.GainExperience(data.EXPGROWTH);
+
+        //alarmText.text = "먹이주기 완료, 배부름이 25% 증가";
+
+        //canFeed = false;
+        //feedTimer = 0f;
+
+
+    }
+
+    private void CreateFoodSlot(int itemId, int quantity)
+    {
+        if (foodSlotPrefab == null || foodSlotParent == null) return;
+
+        InventorySlot newSlot = Instantiate(foodSlotPrefab, foodSlotParent);
+
+        IItem itemData = inventoryManager.GetItemData(itemId);
+        if (itemData != null)
         {
-            Debug.Log("먹이주기 조건 불충족: 배고픔이 100%");
-            alarmText.text = "먹이주기 조건 불충족: 배부름이 100%";
-            return;
+            newSlot.SetItem(itemData, quantity);
+
+            Button slotButton = newSlot.GetComponent<Button>();
+            if (slotButton == null)
+            {
+                slotButton = newSlot.gameObject.AddComponent<Button>();
+            }
+
+            slotButton.onClick.RemoveAllListeners();
+            //slotButton.onClick.AddListener(() => UseFoodItem(itemId));
+
+            activeFoodSlots.Add(newSlot);
         }
+    }
 
-        levelUpParticle.Play();
-        int hungerRecovery = (int)(dragonHealth.stats.maxHunger * data.REC_PERCENT / 100);
-        dragonHealth.stats.ChangeStat(StatType.Hunger, hungerRecovery);
-
-        // 경험치 추가
-        dragonHealth.GainExperience(data.EXPGROWTH);
-
-        alarmText.text = "먹이주기 완료, 배부름이 25% 증가";
-
-        canFeed = false;
-        feedTimer = 0f;
-
-
+    private void ClearFoodSlots()
+    {
+        foreach (var slot in activeFoodSlots)
+        {
+            if (slot != null)
+            {
+                Destroy(slot.gameObject);
+            }
+        }
+        activeFoodSlots.Clear();
     }
 
     public void OnClickBath()
@@ -792,7 +845,6 @@ public class GameManager : MonoBehaviour
         light1.gameObject.SetActive(!light1.gameObject.activeSelf);
         light2.gameObject.SetActive(!light2.gameObject.activeSelf);
     }
-
     public void FullStaminaCheat()
     {
         float staminaToAdd = dragonHealth.stats.maxStamina - dragonHealth.stats.stamina;
@@ -800,5 +852,52 @@ public class GameManager : MonoBehaviour
         dragonHealth.GetComponent<DragonBehavior>().PlayRecoverAnimation();
 
         dragonHealth.status.RemoveStatus(StatusType.PassOut);
+    }
+
+    public void UseFoodItem(int itemId, int amount = 1)
+    {
+        if (dragonHealth.isPassOut)
+        {
+            alarmText.text = "드래곤이 기절 상태입니다!";
+            return;
+        }
+
+        if (!canFeed)
+        {
+            alarmText.text = "먹이주기 쿨타임 중입니다.";
+            return;
+        }
+
+        if (!inventoryManager.HasItem(itemId, amount))
+        {
+            alarmText.text = "아이템이 부족합니다!";
+            return;
+        }
+
+        ItemTableData itemData = DataTableManger.ItemTable.Get(itemId);
+
+        if (dragonHealth.stats.hunger >= dragonHealth.stats.maxHunger)
+        {
+            alarmText.text = "이미 배부릅니다!";
+            return;
+        }
+
+        inventoryManager.RemoveItem(itemId, amount);
+
+        int hungerRecovery = itemData.EFFECT1_VALUE;
+        dragonHealth.stats.ChangeStat(StatType.Hunger, hungerRecovery);
+
+        string itemName = itemData.StringName;
+        AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 배부름 +{hungerRecovery}");
+
+        canFeed = false;
+        feedTimer = 0f;
+
+        if (feedItemImage != null)
+        {
+            feedItemImage.enabled = false;
+        }
+
+        Debug.Log($"{itemName} 사용 완료 - 배부름 {hungerRecovery} 회복");
     }
 }

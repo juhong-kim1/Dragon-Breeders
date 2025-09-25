@@ -7,6 +7,7 @@ public class MainWindow : GenericWindow
     public Button menuButton;
     public Button statButton;
     public Button helpButton;
+    public Button feedButton;
     public Button inventoryButton;
 
     public GameObject mapWindowObject;
@@ -15,6 +16,7 @@ public class MainWindow : GenericWindow
     [SerializeField] private GameObject statPanel;
     [SerializeField] private GameObject helpPanel;
     [SerializeField] private GameObject InventoryPanel;
+    [SerializeField] private GameObject feedPanel;
 
     [SerializeField] private InventoryManager inventoryManager;
     public TutorialManager tutorialManager;
@@ -26,10 +28,12 @@ public class MainWindow : GenericWindow
         statButton.onClick.AddListener(ToggleStat);
         helpButton.onClick.AddListener(ToggleHelp);
         inventoryButton.onClick.AddListener(ToggleInventory);
+        feedButton.onClick.AddListener(ToggleFeed);
         menuPanel.SetActive(false);
         statPanel.SetActive(false);
         helpPanel.SetActive(false);
         InventoryPanel.SetActive(false);
+        feedPanel.SetActive(false);
     }
 
     public void OnClickStart()
@@ -71,5 +75,24 @@ public class MainWindow : GenericWindow
     {
         if (InventoryPanel.activeSelf)
             InventoryPanel.SetActive(false);
+    }
+
+    private void ToggleFeed()
+    { 
+        feedPanel.SetActive(!feedPanel.activeSelf);
+
+        if (feedPanel.activeSelf)
+        {
+            GameManager.Instance.GetFeed();
+        }
+    }
+
+    public void CloseFeed()
+    {
+        if (feedPanel.activeSelf)
+            feedPanel.SetActive(false);
+
+        GameManager.Instance.isFeeding = false;
+        GameManager.Instance.feedItemImage.enabled = false;
     }
 }

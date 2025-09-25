@@ -1,6 +1,6 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class InventorySlot : MonoBehaviour
 {
@@ -10,8 +10,19 @@ public class InventorySlot : MonoBehaviour
     public TextMeshProUGUI amountText;
     public GameObject amountParent;
 
+    public Button itemButton;
+
     private IItem currentItem;
     private int currentAmount;
+
+    private void Start()
+    {
+        itemButton = GetComponent<Button>();
+
+        itemButton.onClick.AddListener(OnClickItemImages);
+
+        GameManager.Instance.feedItemImage.enabled = false;
+    }
 
     public void SetItem(IItem item, int amount = 1)
     {
@@ -20,21 +31,18 @@ public class InventorySlot : MonoBehaviour
 
         if (item != null)
         {
-            // 아이콘 설정
             if (icon != null)
             {
                 icon.sprite = item.GetIcon();
                 icon.enabled = true;
             }
 
-            // 이름 설정
             if (itemName != null)
             {
                 itemName.text = item.GetName();
                 itemName.enabled = true;
             }
 
-            // 수량 설정
             UpdateAmountDisplay();
         }
     }
@@ -88,5 +96,23 @@ public class InventorySlot : MonoBehaviour
     public int GetAmount()
     {
         return currentAmount;
+    }
+
+    public void OnClickItemImages()
+    {
+        if (currentItem == null) return;
+
+        if (GameManager.Instance.isFeeding)
+        {
+            GameManager.Instance.itemDiscription.text = currentItem.GetDescription();
+            GameManager.Instance.feedItemImage.enabled = true;
+            GameManager.Instance.feedItemImage.sprite = currentItem.GetIcon();
+
+            DragFood feedDrag = GameManager.Instance.feedItemImage.GetComponent<DragFood>();
+            if (feedDrag != null)
+            {
+                feedDrag.SetCurrentItem(currentItem);
+            }
+        }
     }
 }
