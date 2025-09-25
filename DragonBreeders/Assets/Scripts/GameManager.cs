@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
     private bool canRest = true;
     private bool canFeed = true;
     private bool canBath = true;
-    private bool canPlay = true;
+    public bool canPlay = true;
 
     public Image playProgressBar;
     public Image feedProgressBar;
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
     public Button releaseButton;
 
     public ParticleSystem levelUpParticle;
-    private bool isPlaying = false;
+    private bool isGrowthEffectPlaying = false;
     private bool isDragonReleased = false;
 
     public TextMeshProUGUI dragonFeedback;
@@ -118,14 +118,13 @@ public class GameManager : MonoBehaviour
 
     public bool isFighting = false;
 
-    public Transform foodSlotParent;
-    public InventorySlot foodSlotPrefab;
-    private List<InventorySlot> activeFoodSlots = new List<InventorySlot>();
-
-    public TextMeshProUGUI itemDiscription;
+    public TextMeshProUGUI feedItemDiscription;
+    public TextMeshProUGUI playItemDiscription;
     public Image feedItemImage;
+    public Image playItemImage;
 
     public bool isFeeding = false;
+    public bool isPlaying = false;
 
     public void Awake()
     {
@@ -277,21 +276,11 @@ public class GameManager : MonoBehaviour
         experienceSlider.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
         experienceSliderToMain.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
 
-        UpdateMapUI(stats);
-
         UpdateMainUI(dragonHealth);
         foreach (var window in otherWindows)
         {
             if (window != null)
                 window.UpdateStats(dragonHealth);
-        }
-    }
-
-    private void UpdateMapUI(DragonStats stats)
-    {
-        if (mapStatTexts.Length >= 8)
-        {
-
         }
     }
 
@@ -361,44 +350,11 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void CreateFoodSlot(int itemId, int quantity)
-    {
-        if (foodSlotPrefab == null || foodSlotParent == null) return;
-
-        InventorySlot newSlot = Instantiate(foodSlotPrefab, foodSlotParent);
-
-        IItem itemData = inventoryManager.GetItemData(itemId);
-        if (itemData != null)
-        {
-            newSlot.SetItem(itemData, quantity);
-
-            Button slotButton = newSlot.GetComponent<Button>();
-            if (slotButton == null)
-            {
-                slotButton = newSlot.gameObject.AddComponent<Button>();
-            }
-
-            slotButton.onClick.RemoveAllListeners();
-            //slotButton.onClick.AddListener(() => UseFoodItem(itemId));
-
-            activeFoodSlots.Add(newSlot);
-        }
-    }
-
-    private void ClearFoodSlots()
-    {
-        foreach (var slot in activeFoodSlots)
-        {
-            if (slot != null)
-            {
-                Destroy(slot.gameObject);
-            }
-        }
-        activeFoodSlots.Clear();
-    }
-
     public void OnClickBath()
     {
+        AlarmManager.Instance.ShowAlarm("3차빌드 때 구현 하겠습니다");
+        return;
+
         if (dragonHealth.isPassOut) return;
         if (!canBath) { Debug.Log("목욕 쿨 진행 중"); return; }
 
@@ -408,7 +364,6 @@ public class GameManager : MonoBehaviour
         int cleanRecovery = (int)(dragonHealth.stats.maxClean * data.REC_PERCENT / 100);
         dragonHealth.stats.ChangeStat(StatType.Clean, cleanRecovery);
 
-        // 경험치 추가
         dragonHealth.GainExperience(data.EXPGROWTH);
 
         alarmText.text = "목욕 완료, 청결도 30% 회복";
@@ -417,34 +372,42 @@ public class GameManager : MonoBehaviour
         bathTimer = 0f;
     }
 
-    public void OnClickPlay()
+    public void GetPlay()
     {
-        if (dragonHealth.isPassOut) return;
-        if (!canPlay) { Debug.Log("놀아주기 쿨 진행 중"); return; }
+        isPlaying = true;
 
-        var data = DataTableManger.NurtureTable.Get(4050401);
-        if (data == null) return;
+        inventoryManager.RefreshPlayUI();
 
-        if (!CanExecuteNurture(data))
-        {
-            Debug.Log("놀아주기 조건 불충족: 피로도가 75% 이상");
-            alarmText.text = "놀아주기 조건 불충족: 피로도가 75% 이상";
-            return;
-        }
+        Debug.Log("음식 아이템만 표시됨");
 
-        dragonHealth.GetComponent<DragonBehavior>().PlayPlayAnimation();
 
-        float intimacyRecovery = dragonHealth.stats.maxIntimacy * data.REC_PERCENT / 100;
-        dragonHealth.stats.ChangeStat(StatType.Intimacy, intimacyRecovery);
-        dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
-        dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
 
-        dragonHealth.GainExperience(data.EXPGROWTH);
+        //if (dragonHealth.isPassOut) return;
+        //if (!canPlay) { Debug.Log("놀아주기 쿨 진행 중"); return; }
 
-        alarmText.text = "놀아주기 완료, 친밀도 10% 증가";
+        //var data = DataTableManger.NurtureTable.Get(4050401);
+        //if (data == null) return;
 
-        canPlay = false;
-        playTimer = 0f;
+        //if (!CanExecuteNurture(data))
+        //{
+        //    Debug.Log("놀아주기 조건 불충족: 피로도가 75% 이상");
+        //    alarmText.text = "놀아주기 조건 불충족: 피로도가 75% 이상";
+        //    return;
+        //}
+
+        //dragonHealth.GetComponent<DragonBehavior>().PlayPlayAnimation();
+
+        //float intimacyRecovery = dragonHealth.stats.maxIntimacy * data.REC_PERCENT / 100;
+        //dragonHealth.stats.ChangeStat(StatType.Intimacy, intimacyRecovery);
+        //dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
+        //dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
+
+        //dragonHealth.GainExperience(data.EXPGROWTH);
+
+        //alarmText.text = "놀아주기 완료, 친밀도 10% 증가";
+
+        //canPlay = false;
+        //playTimer = 0f;
     }
 
     public void OnClickRest()
@@ -466,17 +429,18 @@ public class GameManager : MonoBehaviour
             if (!CanExecuteNurture(data))
             {
                 Debug.Log("휴식 조건 불충족: 피로도가 80% 미만");
-                alarmText.text = "휴식 조건 불충족: 피로도가 80% 미만";
+
+                AlarmManager.Instance.ShowAlarm("휴식하기엔 아직 팔팔합니다!");
                 return;
             }
 
             float fatigueRecovery = dragonHealth.stats.maxFatigue * data.REC_PERCENT / 100;
             dragonHealth.stats.ChangeStat(StatType.Fatigue, -fatigueRecovery);
 
-            // 경험치 추가
+
             dragonHealth.GainExperience(data.EXPGROWTH);
 
-            alarmText.text = "피로도 100% 회복 성공";
+            AlarmManager.Instance.ShowAlarm("개운하다~");
 
             dragonHealth.GetComponent<DragonBehavior>().PlayRestAnimation();
 
@@ -745,11 +709,14 @@ public class GameManager : MonoBehaviour
 
         if (allItems.Count > 0)
         {
-            // 랜덤으로 하나 선택
             int randomIndex = Random.Range(0, allItems.Count);
             var randomItem = allItems[randomIndex];
 
             inventoryManager.AddItem(randomItem.ITEM_ID, 1);
+
+            inventoryManager.RefreshPlayUI();
+            inventoryManager.RefreshFoodUI();
+
             Debug.Log($"랜덤 아이템 추가: {randomItem.ITEM_NAME} (ID: {randomItem.ITEM_ID})");
         }
         else
@@ -795,7 +762,6 @@ public class GameManager : MonoBehaviour
     {
         if (dragonHealth == null) return;
 
-        //Destroy(dragonHealth.gameObject);
         EggSlot.isDragonActive = false;
 
         isDragonReleased = true;
@@ -807,18 +773,18 @@ public class GameManager : MonoBehaviour
     private void GrowUpEffect()
     {
 
-        if (dragonHealth != null && dragonHealth.isFormChanging && !isPlaying)
+        if (dragonHealth != null && dragonHealth.isFormChanging && !isGrowthEffectPlaying)
         {
             levelUpParticle.Play();
 
             levelUpParticle.transform.localScale = Vector3.one * (float)dragonHealth.currentGrowth;
 
-            isPlaying = true;
+            isGrowthEffectPlaying = true;
         }
 
         if (dragonHealth != null && !dragonHealth.isFormChanging)
         {
-            isPlaying = false;
+            isGrowthEffectPlaying = false;
         }
     }
 
@@ -851,6 +817,8 @@ public class GameManager : MonoBehaviour
         dragonHealth.stats.ChangeStat(StatType.Stamina, staminaToAdd);
         dragonHealth.GetComponent<DragonBehavior>().PlayRecoverAnimation();
 
+        dragonHealth.isPassOut = false;
+
         dragonHealth.status.RemoveStatus(StatusType.PassOut);
     }
 
@@ -858,19 +826,19 @@ public class GameManager : MonoBehaviour
     {
         if (dragonHealth.isPassOut)
         {
-            alarmText.text = "드래곤이 기절 상태입니다!";
+            AlarmManager.Instance.ShowAlarm("드래곤이 죽기직전인가봐요!");
             return;
         }
 
         if (!canFeed)
         {
-            alarmText.text = "먹이주기 쿨타임 중입니다.";
+            AlarmManager.Instance.ShowAlarm("방금 밥먹었어요!");
             return;
         }
 
         if (!inventoryManager.HasItem(itemId, amount))
         {
-            alarmText.text = "아이템이 부족합니다!";
+            AlarmManager.Instance.ShowAlarm("아이템이 부족합니다!");
             return;
         }
 
@@ -878,14 +846,18 @@ public class GameManager : MonoBehaviour
 
         if (dragonHealth.stats.hunger >= dragonHealth.stats.maxHunger)
         {
-            alarmText.text = "이미 배부릅니다!";
+            AlarmManager.Instance.ShowAlarm("배가 터져 죽을것같아요");
             return;
         }
 
         inventoryManager.RemoveItem(itemId, amount);
+        inventoryManager.RefreshFoodUI();
+
+        NurtureTableData nurtureData = DataTableManger.NurtureTable.Get(4030101);
 
         int hungerRecovery = itemData.EFFECT1_VALUE;
-        dragonHealth.stats.ChangeStat(StatType.Hunger, hungerRecovery);
+
+        dragonHealth.stats.ChangeStat(StatType.Hunger, (nurtureData.REC_PERCENT * dragonHealth.stats.maxHunger) + hungerRecovery);
 
         string itemName = itemData.StringName;
         AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 배부름 +{hungerRecovery}");
@@ -899,5 +871,63 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log($"{itemName} 사용 완료 - 배부름 {hungerRecovery} 회복");
+    }
+
+    public void UsePlayItem(int itemId, int amount = 1)
+    {
+        if (dragonHealth.isPassOut)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤이 KO 상태네요!");
+            return;
+        }
+
+        if (dragonHealth.stats.FullFatigue())
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤이 과로했습니다..");
+        }
+
+        if (!canPlay)
+        {
+            AlarmManager.Instance.ShowAlarm("아직 놀 수 없어요!");
+            return;
+        }
+
+        if (!inventoryManager.HasItem(itemId, amount))
+        {
+            AlarmManager.Instance.ShowAlarm("아이템이 부족합니다!");
+            return;
+        }
+
+        ItemTableData itemData = DataTableManger.ItemTable.Get(itemId);
+
+        if (dragonHealth.stats.intimacy >= dragonHealth.stats.maxIntimacy)
+        {
+            AlarmManager.Instance.ShowAlarm("이미 너무 친합니다!");
+            return;
+        }
+
+        inventoryManager.RemoveItem(itemId, amount);
+        inventoryManager.RefreshPlayUI();
+
+        NurtureTableData nurtureData = DataTableManger.NurtureTable.Get(4050401);
+
+        int increaseIntimacy = itemData.EFFECT1_VALUE;
+        dragonHealth.stats.ChangeStat(StatType.Intimacy, (nurtureData.REC_PERCENT * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
+        dragonHealth.stats.ChangeStat(StatType.Fatigue, nurtureData.RECEIVE_FTG);
+
+
+
+        string itemName = itemData.StringName;
+        AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 친밀도 +{increaseIntimacy}");
+
+        canPlay = false;
+        playTimer = 0f;
+
+        if (playItemImage != null)
+        {
+            playItemImage.enabled = false;
+        }
+
+        Debug.Log($"{itemName} 사용 완료 - 친밀도 {increaseIntimacy} 증가");
     }
 }

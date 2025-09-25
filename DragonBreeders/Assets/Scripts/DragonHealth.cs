@@ -123,23 +123,7 @@ public class DragonHealth : MonoBehaviour
 
     private void UpdateGrowth()
     {
-        //switch (currentGrowth)
-        //{
-        //    case DragonGrowthState.Infancy:
-        //        targetScale = Vector3.one * 0.2f;
-        //        break;
-        //    case DragonGrowthState.GrowingUp:
-        //        targetScale = Vector3.one * 0.4f;
-        //        break;
-        //    case DragonGrowthState.Maturity:
-        //        targetScale = Vector3.one * 0.6f;
-        //        break;
-        //    case DragonGrowthState.Adult:
-        //        targetScale = Vector3.one * 1f;
-        //        break;
-        //}
-
-        transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * growSpeed);
+         transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * growSpeed);
 
         if (isFormChanging == true && rotationTime < rotationMaxTime)
         {
@@ -163,9 +147,9 @@ public class DragonHealth : MonoBehaviour
         {
             stats.ChangeStat(StatType.Hunger, -currentTableData.DEP_FOOD);
 
-            if (stats.hunger <= 0)
+            if (stats.hunger > 0)
             {
-                stats.ChangeStat(StatType.Fatigue, -currentTableData.DEP_FOOD);
+                stats.ChangeStat(StatType.Stamina, currentTableData.DEP_FOOD);
             }
 
             hungryTimer = 0f;
@@ -237,6 +221,8 @@ public class DragonHealth : MonoBehaviour
             ApplyTableData();
             status.RemoveStatus(StatusType.Hungry);
             status.RemoveStatus(StatusType.Fatigue);
+            stats.stamina = stats.maxStamina;
+
             isFormChanging = true;
 
             string Action = DragonBehavior.action[2];

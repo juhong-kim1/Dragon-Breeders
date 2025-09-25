@@ -248,12 +248,21 @@ public class BattleManager : MonoBehaviour
                     break;
                 case Difficulty.Low:
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, Nuture.Get(4000501).EXPGROWTH);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Hunger, -Nuture.Get(4000501).DEPLETE_FOOD);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Clean, -Nuture.Get(4000501).DEPLETE_HYG);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Fatigue, Nuture.Get(4000501).RECEIVE_FTG);
                     break;
                 case Difficulty.Medium:
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, Nuture.Get(4000502).EXPGROWTH);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Hunger, -Nuture.Get(4000501).DEPLETE_FOOD);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Clean, -Nuture.Get(4000501).DEPLETE_HYG);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Fatigue, Nuture.Get(4000501).RECEIVE_FTG);
                     break;
                 case Difficulty.High:
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, Nuture.Get(4000503).EXPGROWTH);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Hunger, -Nuture.Get(4000501).DEPLETE_FOOD);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Clean, -Nuture.Get(4000501).DEPLETE_HYG);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Fatigue, Nuture.Get(4000501).RECEIVE_FTG);
                     break;
             }
 

@@ -22,6 +22,7 @@ public class InventorySlot : MonoBehaviour
         itemButton.onClick.AddListener(OnClickItemImages);
 
         GameManager.Instance.feedItemImage.enabled = false;
+        GameManager.Instance.playItemImage.enabled = false;
     }
 
     public void SetItem(IItem item, int amount = 1)
@@ -104,14 +105,27 @@ public class InventorySlot : MonoBehaviour
 
         if (GameManager.Instance.isFeeding)
         {
-            GameManager.Instance.itemDiscription.text = currentItem.GetDescription();
+            GameManager.Instance.feedItemDiscription.text = currentItem.GetDescription();
             GameManager.Instance.feedItemImage.enabled = true;
             GameManager.Instance.feedItemImage.sprite = currentItem.GetIcon();
 
-            DragFood feedDrag = GameManager.Instance.feedItemImage.GetComponent<DragFood>();
+            DragItem feedDrag = GameManager.Instance.feedItemImage.GetComponent<DragItem>();
             if (feedDrag != null)
             {
                 feedDrag.SetCurrentItem(currentItem);
+            }
+        }
+
+        if (GameManager.Instance.isPlaying)
+        {
+            GameManager.Instance.playItemDiscription.text = currentItem.GetDescription();
+            GameManager.Instance.playItemImage.enabled = true;
+            GameManager.Instance.playItemImage.sprite = currentItem.GetIcon();
+
+            DragItem playDrag = GameManager.Instance.playItemImage.GetComponent<DragItem>();
+            if (playDrag != null)
+            {
+                playDrag.SetCurrentItem(currentItem);
             }
         }
     }

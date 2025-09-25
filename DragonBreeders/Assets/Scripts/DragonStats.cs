@@ -69,5 +69,12 @@ public class DragonStats
     public void ConsumeGrowthExperience()
     {
         experienceMax += GameManager.Instance.dragonHealth.currentTableData.EVOEXP;
+
+        stamina = maxStamina;
+    }
+
+    public bool FullFatigue()
+    { 
+        return fatigue == maxFatigue;
     }
 }

@@ -7,10 +7,8 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private Transform slotParent;
     [SerializeField] private int initialPoolSize = 30;
 
-    [Header("데이터베이스")]
     [SerializeField] private ItemDatabase itemDatabase;
 
-    [Header("매니저 참조")]
     [SerializeField] private InventoryManager inventoryManager;
 
     private Queue<InventorySlot> slotPool = new Queue<InventorySlot>();
