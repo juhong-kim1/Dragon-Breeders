@@ -18,7 +18,7 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private bool isPressing = false;
     private float pressTime = 0f;
-    public float holdDuration = 5f; // 5√ 
+    public float holdDuration = 3f;
 
     public Image progressBar;
     private bool isHolding = false;

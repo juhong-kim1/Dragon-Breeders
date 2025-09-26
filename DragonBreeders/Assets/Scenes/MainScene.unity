@@ -2000,7 +2000,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vault: {fileID: 2111678529}
   grassEggIcon: {fileID: 21300000, guid: 6811ed51330a7ca449331258b78b1a72, type: 3}
-  dragonPrefab: {fileID: 168864, guid: 281a986484325de459dc1b3709335bc5, type: 3}
+  dragonPrefab: {fileID: 100720, guid: 8252519d2c6fd014bb5f75765a8c4fda, type: 3}
 --- !u!4 &184023073
 Transform:
   m_ObjectHideFlags: 0

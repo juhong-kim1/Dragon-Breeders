@@ -48,6 +48,8 @@ public class DragonHealth : MonoBehaviour
 
     private float flySpeed = 5f;
 
+    public ParticleSystem fireBreath;
+    public ParticleSystem fire;
 
     private void Start()
     {

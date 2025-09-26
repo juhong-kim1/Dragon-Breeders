@@ -64,7 +64,7 @@ public class BattleManager : MonoBehaviour
 
     private int skillCooldown = 0;
     private int enemySkillCooldown = 0;
-    [SerializeField] private float displayTime = 2f;
+    [SerializeField] private float displayTime = 3f;
 
     private Coroutine currentAlarmCoroutine;
     private Coroutine battleStartCoroutine;
@@ -83,6 +83,12 @@ public class BattleManager : MonoBehaviour
     public InventorySlot[] rewardSlots = new InventorySlot[3];
 
     public Slider experienceSlider;
+
+    public ParticleSystem fireEffect;
+    public ParticleSystem fireHitEffect;
+
+    public ParticleSystem enemyHitEffect;
+    public ParticleSystem enemySkillEffect;
 
     private void Start()
     {
@@ -192,6 +198,8 @@ public class BattleManager : MonoBehaviour
         if (currentState != BattleState.PlayerTurn || skillCooldown > 0) return;
 
         SetButtonsInteractable(false);
+
+        StartCoroutine(CoSkillEffectPlay());
 
         StartCoroutine(ApplySkillDamageDelayed(attackDelay));
 
@@ -617,6 +625,7 @@ public class BattleManager : MonoBehaviour
         monster.stamina -= finalDamage;
         monster.stamina = Mathf.Max(0, monster.stamina);
 
+        fireHitEffect.Play();
 
         ShowMonsterDamage(Mathf.RoundToInt(finalDamage));
         UpdateUI();
@@ -669,6 +678,8 @@ public class BattleManager : MonoBehaviour
         ShowPlayerDamage(Mathf.RoundToInt(finalDamage));
         UpdateUI();
 
+        enemyHitEffect.Play();
+
         Handheld.Vibrate();
 
         yield return new WaitForSeconds(1f);
@@ -696,6 +707,8 @@ public class BattleManager : MonoBehaviour
         playerDragon.stats.ChangeStat(StatType.Stamina, -finalDamage);
         ShowPlayerDamage(Mathf.RoundToInt(finalDamage));
         UpdateUI();
+
+        enemySkillEffect.Play();
 
         Handheld.Vibrate();
 
@@ -889,4 +902,17 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    private IEnumerator CoSkillEffectPlay()
+    {
+        if (GameManager.Instance.dragonHealth.fireBreath == null)
+            yield break;
+
+        GameManager.Instance.dragonHealth.fireBreath.Play();
+        fireEffect.Play();
+
+        yield return new WaitForSeconds(2f);
+
+        GameManager.Instance.dragonHealth.fireBreath.Stop();
+        fireEffect.Stop();
+    }
 }

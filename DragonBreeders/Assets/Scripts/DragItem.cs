@@ -13,7 +13,7 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     [Header("놀아주기 설정")]
     public float playDuration = 3f;
-    public float requiredDistance = 100f;
+    public float requiredDistance = 70f;
     public Slider playProgressSlider;
 
     private float playTimer = 0f;
