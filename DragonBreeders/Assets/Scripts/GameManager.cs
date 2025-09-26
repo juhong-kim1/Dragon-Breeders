@@ -884,7 +884,7 @@ public class GameManager : MonoBehaviour
         int hungerRecovery = itemData.EFFECT1_VALUE;
 
         dragonHealth.stats.ChangeStat(StatType.Hunger, ((nurtureData.REC_PERCENT/100f) * dragonHealth.stats.maxHunger) + hungerRecovery);
-
+        dragonHealth.stats.ChangeStat(StatType.Experience, ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery);
         string itemName = itemData.StringName;
         AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 배부름 +{((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery}");
 
@@ -926,8 +926,9 @@ public class GameManager : MonoBehaviour
         int increaseIntimacy = itemData.EFFECT1_VALUE;
         dragonHealth.stats.ChangeStat(StatType.Intimacy, ((nurtureData.REC_PERCENT/100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
         dragonHealth.stats.ChangeStat(StatType.Fatigue, nurtureData.RECEIVE_FTG);
+        dragonHealth.stats.ChangeStat(StatType.Experience, ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
 
-        if(TutorialManager.Instance.currentStep == 12)
+        if (TutorialManager.Instance.currentStep == 12)
         TutorialManager.Instance.NextStep();
 
         string itemName = itemData.StringName;
