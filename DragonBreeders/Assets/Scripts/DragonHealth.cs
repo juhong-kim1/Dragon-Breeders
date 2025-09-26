@@ -139,8 +139,8 @@ public class DragonHealth : MonoBehaviour
 
     private void UpdateStats()
     {
-        if (isPassOut)
-            return;
+        //if (isPassOut)
+        //    return;
 
         hungryTimer += Time.deltaTime;
         if (hungryTimer >= hungryMaxTime)
@@ -150,6 +150,15 @@ public class DragonHealth : MonoBehaviour
             if (stats.hunger > 0)
             {
                 stats.ChangeStat(StatType.Stamina, currentTableData.DEP_FOOD);
+
+                if (isPassOut && stats.stamina >= 1f)
+                {
+                    isPassOut = false;
+                    status.RemoveStatus(StatusType.PassOut);
+                    GetComponent<DragonBehavior>().PlayRecoverAnimation();
+                    AlarmManager.Instance.ShowAlarm("드래곤이 의식을 되찾았어요!");
+                    Debug.Log("자동 회복: 체력이 1 이상이 되어 깨어남");
+                }
             }
 
             hungryTimer = 0f;
@@ -231,6 +240,10 @@ public class DragonHealth : MonoBehaviour
 
             animator.SetTrigger(Action);
         }
+        else 
+        {
+            GameManager.Instance.releaseButton.gameObject.SetActive(true);
+        }
     }
 
     private void CheckDragonStatus()
@@ -275,6 +288,11 @@ public class DragonHealth : MonoBehaviour
             GrowUp();
             stats.ConsumeGrowthExperience();
             Debug.Log("드래곤이 성장했습니다!");
+        }
+
+        if (currentGrowth == DragonGrowthState.Adult)
+        {
+            GameManager.Instance.releaseButton.gameObject.SetActive(true);
         }
     }
 

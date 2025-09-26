@@ -126,6 +126,12 @@ public class MapWindow : GenericWindow
 
     private void ToggleTraining()
     {
+        if (GameManager.Instance.dragonHealth == null)
+        {
+            AlarmManager.Instance.ShowAlarm("È¥ÀÚ¼± ½Î¿ï ¼ö ¾ø¾î¿ä!");
+            return;
+        }
+
         trainingLocationPanel.SetActive(!trainingLocationPanel.activeSelf);
     }
 

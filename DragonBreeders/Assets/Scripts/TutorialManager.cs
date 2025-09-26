@@ -189,7 +189,7 @@ public class TutorialManager : MonoBehaviour
                 tutorialText.text = text.Get("TUTORIAL6");
                 Debug.Log("step 6");
                 var dragonStat = GameManager.Instance.dragonHealth.stats;
-                if(dragonStat.experience < 100f) GameManager.Instance.dragonHealth.stats.experience = 100f;
+                if(dragonStat.experience < 100f) GameManager.Instance.dragonHealth.stats.experience = 120f;
                 if (dragonStat.hunger > 90f) GameManager.Instance.dragonHealth.stats.hunger = 90f;
                 break;
             case 7:

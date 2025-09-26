@@ -164,7 +164,6 @@ public class GameManager : MonoBehaviour
         }
 
         UpdateStatText();
-        UpdateReleaseButton();
 
         if (!canExplore)
         {
@@ -789,19 +788,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void UpdateReleaseButton()
-    {
-        if (releaseButton == null) return;
-
-        if (dragonHealth == null)
-        {
-            releaseButton.gameObject.SetActive(false);
-            return;
-        }
-
-        releaseButton.gameObject.SetActive(dragonHealth.currentGrowth == DragonGrowthState.Adult);
-    }
-
     public void OnClickReleaseDragon()
     {
         if (dragonHealth == null) return;
@@ -897,10 +883,10 @@ public class GameManager : MonoBehaviour
 
         int hungerRecovery = itemData.EFFECT1_VALUE;
 
-        dragonHealth.stats.ChangeStat(StatType.Hunger, (nurtureData.REC_PERCENT * dragonHealth.stats.maxHunger) + hungerRecovery);
+        dragonHealth.stats.ChangeStat(StatType.Hunger, ((nurtureData.REC_PERCENT/100f) * dragonHealth.stats.maxHunger) + hungerRecovery);
 
         string itemName = itemData.StringName;
-        AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 배부름 +{hungerRecovery}");
+        AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 배부름 +{((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery}");
 
         canFeed = false;
         feedTimer = 0f;
@@ -938,14 +924,14 @@ public class GameManager : MonoBehaviour
         NurtureTableData nurtureData = DataTableManger.NurtureTable.Get(4050401);
 
         int increaseIntimacy = itemData.EFFECT1_VALUE;
-        dragonHealth.stats.ChangeStat(StatType.Intimacy, (nurtureData.REC_PERCENT * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
+        dragonHealth.stats.ChangeStat(StatType.Intimacy, ((nurtureData.REC_PERCENT/100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
         dragonHealth.stats.ChangeStat(StatType.Fatigue, nurtureData.RECEIVE_FTG);
 
         if(TutorialManager.Instance.currentStep == 12)
         TutorialManager.Instance.NextStep();
 
         string itemName = itemData.StringName;
-        AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 친밀도 +{increaseIntimacy}");
+        AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 친밀도 +{((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy}");
 
         canPlay = false;
         playTimer = 0f;

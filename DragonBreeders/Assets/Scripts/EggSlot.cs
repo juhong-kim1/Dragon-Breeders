@@ -109,6 +109,8 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 }
             }
 
+            Handheld.Vibrate();
+
             AlarmManager.Instance.ShowAlarm("알에서 새 친구가 깨어났어요!");
             isDragonActive = true;
 
