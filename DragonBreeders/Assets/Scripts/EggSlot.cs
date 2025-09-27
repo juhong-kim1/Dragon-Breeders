@@ -23,6 +23,8 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public Image progressBar;
     private bool isHolding = false;
 
+    public MainWindow mainWindow;
+
     void Awake()
     {
         egg = null;
@@ -111,7 +113,10 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
             Handheld.Vibrate();
 
-            AlarmManager.Instance.ShowAlarm("알에서 새 친구가 깨어났어요!");
+            GameManager.Instance.windowManager.Open(Windows.Game);
+            GameManager.Instance.mainWindow.dragonNameInputPanel.SetActive(true);
+
+            AlarmManager.Instance.ShowAlarm("알에서 새 친구가 깨어났어요! 이름을 정해주세요!");
             isDragonActive = true;
 
             ClearEgg();

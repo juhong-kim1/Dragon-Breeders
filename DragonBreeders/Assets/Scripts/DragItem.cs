@@ -37,7 +37,7 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (currentItem == null || !gameObject.activeInHierarchy) return;
+        if ((currentItem == null && !GameManager.Instance.isShowering) || !gameObject.activeInHierarchy) return;
 
         originalPosition = rectTransform.anchoredPosition;
         lastDragPosition = eventData.position;
@@ -55,24 +55,38 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (currentItem == null) return;
-
         Vector2 currentPos = eventData.position;
         Vector2 dragDelta = currentPos - lastDragPosition;
         lastDragPosition = currentPos;
 
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
 
-
         if (IsInDragonArea(currentPos))
         {
-            if (currentItem.GetItemType() == 6)
+            if (currentItem == null && GameManager.Instance.isShowering)
             {
                 HandlePlayDrag(dragDelta);
             }
-            else if (currentItem.GetItemType() == 2)
+            else if (currentItem != null)
             {
-                transform.localScale = Vector3.one * 1.2f;
+                int itemType = currentItem.GetItemType();
+
+                if (itemType == 6) // 놀이용품
+                {
+                    HandlePlayDrag(dragDelta);
+                }
+                else if (itemType == 4) // 비누
+                {
+                    HandlePlayDrag(dragDelta);
+                }
+                else if (itemType == 5) // 브러쉬
+                {
+                    HandlePlayDrag(dragDelta);
+                }
+                else if (itemType == 2) // 음식
+                {
+                    transform.localScale = Vector3.one * 1.2f;
+                }
             }
         }
         else
@@ -89,26 +103,28 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         canvasGroup.blocksRaycasts = true;
 
-        if (currentItem == null)
-        {
-            Debug.Log("currentItem이 null입니다");
-            return;
-        }
-
         Vector2 screenPos = eventData.position;
 
-        if (IsInDragonArea(screenPos))
+        if (currentItem == null && GameManager.Instance.isShowering)
         {
-            if (currentItem.GetItemType() == 2)
-            {
-                Debug.Log("드래곤 영역에 드롭 성공!");
-                GameManager.Instance.UseFoodItem(currentItem.GetID(), 1);
-            }
+            
         }
-        else
+
+        else if (currentItem != null)
         {
-            AlarmManager.Instance.ShowAlarm("음식 떨어졌어요!");
-            Debug.Log("드래곤 영역 밖에 드롭됨");
+            if (IsInDragonArea(screenPos))
+            {
+                if (currentItem.GetItemType() == 2)
+                {
+                    Debug.Log("드래곤 영역에 드롭 성공!");
+                    GameManager.Instance.UseFoodItem(currentItem.GetID(), 1);
+                }
+            }
+            else
+            {
+                AlarmManager.Instance.ShowAlarm("아이템 떨어졌어요!");
+                Debug.Log("드래곤 영역 밖에 드롭됨");
+            }
         }
 
         if (isPlayingWithDragon)
@@ -146,18 +162,53 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                 playProgressSlider.value = 0f;
             }
 
-            Debug.Log("놀아주기 시작!");
+            if (currentItem == null && GameManager.Instance.isShowering)
+            {
+                Debug.Log("샤워 시작!");
+                GameManager.Instance.bathParticle.Play();
+            }
+            else if (currentItem != null)
+            {
+                int itemType = currentItem.GetItemType();
+                if (itemType == 6) Debug.Log("놀아주기 시작!");
+                else if (itemType == 4)
+                {
+                    Debug.Log("비누질 시작!");
+                    GameManager.Instance.bathParticle.Play();
+                }
+                else if (itemType == 5)
+                {
+                    Debug.Log("브러싱 시작!");
+                    GameManager.Instance.bathParticle.Play();
+                }
+            }
         }
 
         playTimer += Time.deltaTime;
         totalDragDistance += new Vector2(Mathf.Abs(dragDelta.x), Mathf.Abs(dragDelta.y));
 
-
-        if (playProgressSlider != null && GameManager.Instance.playItemImage.enabled)
+        if (playProgressSlider != null)
         {
-            playProgressSlider.value = playTimer / playDuration;
-        }
+            bool shouldShowProgress = false;
 
+            if (currentItem == null && GameManager.Instance.isShowering)
+            {
+                shouldShowProgress = true;
+            }
+            else if (currentItem != null)
+            {
+                int itemType = currentItem.GetItemType();
+                if (itemType == 6 && GameManager.Instance.playItemImage.enabled)
+                    shouldShowProgress = true;
+                else if (itemType == 4 && GameManager.Instance.soapItemImage != null && GameManager.Instance.soapItemImage.enabled)
+                    shouldShowProgress = true;
+                else if (itemType == 5 && GameManager.Instance.brushItemImage != null && GameManager.Instance.brushItemImage.enabled)
+                    shouldShowProgress = true;
+            }
+
+            if (shouldShowProgress)
+                playProgressSlider.value = playTimer / playDuration;
+        }
 
         transform.localScale = Vector3.one * (1f + Mathf.Sin(Time.time * 10f) * 0.1f);
 
@@ -169,17 +220,60 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     private void CompletePlay()
     {
-        if (!GameManager.Instance.canPlay)
+        GameManager.Instance.bathParticle.Stop();
+
+        if (currentItem == null && GameManager.Instance.isShowering)
         {
-            AlarmManager.Instance.ShowAlarm("방금 놀아서 힘들어요!");
+            if (!GameManager.Instance.canBath)
+            {
+                AlarmManager.Instance.ShowAlarm("방금 목욕했어요!");
+                CancelPlay();
+                return;
+            }
+            GameManager.Instance.CompleteShower();
+            Debug.Log("샤워 완료!");
             CancelPlay();
             return;
         }
 
-        GameManager.Instance.UsePlayItem(currentItem.GetID(), 1);
+        if (currentItem != null)
+        {
+            int itemType = currentItem.GetItemType();
 
-        Debug.Log("놀아주기 완료!");
-
+            if (itemType == 6)
+            {
+                if (!GameManager.Instance.canPlay)
+                {
+                    AlarmManager.Instance.ShowAlarm("방금 놀아서 힘들어요!");
+                    CancelPlay();
+                    return;
+                }
+                GameManager.Instance.UsePlayItem(currentItem.GetID(), 1);
+                Debug.Log("놀아주기 완료!");
+            }
+            else if (itemType == 4) // 비누
+            {
+                if (!GameManager.Instance.canBath)
+                {
+                    AlarmManager.Instance.ShowAlarm("방금 목욕했어요!");
+                    CancelPlay();
+                    return;
+                }
+                GameManager.Instance.UseSoapItem(currentItem.GetID(), 1);
+                Debug.Log("비누질 완료!");
+            }
+            else if (itemType == 5) // 브러쉬
+            {
+                if (!GameManager.Instance.canBath)
+                {
+                    AlarmManager.Instance.ShowAlarm("방금 목욕했어요!");
+                    CancelPlay();
+                    return;
+                }
+                GameManager.Instance.UseBrushItem(currentItem.GetID(), 1);
+                Debug.Log("브러싱 완료!");
+            }
+        }
 
         CancelPlay();
     }
@@ -194,5 +288,8 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             playProgressSlider.gameObject.SetActive(false);
 
         transform.localScale = Vector3.one;
+
+        GameManager.Instance.bathParticle.Stop();
+
     }
 }

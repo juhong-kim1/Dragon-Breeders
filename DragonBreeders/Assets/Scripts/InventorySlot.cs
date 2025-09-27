@@ -23,6 +23,9 @@ public class InventorySlot : MonoBehaviour
 
         GameManager.Instance.feedItemImage.enabled = false;
         GameManager.Instance.playItemImage.enabled = false;
+        GameManager.Instance.soapItemImage.enabled = false;
+        GameManager.Instance.brushItemImage.enabled = false;
+
     }
 
     public void SetItem(IItem item, int amount = 1)
@@ -103,7 +106,9 @@ public class InventorySlot : MonoBehaviour
     {
         if (currentItem == null) return;
 
-        if (GameManager.Instance.isFeeding)
+        int itemType = currentItem.GetItemType();
+
+        if (GameManager.Instance.isFeeding && itemType == 2)
         {
             GameManager.Instance.feedItemDiscription.text = currentItem.GetDescription();
             GameManager.Instance.feedItemImage.enabled = true;
@@ -116,7 +121,7 @@ public class InventorySlot : MonoBehaviour
             }
         }
 
-        if (GameManager.Instance.isPlaying)
+        if (GameManager.Instance.isPlaying && itemType == 6)
         {
             GameManager.Instance.playItemDiscription.text = currentItem.GetDescription();
             GameManager.Instance.playItemImage.enabled = true;
@@ -126,6 +131,48 @@ public class InventorySlot : MonoBehaviour
             if (playDrag != null)
             {
                 playDrag.SetCurrentItem(currentItem);
+            }
+        }
+
+        if (GameManager.Instance.isSoaping && itemType == 4)
+        {
+            if (!GameManager.Instance.hasSoaped)
+            {
+                GameManager.Instance.soapItemDiscription.text = currentItem.GetDescription();
+                GameManager.Instance.soapItemImage.enabled = true;
+                GameManager.Instance.soapItemImage.sprite = currentItem.GetIcon();
+                DragItem soapDrag = GameManager.Instance.soapItemImage.GetComponent<DragItem>();
+                if (soapDrag != null)
+                {
+                    soapDrag.SetCurrentItem(currentItem);
+                }
+            }
+            else
+            {
+                AlarmManager.Instance.ShowAlarm("이미 비누를 사용했어요!");
+            }
+        }
+
+        if (GameManager.Instance.isBrushing && itemType == 5)
+        {
+            if (!GameManager.Instance.hasSoaped)
+            {
+                AlarmManager.Instance.ShowAlarm("먼저 비누를 사용해주세요!");
+            }
+            else if (!GameManager.Instance.hasBrushed)
+            {
+                GameManager.Instance.brushItemDiscription.text = currentItem.GetDescription();
+                GameManager.Instance.brushItemImage.enabled = true;
+                GameManager.Instance.brushItemImage.sprite = currentItem.GetIcon();
+                DragItem brushDrag = GameManager.Instance.brushItemImage.GetComponent<DragItem>();
+                if (brushDrag != null)
+                {
+                    brushDrag.SetCurrentItem(currentItem);
+                }
+            }
+            else
+            {
+                AlarmManager.Instance.ShowAlarm("이미 브러쉬를 사용했어요!");
             }
         }
     }

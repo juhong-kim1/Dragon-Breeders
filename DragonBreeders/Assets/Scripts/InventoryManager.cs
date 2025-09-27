@@ -9,6 +9,8 @@ public class InventoryManager : MonoBehaviour
     public InventoryUI inventoryUI;
     public InventoryUI foodInventoryUI;
     public InventoryUI playInventoryUI;
+    public InventoryUI soapInventoryUI;
+    public InventoryUI brushInventoryUI;
 
     private Dictionary<int, int> items = new Dictionary<int, int>();
 
@@ -84,6 +86,21 @@ public class InventoryManager : MonoBehaviour
         if (playInventoryUI != null)
         {
             playInventoryUI.RefreshDisplay(GetAllItems(), 6);
+        }
+    }
+
+    public void RefreshSoapUI()
+    {
+        if (soapInventoryUI != null)
+        {
+            soapInventoryUI.RefreshDisplay(GetAllItems(), 4);
+        }
+    }
+    public void RefreshBrushUI()
+    {
+        if (brushInventoryUI != null)
+        {
+            brushInventoryUI.RefreshDisplay(GetAllItems(), 5);
         }
     }
 

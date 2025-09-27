@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
     private bool canExplore = true;
     private bool canRest = true;
     private bool canFeed = true;
-    private bool canBath = true;
+    public bool canBath = true;
     public bool canPlay = true;
 
     public Image playProgressBar;
@@ -120,11 +120,29 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI feedItemDiscription;
     public TextMeshProUGUI playItemDiscription;
+    public TextMeshProUGUI soapItemDiscription;
+    public TextMeshProUGUI brushItemDiscription;
     public Image feedItemImage;
     public Image playItemImage;
+    public Image soapItemImage;
+    public Image brushItemImage;
 
     public bool isFeeding = false;
     public bool isPlaying = false;
+    public bool isSoaping;
+    public bool isBrushing;
+
+    public bool isShowering = false;
+    public Image showerItemImage;
+
+    public bool hasSoaped = false;
+    public bool hasBrushed = false;
+    private float accumulatedClean = 0f;
+
+    public ParticleSystem bathParticle;
+
+    public WindowManager windowManager;
+    public MainWindow mainWindow;
 
     private int releaseToCoin = 3000;
 
@@ -277,6 +295,11 @@ public class GameManager : MonoBehaviour
         experienceSlider.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
         experienceSliderToMain.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
 
+        if (mainWindow != null && mainWindow.dragonNameText != null && dragonHealth != null)
+        {
+            mainWindow.dragonNameText.text = dragonHealth.stats.dragonName;
+        }
+
         UpdateMainUI(dragonHealth);
         foreach (var window in otherWindows)
         {
@@ -371,24 +394,111 @@ public class GameManager : MonoBehaviour
 
     public void OnClickBath()
     {
-        AlarmManager.Instance.ShowAlarm("3차빌드 때 구현 하겠습니다");
-        return;
+        if (dragonHealth == null)
+        {
+            AlarmManager.Instance.ShowAlarm("목욕시킬 드래곤이 없어요!");
+            return;
+        }
 
-        //if (dragonHealth.isPassOut) return;
-        //if (!canBath) { Debug.Log("목욕 쿨 진행 중"); return; }
+        if (dragonHealth.isPassOut)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤이 기절했어요!");
+            return;
+        }
 
-        //var data = DataTableManger.NurtureTable.Get(4040201);
-        //if (data == null) return;
+        if (!canBath)
+        {
+            AlarmManager.Instance.ShowAlarm("아직 목욕할 수 없어요!");
+            return;
+        }
 
-        //int cleanRecovery = (int)(dragonHealth.stats.maxClean * data.REC_PERCENT / 100);
-        //dragonHealth.stats.ChangeStat(StatType.Clean, cleanRecovery);
 
-        //dragonHealth.GainExperience(data.EXPGROWTH);
+    }
 
-        //alarmText.text = "목욕 완료, 청결도 30% 회복";
+    public void GetSoap()
+    {
+        if (dragonHealth == null)
+        {
+            AlarmManager.Instance.ShowAlarm("목욕시킬 드래곤이 없어요!");
+            return;
+        }
 
-        //canBath = false;
-        //bathTimer = 0f;
+        if (dragonHealth.isPassOut)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤이 기절했어요!");
+            return;
+        }
+
+        if (!canBath)
+        {
+            AlarmManager.Instance.ShowAlarm("아직 목욕할 수 없어요!");
+            return;
+        }
+
+        isSoaping = true;
+        inventoryManager.RefreshSoapUI();
+        Debug.Log("비누 아이템만 표시됨");
+    }
+
+    public void GetBrush()
+    {
+        if (dragonHealth == null)
+        {
+            AlarmManager.Instance.ShowAlarm("목욕시킬 드래곤이 없어요!");
+            return;
+        }
+
+        if (dragonHealth.isPassOut)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤이 기절했어요!");
+            return;
+        }
+
+        if (!canBath)
+        {
+            AlarmManager.Instance.ShowAlarm("아직 목욕할 수 없어요!");
+            return;
+        }
+
+        isBrushing = true;
+        inventoryManager.RefreshBrushUI();
+        Debug.Log("브러쉬 아이템만 표시됨");
+    }
+
+    public void GetShower()
+    {
+        if (dragonHealth == null)
+        {
+            AlarmManager.Instance.ShowAlarm("샤워시킬 드래곤이 없어요!");
+            return;
+        }
+
+        if (dragonHealth.isPassOut)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤이 기절했어요!");
+            return;
+        }
+
+        if (!canBath)
+        {
+            AlarmManager.Instance.ShowAlarm("아직 목욕할 수 없어요!");
+            return;
+        }
+
+        if (!hasSoaped)
+        {
+            AlarmManager.Instance.ShowAlarm("먼저 비누를 사용해주세요!");
+            return;
+        }
+
+        if (!hasBrushed)
+        {
+            AlarmManager.Instance.ShowAlarm("먼저 브러쉬를 사용해주세요!");
+            return;
+        }
+
+        isShowering = true;
+        Debug.Log("샤워 모드 활성화");
     }
 
     public void GetPlay()
@@ -422,35 +532,6 @@ public class GameManager : MonoBehaviour
         inventoryManager.RefreshPlayUI();
 
         Debug.Log("음식 아이템만 표시됨");
-
-
-
-        //if (dragonHealth.isPassOut) return;
-        //if (!canPlay) { Debug.Log("놀아주기 쿨 진행 중"); return; }
-
-        //var data = DataTableManger.NurtureTable.Get(4050401);
-        //if (data == null) return;
-
-        //if (!CanExecuteNurture(data))
-        //{
-        //    Debug.Log("놀아주기 조건 불충족: 피로도가 75% 이상");
-        //    alarmText.text = "놀아주기 조건 불충족: 피로도가 75% 이상";
-        //    return;
-        //}
-
-        //dragonHealth.GetComponent<DragonBehavior>().PlayPlayAnimation();
-
-        //float intimacyRecovery = dragonHealth.stats.maxIntimacy * data.REC_PERCENT / 100;
-        //dragonHealth.stats.ChangeStat(StatType.Intimacy, intimacyRecovery);
-        //dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
-        //dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
-
-        //dragonHealth.GainExperience(data.EXPGROWTH);
-
-        //alarmText.text = "놀아주기 완료, 친밀도 10% 증가";
-
-        //canPlay = false;
-        //playTimer = 0f;
     }
 
     public void OnClickRest()
@@ -493,146 +574,6 @@ public class GameManager : MonoBehaviour
 
 
     }
-
-    public void OnClickTrain()
-    {
-        //if (dragonHealth.isPassOut) { Debug.Log("기절 중, 훈련 불가"); return; }
-        //if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) { Debug.Log("유아기에선 훈련 불가"); alarmText.text = "유아기에선 훈련 불가"; return; }
-
-        //var data = DataTableManger.NurtureTable.Get(4000501);
-        //if (data == null) return;
-
-        //if (!CanExecuteNurture(data))
-        //{
-        //    Debug.Log("훈련 조건 불충족: 피로도가 65% 이상");
-        //    alarmText.text = "훈련 조건 불충족: 피로도가 65% 이상";
-        //    return;
-        //}
-
-        //dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
-        //dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
-
-        //// 경험치 추가
-        //dragonHealth.GainExperience(data.EXPGROWTH);
-
-        //alarmText.text = $"훈련 완료, 경험치 {data.EXPGROWTH} 획득";
-
-        //if (Random.Range(0f, 100f) < data.RATE_INJURY)
-        //{
-        //    StatusType[] injuries = { StatusType.Scratches, StatusType.Bleeding, StatusType.Fracture };
-        //    StatusType randomInjury = injuries[Random.Range(0, injuries.Length)];
-        //    dragonHealth.status.AddStatus(randomInjury);
-        //}
-    }
-
-    //public void OnClickExplore()
-    //{
-    //    if (dragonHealth.isPassOut) { Debug.Log("기절 중, 탐험 불가"); return; }
-    //    if (!canExplore) { Debug.Log("탐험 쿨 진행 중"); return; }
-    //    if (dragonHealth.currentGrowth == DragonGrowthState.Infancy) { Debug.Log("유아기에선 탐험 불가"); alarmText.text = "유아기에선 탐험 불가"; return; }
-
-
-    //    var data = DataTableManger.NurtureTable.Get(4000502);
-    //    if (data == null) return;
-
-    //    if (!CanExecuteNurture(data))
-    //    {
-    //        Debug.Log("탐험 조건 불충족: 피로도가 65% 이상");
-    //        alarmText.text = "탐험 조건 불충족: 피로도가 65% 이상";
-    //        return;
-    //    }
-
-    //    Debug.Log("탐험 시작");
-
-    //    dragonHealth.stats.ChangeStat(StatType.Clean, -data.DEPLETE_HYG);
-    //    dragonHealth.stats.ChangeStat(StatType.Fatigue, data.RECEIVE_FTG);
-
-    //    // 경험치 추가
-    //    dragonHealth.GainExperience(data.EXPGROWTH);
-
-    //    if (Random.Range(0f, 100f) < data.RATE_DISEASE)
-    //    {
-    //        StatusType[] diseases = { StatusType.Cold, StatusType.FoodPoisoning, StatusType.HighFever, StatusType.Infection };
-    //        StatusType randomDisease = diseases[Random.Range(0, diseases.Length)];
-    //        dragonHealth.status.AddStatus(randomDisease);
-    //    }
-
-    //    var itemData = DataTableManger.ItemTable;
-
-    //    if (Random.Range(0f, 100f) > 50f) //itemData.Get(5010001).DROP_RATE
-    //    {
-    //        int random = Random.Range(0, 4);
-    //        int randomTypeDragon = Random.Range(0, 4);
-
-    //        Debug.Log("랜덤 알 생성");
-    //        alarmText.text = "탐험 성공! 랜덤 알을 얻었습니다.";
-
-    //        switch (random)
-    //        {
-    //            case 0:
-    //                Egg egg1 = new Egg
-    //                {
-    //                    eggName = "Grass Egg",
-    //                    icon = icon[random],
-    //                    dragonPrefab = dragonPrefabs[randomTypeDragon]
-    //                };
-    //                vault.AddEgg(egg1);
-    //                break;
-    //            case 1:
-    //                Egg egg2 = new Egg
-    //                {
-    //                    eggName = "FIre Egg",
-    //                    icon = icon[random],
-    //                    dragonPrefab = dragonPrefabs[randomTypeDragon + 4]
-    //                };
-    //                vault.AddEgg(egg2);
-    //                break;
-    //            case 2:
-    //                Egg egg3 = new Egg
-    //                {
-    //                    eggName = "Water Egg",
-    //                    icon = icon[random],
-    //                    dragonPrefab = dragonPrefabs[randomTypeDragon + 8]
-    //                };
-    //                vault.AddEgg(egg3);
-    //                break;
-    //            case 3:
-    //                Egg egg4 = new Egg
-    //                {
-    //                    eggName = "Wind Egg",
-    //                    icon = icon[random],
-    //                    dragonPrefab = dragonPrefabs[randomTypeDragon + 12]
-    //                };
-    //                vault.AddEgg(egg4);
-    //                break;
-    //        }
-    //    }
-
-    //    if (Random.Range(0f, 100f) > 30f)
-    //    {
-    //        var allItems = DataTableManger.ItemTable.GetAll();
-    //        if (allItems != null && allItems.Count > 0)
-    //        {
-    //            var randomItemData = allItems[Random.Range(0, allItems.Count)];
-
-
-    //            Item newItem = new Item
-    //            {
-    //                itemID = randomItemData.ITEM_ID,
-    //                itemName = DataTableManger.StringTable.Get(randomItemData.ITEM_NAME),
-    //                itemType = randomItemData.ITEM_TYPE,
-    //                icon = Resources.Load<Sprite>($"ItemImages/{randomItemData.ITEM_IMAGE}"),
-    //                description = DataTableManger.StringTable.Get(randomItemData.ITEM_DESCRIPTION)
-    //            };
-
-    //            Debug.Log($"아이템 획득: {newItem.GetName()}");
-    //            alarmText.text = $"탐험 성공! {newItem.GetName()} 을(를) 획득했습니다.";
-    //        }
-    //    }
-
-    //    canExplore = false;
-    //    exploreTimer = 0f;
-    //}
 
     bool CanExecuteNurture(NurtureTableData data)
     {
@@ -945,8 +886,100 @@ public class GameManager : MonoBehaviour
         Debug.Log($"{itemName} 사용 완료 - 친밀도 {increaseIntimacy} 증가");
     }
 
-    public void OnClickCollection()
+    public void UseSoapItem(int itemId, int amount = 1)
     {
-        AlarmManager.Instance.ShowAlarm("3차 빌드에서 구현 예정입니다.");
+        if (!inventoryManager.HasItem(itemId, amount))
+        {
+            AlarmManager.Instance.ShowAlarm("아이템이 부족합니다!");
+            return;
+        }
+
+        ItemTableData itemData = DataTableManger.ItemTable.Get(itemId);
+
+        inventoryManager.RemoveItem(itemId, amount);
+        inventoryManager.RefreshSoapUI();
+
+        NurtureTableData nurtureData = DataTableManger.NurtureTable.Get(4040201);
+
+        int cleanRecovery = itemData.EFFECT1_VALUE;
+        float cleanAmount = ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxClean) + cleanRecovery;
+
+        accumulatedClean += cleanAmount;
+        hasSoaped = true;
+
+        string itemName = itemData.StringName;
+        AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 이제 브러쉬를 사용하세요");
+
+        if (soapItemImage != null)
+        {
+            soapItemImage.enabled = false;
+        }
+
+        Debug.Log($"{itemName} 사용 완료 - 청결도 {cleanAmount} 누적");
+    }
+    public void UseBrushItem(int itemId, int amount = 1)
+    {
+        if (!hasSoaped)
+        {
+            AlarmManager.Instance.ShowAlarm("먼저 비누를 사용해주세요!");
+            return;
+        }
+
+        if (!inventoryManager.HasItem(itemId, amount))
+        {
+            AlarmManager.Instance.ShowAlarm("아이템이 부족합니다!");
+            return;
+        }
+
+        ItemTableData itemData = DataTableManger.ItemTable.Get(itemId);
+
+        inventoryManager.RemoveItem(itemId, amount);
+        inventoryManager.RefreshBrushUI();
+
+        NurtureTableData nurtureData = DataTableManger.NurtureTable.Get(4040201);
+
+        int cleanRecovery = itemData.EFFECT1_VALUE;
+        float cleanAmount = ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxClean) + cleanRecovery;
+
+        accumulatedClean += cleanAmount;
+        hasBrushed = true;
+
+        string itemName = itemData.StringName;
+        AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 이제 샤워를 하세요");
+
+        if (brushItemImage != null)
+        {
+            brushItemImage.enabled = false;
+        }
+
+        Debug.Log($"{itemName} 사용 완료 - 청결도 {cleanAmount} 누적");
+    }
+    public void CompleteShower()
+    {
+        if (!hasSoaped || !hasBrushed)
+        {
+            AlarmManager.Instance.ShowAlarm("비누와 브러쉬를 먼저 사용해주세요!");
+            return;
+        }
+
+        dragonHealth.stats.ChangeStat(StatType.Clean, accumulatedClean);
+        dragonHealth.stats.ChangeStat(StatType.Experience, accumulatedClean);
+
+        AlarmManager.Instance.ShowAlarm($"목욕 완료! 청결도 +{accumulatedClean}");
+
+        hasSoaped = false;
+        hasBrushed = false;
+        accumulatedClean = 0f;
+        isShowering = false;
+
+        canBath = false;
+        bathTimer = 0f;
+
+        if (showerItemImage != null)
+        {
+            showerItemImage.enabled = false;
+        }
+
+        Debug.Log("목욕 시퀀스 완료");
     }
 }

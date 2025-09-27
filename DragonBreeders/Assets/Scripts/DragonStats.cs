@@ -31,6 +31,8 @@ public class DragonStats
     public float experience = 1;
     public float experienceMax = 100;
 
+    public string dragonName;
+
     public void ChangeStat(StatType statType, float amount)
     {
         switch (statType)
