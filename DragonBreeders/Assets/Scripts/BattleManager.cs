@@ -283,6 +283,7 @@ public class BattleManager : MonoBehaviour
             ShowAlarm("승리하였습니다!");
             yield return new WaitForSeconds(5f);
             endBattlePanel.SetActive(true);
+            GameManager.Instance.trainingWinCount++;
 
             GetCoin();
             DisplayRewards(rewards);
@@ -295,6 +296,8 @@ public class BattleManager : MonoBehaviour
             monster.PlayWinAnimation();
             currentState = BattleState.Lost;
             ShowAlarm("패배하였습니다!");
+            GameManager.Instance.trainingLoseCount++;
+
             yield return new WaitForSeconds(5f);
             OnClickQuitOut();
         }

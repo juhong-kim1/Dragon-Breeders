@@ -96,6 +96,7 @@ public class DragonHealth : MonoBehaviour
         stats.maxClean = currentTableData.MAXHYG;
         stats.maxIntimacy = currentTableData.MAXFRN;
         stats.experienceMax = currentTableData.EVOEXP;
+        stats.dragonSpecies = currentTableData.StringSpecies;
 
         if (stats.stamina <= 0) stats.stamina = stats.maxStamina;
         if (stats.hunger <= 0) stats.hunger = stats.maxHunger;
@@ -196,6 +197,7 @@ public class DragonHealth : MonoBehaviour
         hasTriggerPassOut = true;
         status.AddStatus(StatusType.PassOut);
         stats.ChangeStat(StatType.Fatigue, -50f);
+        GameManager.Instance.passOutCount++;
         AlarmManager.Instance.ShowAlarm("드래곤이 의식을 잃었어요!");
         animator.SetTrigger(isPassOutTrigger);
     }

@@ -1,6 +1,7 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class MainWindow : GenericWindow
 {
@@ -17,6 +18,8 @@ public class MainWindow : GenericWindow
     public Button brushButton;
     public Button showerButton;
     public Button confirmNameButton;
+    public Button indexButton;
+
     public TMP_InputField nameInputField;
 
     public GameObject mapWindowObject;
@@ -31,6 +34,8 @@ public class MainWindow : GenericWindow
     [SerializeField] private GameObject bathUi;
     [SerializeField] private GameObject soapPanel;
     [SerializeField] private GameObject brushPanel;
+    [SerializeField] private GameObject indexPanel;
+
     public GameObject dragonNameInputPanel;
     public TextMeshProUGUI dragonNameText;
 
@@ -39,6 +44,8 @@ public class MainWindow : GenericWindow
     [SerializeField] private InventoryManager inventoryManager;
     public TutorialManager tutorialManager;
     public GameManager gameManager;
+
+    public IndexUI indexUI;
 
     private void Start()
     {
@@ -54,6 +61,7 @@ public class MainWindow : GenericWindow
         brushButton.onClick.AddListener(ToggleBrush);
         showerButton.onClick.AddListener(ToggleShower);
         confirmNameButton.onClick.AddListener(ConfirmDragonName);
+        indexButton.onClick.AddListener(ToggleIndex);
 
         menuPanel.SetActive(false);
         statPanel.SetActive(false);
@@ -66,6 +74,7 @@ public class MainWindow : GenericWindow
         brushPanel.SetActive(false);
         showerImageObject.SetActive(false);
         dragonNameInputPanel.SetActive(false);
+        indexPanel.SetActive(false);
     }
 
     public void OnClickStart()
@@ -191,6 +200,16 @@ public class MainWindow : GenericWindow
         }
     }
 
+    public void ToggleIndex()
+    {
+        indexPanel.SetActive(!indexPanel.activeSelf);
+
+        if (indexPanel.activeSelf && indexUI != null && GameManager.Instance.dragonIndex != null)
+        {
+            indexUI.ShowIndex(GameManager.Instance.dragonIndex);
+        }
+    }
+
     public void ToggleShower()
     {
         showerImageObject.SetActive(!showerImageObject.activeSelf);
@@ -239,6 +258,12 @@ public class MainWindow : GenericWindow
             GameManager.Instance.brushItemImage.enabled = false;
     }
 
+    public void CloseIndex()
+    {
+        if (indexPanel.activeSelf)
+            indexPanel.SetActive(false);
+    }
+
     private void ConfirmDragonName()
     {
         string inputName = nameInputField.text.Trim();
@@ -255,5 +280,4 @@ public class MainWindow : GenericWindow
 
         AlarmManager.Instance.ShowAlarm($"{inputName}! 앞으로 잘해보자~");
     }
-
 }

@@ -144,7 +144,17 @@ public class GameManager : MonoBehaviour
     public WindowManager windowManager;
     public MainWindow mainWindow;
 
+    public DragonIndex dragonIndex;
+
     private int releaseToCoin = 3000;
+
+    public int trainingWinCount = 0;
+    public int trainingLoseCount = 0;
+    public int playCount = 0;
+    public int bathCount = 0;
+    public int feedCount = 0;
+    public int restCount = 0;
+    public int passOutCount = 0;
 
     public void Awake()
     {
@@ -566,6 +576,8 @@ public class GameManager : MonoBehaviour
 
             AlarmManager.Instance.ShowAlarm("개운하다~");
 
+            restCount++;
+
             dragonHealth.GetComponent<DragonBehavior>().PlayRestAnimation();
 
             canRest = false;
@@ -650,22 +662,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GrowCheatButton()
-    {
-        if (dragonHealth == null)
-            return;
-
-        if (dragonHealth.currentGrowth == DragonGrowthState.Adult)
-        {
-            Destroy(dragonHealth.gameObject);
-            playerManager.famePoint += 100;
-            EggSlot.isDragonActive = false;
-
-        }
-
-        dragonHealth.GrowUp();
-    }
-
     public void CoolTimeResetButton()
     {
         canBath = true;
@@ -733,6 +729,11 @@ public class GameManager : MonoBehaviour
     {
         if (dragonHealth == null) return;
 
+        if (dragonIndex != null)
+        {
+            dragonIndex.RegisterDragon(dragonHealth);
+        }
+
         EggSlot.isDragonActive = false;
 
         isDragonReleased = true;
@@ -745,6 +746,14 @@ public class GameManager : MonoBehaviour
 
         AlarmManager.Instance.ShowAlarm("잘가 드래곤~");
         Debug.Log("드래곤을 방생했습니다!");
+
+        playCount = 0;
+        feedCount = 0;
+        bathCount = 0;
+        trainingLoseCount = 0;
+        trainingWinCount = 0;
+        passOutCount = 0;
+        restCount = 0;
 
         vault.AddRandomEggIfEmpty();
     }
@@ -840,6 +849,7 @@ public class GameManager : MonoBehaviour
             feedItemImage.enabled = false;
         }
 
+        feedCount++;
         Debug.Log($"{itemName} 사용 완료 - 배부름 {hungerRecovery} 회복");
     }
 
@@ -883,6 +893,7 @@ public class GameManager : MonoBehaviour
             playItemImage.enabled = false;
         }
 
+        playCount++;
         Debug.Log($"{itemName} 사용 완료 - 친밀도 {increaseIntimacy} 증가");
     }
 
@@ -979,6 +990,8 @@ public class GameManager : MonoBehaviour
         {
             showerItemImage.enabled = false;
         }
+
+        bathCount++;
 
         Debug.Log("목욕 시퀀스 완료");
     }

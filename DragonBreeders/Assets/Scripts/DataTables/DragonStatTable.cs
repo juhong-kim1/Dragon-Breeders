@@ -27,6 +27,8 @@ public class DragonStatTableData
     public string SKILL2_ANIM { get; set; }
     public int ORDER_1 { get; set; }
 
+    public string StringSpecies => DataTableManger.StringTable.Get(DRAGON_NAME);
+
     public override string ToString()
     {
         return $"{DRAGON_ID} / {DRAGON_NAME} / º∫¿Â:{GROWTH_TYPE} / HP:{MAXHP}";

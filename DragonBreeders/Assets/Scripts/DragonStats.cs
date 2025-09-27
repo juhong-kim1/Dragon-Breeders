@@ -32,6 +32,7 @@ public class DragonStats
     public float experienceMax = 100;
 
     public string dragonName;
+    public string dragonSpecies;
 
     public void ChangeStat(StatType statType, float amount)
     {
