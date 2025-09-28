@@ -278,6 +278,8 @@ public class MainWindow : GenericWindow
 
         dragonNameInputPanel.SetActive(false);
 
+        nameInputField.text = string.Empty;
+
         AlarmManager.Instance.ShowAlarm($"{inputName}! 앞으로 잘해보자~");
     }
 }

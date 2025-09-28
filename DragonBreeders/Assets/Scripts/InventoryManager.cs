@@ -146,4 +146,10 @@ public class InventoryManager : MonoBehaviour
         AddItem(5060001, 99);
         AddItem(5050001, 99);
     }
+
+    public void LoadItems(Dictionary<int, int> loadedItems)
+    {
+        items.Clear();
+        items = new Dictionary<int, int>(loadedItems);
+    }
 }

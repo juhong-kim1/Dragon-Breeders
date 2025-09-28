@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public enum DragonGrowthState
@@ -51,6 +50,14 @@ public class DragonHealth : MonoBehaviour
     public ParticleSystem fireBreath;
     public ParticleSystem fire;
 
+    private string infancyText = "유아기";
+    private string growingUpText = "성장기";
+    private string maturityText = "성숙기";
+    private string adultText = "성인";
+    public string currentGrowthText;
+
+    public bool isLoadedFromSave = false;
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -61,6 +68,11 @@ public class DragonHealth : MonoBehaviour
         }
 
         ApplyTableData();
+
+        if (!isLoadedFromSave)
+        {
+            currentGrowthText = infancyText;
+        }
     }
 
     private void Update()
@@ -78,9 +90,7 @@ public class DragonHealth : MonoBehaviour
 
         if (currentTableData == null)
         {
-
             Debug.LogError($"테이블 데이터를 찾을 수 없습니다: Species:{currentSpeciesType}, Element:{currentElementType}, Growth:{growthType}");
-
             targetScale = Vector3.one * 0.2f;
             return;
         }
@@ -95,7 +105,12 @@ public class DragonHealth : MonoBehaviour
         stats.maxHunger = currentTableData.MAXFOOD;
         stats.maxClean = currentTableData.MAXHYG;
         stats.maxIntimacy = currentTableData.MAXFRN;
-        stats.experienceMax = currentTableData.EVOEXP;
+
+        if (!isLoadedFromSave)
+        {
+            stats.experienceMax = currentTableData.EVOEXP;
+        }
+
         stats.dragonSpecies = currentTableData.StringSpecies;
 
         if (stats.stamina <= 0) stats.stamina = stats.maxStamina;
@@ -142,9 +157,6 @@ public class DragonHealth : MonoBehaviour
 
     private void UpdateStats()
     {
-        //if (isPassOut)
-        //    return;
-
         hungryTimer += Time.deltaTime;
         if (hungryTimer >= hungryMaxTime)
         {
@@ -247,6 +259,22 @@ public class DragonHealth : MonoBehaviour
         else 
         {
             GameManager.Instance.releaseButton.gameObject.SetActive(true);
+        }
+
+        switch (currentGrowth)
+        {
+            case DragonGrowthState.Infancy:
+                currentGrowthText = infancyText;
+                break;
+            case DragonGrowthState.GrowingUp:
+                currentGrowthText = growingUpText;
+                break;
+            case DragonGrowthState.Maturity:
+                currentGrowthText = maturityText;
+                break;
+            case DragonGrowthState.Adult:
+                currentGrowthText = adultText;
+                break;
         }
     }
 

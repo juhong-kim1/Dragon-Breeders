@@ -107,6 +107,9 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             {
                 if (gameManager != null)
                 {
+                    newHealth.currentSpeciesType = egg.speciesType;
+                    newHealth.currentElementType = egg.elementType;
+
                     gameManager.dragonHealth = newHealth;
                 }
             }

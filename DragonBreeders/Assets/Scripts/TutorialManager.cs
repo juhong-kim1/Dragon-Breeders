@@ -30,7 +30,7 @@ public class TutorialManager : MonoBehaviour
 
     public int currentStep = 0;
     public bool tutorialActive = false;
-    private bool isTutorialClear = false;
+    public bool isTutorialClear = false;
 
     public void Awake()
     {

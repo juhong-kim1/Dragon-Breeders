@@ -156,6 +156,8 @@ public class GameManager : MonoBehaviour
     public int restCount = 0;
     public int passOutCount = 0;
 
+    public Shop shop;
+
     public void Awake()
     {
         if (Instance == null)
@@ -171,6 +173,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        LoadGame();
+
         releaseButton.gameObject.SetActive(false);
         alarmPanel.gameObject.SetActive(false);
 
@@ -179,6 +183,19 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SaveGame();
+            Debug.Log("S키로 수동 저장");
+        }
+
+        // 테스트용 로드 (L키)
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            LoadGame();
+            Debug.Log("L키로 수동 로드");
+        }
+
         CheckFPS();
 
         if (dragonHealth == null)
@@ -279,7 +296,7 @@ public class GameManager : MonoBehaviour
         var stats = dragonHealth.stats;
 
 
-        growthStateText.text = $"{dragonHealth.currentGrowth}";
+        growthStateText.text = $"{dragonHealth.currentGrowthText}";
 
         currentStaminaValue.text = $"{(int)stats.stamina}";
         currentFatigueValue.text = $"{(int)stats.fatigue}";
@@ -287,8 +304,6 @@ public class GameManager : MonoBehaviour
         currentIntimacyValue.text = $"{(int)stats.intimacy}";
         currentCleanValue.text = $"{(int)stats.clean}";
         currentExperienceValue.text = $"{(int)stats.experience}";
-
-
 
         maxStaminaValue.text = $"{(int)stats.maxStamina}";
         maxFatigueValue.text = $"{(int)stats.maxFatigue}";
@@ -322,7 +337,7 @@ public class GameManager : MonoBehaviour
     {
         var stats = dragon.stats;
 
-        growthStateText.text = $"{dragon.currentGrowth}";
+        growthStateText.text = $"{dragon.currentGrowthText}";
 
         currentStaminaValue.text = $"{(int)stats.stamina}";
         currentFatigueValue.text = $"{(int)stats.fatigue}";
@@ -628,7 +643,9 @@ public class GameManager : MonoBehaviour
                 {
                     eggName = "Grass Egg",
                     icon = icon[random],
-                    dragonPrefab = dragonPrefabs[randomTypeDragon]
+                    dragonPrefab = dragonPrefabs[randomTypeDragon],
+                    speciesType = randomTypeDragon + 1,
+                    elementType = 1
                 };
                 vault.AddEgg(egg1);
                 break;
@@ -637,7 +654,9 @@ public class GameManager : MonoBehaviour
                 {
                     eggName = "FIre Egg",
                     icon = icon[random],
-                    dragonPrefab = dragonPrefabs[randomTypeDragon + 4]
+                    dragonPrefab = dragonPrefabs[randomTypeDragon + 4],
+                    speciesType = randomTypeDragon + 1,
+                    elementType = 2
                 };
                 vault.AddEgg(egg2);
                 break;
@@ -646,7 +665,9 @@ public class GameManager : MonoBehaviour
                 {
                     eggName = "Water Egg",
                     icon = icon[random],
-                    dragonPrefab = dragonPrefabs[randomTypeDragon + 8]
+                    dragonPrefab = dragonPrefabs[randomTypeDragon + 8],
+                    speciesType = randomTypeDragon + 1,
+                    elementType = 3
                 };
                 vault.AddEgg(egg3);
                 break;
@@ -655,7 +676,9 @@ public class GameManager : MonoBehaviour
                 {
                     eggName = "Wind Egg",
                     icon = icon[random],
-                    dragonPrefab = dragonPrefabs[randomTypeDragon + 12]
+                    dragonPrefab = dragonPrefabs[randomTypeDragon + 12],
+                    speciesType = randomTypeDragon + 1,
+                    elementType = 4
                 };
                 vault.AddEgg(egg4);
                 break;
@@ -747,6 +770,8 @@ public class GameManager : MonoBehaviour
         AlarmManager.Instance.ShowAlarm("잘가 드래곤~");
         Debug.Log("드래곤을 방생했습니다!");
 
+        mainWindow.dragonNameText.text = string.Empty;
+
         playCount = 0;
         feedCount = 0;
         bathCount = 0;
@@ -786,9 +811,6 @@ public class GameManager : MonoBehaviour
 
         dragonHealth.transform.localPosition = new Vector3(-0.6f, 0f, 13f);
         dragonHealth.transform.localRotation = Quaternion.Euler(0f, 210f, 0f);
-
-        
-
     }
 
     public void MoveSceneOnOff()
@@ -833,7 +855,7 @@ public class GameManager : MonoBehaviour
 
         int hungerRecovery = itemData.EFFECT1_VALUE;
 
-        dragonHealth.stats.ChangeStat(StatType.Hunger, ((nurtureData.REC_PERCENT/100f) * dragonHealth.stats.maxHunger) + hungerRecovery);
+        dragonHealth.stats.ChangeStat(StatType.Hunger, ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery);
         dragonHealth.stats.ChangeStat(StatType.Experience, ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery);
         string itemName = itemData.StringName;
         AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 배부름 +{((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery}");
@@ -841,8 +863,8 @@ public class GameManager : MonoBehaviour
         canFeed = false;
         feedTimer = 0f;
 
-        if(TutorialManager.Instance.currentStep == 10)
-        TutorialManager.Instance.NextStep();
+        if (TutorialManager.Instance.currentStep == 10)
+            TutorialManager.Instance.NextStep();
 
         if (feedItemImage != null)
         {
@@ -875,12 +897,12 @@ public class GameManager : MonoBehaviour
         NurtureTableData nurtureData = DataTableManger.NurtureTable.Get(4050401);
 
         int increaseIntimacy = itemData.EFFECT1_VALUE;
-        dragonHealth.stats.ChangeStat(StatType.Intimacy, ((nurtureData.REC_PERCENT/100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
+        dragonHealth.stats.ChangeStat(StatType.Intimacy, ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
         dragonHealth.stats.ChangeStat(StatType.Fatigue, nurtureData.RECEIVE_FTG);
         dragonHealth.stats.ChangeStat(StatType.Experience, ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
 
         if (TutorialManager.Instance.currentStep == 12)
-        TutorialManager.Instance.NextStep();
+            TutorialManager.Instance.NextStep();
 
         string itemName = itemData.StringName;
         AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 친밀도 +{((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy}");
@@ -994,5 +1016,181 @@ public class GameManager : MonoBehaviour
         bathCount++;
 
         Debug.Log("목욕 시퀀스 완료");
+    }
+
+    public void SaveGame()
+    {
+        var saveData = SaveLoadManager.Data;
+
+        saveData.InventoryItems = inventoryManager.GetAllItems();
+
+        saveData.Coin = playerManager.coin;
+
+        saveData.DragonIndex = dragonIndex.GetAllEntries();
+
+        if (dragonHealth != null)
+        {
+            saveData.CurrentDragon = new SaveDragonData(dragonHealth, this);
+        }
+
+        saveData.EggVault = new List<SaveEggData>();
+        foreach (var slot in vault.slots)
+        {
+            if (slot != null && !slot.IsEmpty())
+            {
+                saveData.EggVault.Add(new SaveEggData(slot.egg));
+            }
+        }
+
+        if (shop != null)
+        {
+            shop.SaveShopData(saveData.ShopItems);
+        }
+
+        if (TutorialManager.Instance != null)
+        {
+            saveData.TutorialStep = TutorialManager.Instance.currentStep;
+            saveData.TutorialCompleted = TutorialManager.Instance.isTutorialClear;
+        }
+
+        saveData.LastSaveTime = System.DateTime.Now.ToBinary().ToString();
+
+        bool success = SaveLoadManager.Save();
+    }
+
+    public void LoadGame()
+    {
+        bool success = SaveLoadManager.Load();
+
+        if (!success)
+        {
+            return;
+        }
+
+        var saveData = SaveLoadManager.Data;
+
+        if (saveData.InventoryItems != null)
+        {
+            inventoryManager.LoadItems(saveData.InventoryItems);
+        }
+
+        playerManager.coin = saveData.Coin;
+        playerManager.UpdateCoinUI();
+
+        if (saveData.DragonIndex != null)
+        {
+            dragonIndex.LoadEntries(saveData.DragonIndex);
+        }
+
+        if (saveData.CurrentDragon != null)
+        {
+            dragonHealth = saveData.CurrentDragon.CreateDragon(this);
+        }
+
+        if (saveData.EggVault != null)
+        {
+            LoadEggVault(saveData.EggVault);
+        }
+
+        if (shop != null)
+        {
+            shop.LoadShopData(saveData.ShopItems);
+        }
+
+        if (!string.IsNullOrEmpty(saveData.LastSaveTime) && dragonHealth != null)
+        {
+            CalculateOfflineProgress(saveData.LastSaveTime);
+        }
+
+        if (TutorialManager.Instance != null)
+        {
+            TutorialManager.Instance.currentStep = saveData.TutorialStep;
+            TutorialManager.Instance.isTutorialClear = saveData.TutorialCompleted;
+
+            if (!saveData.TutorialCompleted && saveData.TutorialStep > 0)
+            {
+                TutorialManager.Instance.tutorialActive = true;
+                TutorialManager.Instance.tutorialPanel.SetActive(true);
+            }
+        }
+    }
+
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+        {
+            SaveGame();
+        }
+    }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus)
+        {
+            SaveGame();
+        }
+    }
+
+    private void LoadEggVault(List<SaveEggData> eggDataList)
+    {
+        foreach (var slot in vault.slots)
+        {
+            if (slot != null)
+            {
+                slot.ClearEgg();
+            }
+        }
+
+        for (int i = 0; i < eggDataList.Count && i < vault.slots.Length; i++)
+        {
+            var eggData = eggDataList[i];
+            var egg = eggData.CreateEgg(this);
+
+            if (egg != null && vault.slots[i] != null)
+            {
+                vault.slots[i].SetEgg(egg);
+            }
+        }
+
+        Debug.Log($"{eggDataList.Count}개의 알을 로드했습니다.");
+    }
+
+    private void CalculateOfflineProgress(string lastSaveTimeString)
+    {
+        try
+        {
+            long lastSaveTimeBinary = System.Convert.ToInt64(lastSaveTimeString);
+            System.DateTime lastSaveTime = System.DateTime.FromBinary(lastSaveTimeBinary);
+            System.DateTime currentTime = System.DateTime.Now;
+
+            double offlineMinutes = (currentTime - lastSaveTime).TotalMinutes;
+
+            Debug.Log($"오프라인 시간: {offlineMinutes:F1}분");
+
+            // 60초마다 감소하는 걸 분 단위로 계산
+            int decreaseCycles = (int)(offlineMinutes);
+
+            if (decreaseCycles > 0)
+            {
+                var tableData = dragonHealth.currentTableData;
+
+                // 배고픔, 청결도, 친밀도 감소
+                dragonHealth.stats.ChangeStat(StatType.Hunger, -tableData.DEP_FOOD * decreaseCycles);
+                dragonHealth.stats.ChangeStat(StatType.Clean, -tableData.DEP_HYG * decreaseCycles);
+                dragonHealth.stats.ChangeStat(StatType.Intimacy, -tableData.DEP_FRN * decreaseCycles);
+
+                // 배고픔이 0보다 크면 체력 회복
+                if (dragonHealth.stats.hunger > 0)
+                {
+                    dragonHealth.stats.ChangeStat(StatType.Stamina, tableData.DEP_FOOD * decreaseCycles);
+                }
+
+                AlarmManager.Instance.ShowAlarm($"오프라인 중 {decreaseCycles}분 경과했습니다.");
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"오프라인 시간 계산 오류: {e.Message}");
+        }
     }
 }

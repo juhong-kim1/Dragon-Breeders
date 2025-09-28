@@ -22,6 +22,8 @@ public class DragonEntry
     public int restCount;
     public int passOutCount;
 
+    public DragonEntry() { }
+
     public DragonEntry(DragonHealth dragon)
     {
         customName = dragon.stats.dragonName;
@@ -67,5 +69,12 @@ public class DragonIndex : MonoBehaviour
     public int GetIndexCount()
     {
         return indexedDragons.Count;
+    }
+
+    public void LoadEntries(List<DragonEntry> loadedEntries)
+    {
+        indexedDragons.Clear();
+        indexedDragons.AddRange(loadedEntries);
+        Debug.Log($"도감 로드 완료: {loadedEntries.Count}마리의 드래곤");
     }
 }

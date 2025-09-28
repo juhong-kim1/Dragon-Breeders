@@ -17,7 +17,9 @@ public class EggVaultTest : MonoBehaviour
         {
             eggName = "Grass Egg",
             icon = grassEggIcon,
-            dragonPrefab = dragonPrefab
+            dragonPrefab = dragonPrefab,
+            speciesType = 1,
+            elementType = 1
         };
 
         vault.AddEgg(firstEgg);

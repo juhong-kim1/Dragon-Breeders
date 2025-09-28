@@ -318,7 +318,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 11.966827, y: -35}
+  m_AnchoredPosition: {x: 11.966797, y: -35}
   m_SizeDelta: {x: 15, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7752654400746988128
@@ -399,8 +399,10 @@ MonoBehaviour:
   purchaseButtonText: {fileID: 2733052830462657352}
   purchaseButton: {fileID: 6883986303177718549}
   itemDiscription: {fileID: 0}
+  itemPrice: 0
   inventoryManager: {fileID: 0}
   playerManager: {fileID: 0}
+  isPurchased: 0
 --- !u!114 &4345648614936625821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -632,35 +634,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3660774565416465926, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3660774565416465926, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3660774565416465926, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 3660774565416465926, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 8531085174374344774, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8531085174374344774, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8531085174374344774, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 8531085174374344774, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -12.8478
       objectReference: {fileID: 0}
     - target: {fileID: 8891127145396447445, guid: 09c3d3fd92f05444d9b2dffdfca6d061, type: 3}
       propertyPath: m_Pivot.x
