@@ -166,20 +166,27 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             {
                 Debug.Log("샤워 시작!");
                 GameManager.Instance.bathParticle.Play();
+                SoundManager.Instance.PlaySFX(SoundManager.Instance.bathAudioClip);
             }
             else if (currentItem != null)
             {
                 int itemType = currentItem.GetItemType();
-                if (itemType == 6) Debug.Log("놀아주기 시작!");
+                if (itemType == 6)
+                {
+                    SoundManager.Instance.PlaySFX(SoundManager.Instance.playAudioClip);
+                    Debug.Log("놀아주기 시작!");
+                }
                 else if (itemType == 4)
                 {
                     Debug.Log("비누질 시작!");
                     GameManager.Instance.bathParticle.Play();
+                    SoundManager.Instance.PlaySFX(SoundManager.Instance.bathAudioClip);
                 }
                 else if (itemType == 5)
                 {
                     Debug.Log("브러싱 시작!");
                     GameManager.Instance.bathParticle.Play();
+                    SoundManager.Instance.PlaySFX(SoundManager.Instance.bathAudioClip);
                 }
             }
         }

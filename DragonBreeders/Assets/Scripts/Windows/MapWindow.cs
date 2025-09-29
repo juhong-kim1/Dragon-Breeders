@@ -100,6 +100,8 @@ public class MapWindow : GenericWindow
     {
         GameManager.Instance.MoveBattleScene();
 
+        SoundManager.Instance.PlayBGM(SoundManager.Instance.BattleBGM);
+
         if(TutorialManager.Instance.currentStep == 17)
         TutorialManager.Instance.NextStep();
     }

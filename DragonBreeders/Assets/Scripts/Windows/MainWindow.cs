@@ -82,6 +82,8 @@ public class MainWindow : GenericWindow
         manager.Open(Windows.Start);
         gameManager.alarmPanel.gameObject.SetActive(false);
 
+        SoundManager.Instance.PlayBGM(SoundManager.Instance.StartBGM);
+
     }
 
     public void OnClickMap()
@@ -168,6 +170,8 @@ public class MainWindow : GenericWindow
     { 
         downUi.SetActive(false);
         bathUi.SetActive(true);
+        playPanel.SetActive(false);
+        feedPanel.SetActive(false);
     }
 
     public void CloseBath()
@@ -182,6 +186,7 @@ public class MainWindow : GenericWindow
     {
         soapPanel.SetActive(!soapPanel.activeSelf);
         CloseBrush();
+        showerImageObject.SetActive(false);
 
         if (soapPanel.activeSelf)
         {
@@ -193,6 +198,7 @@ public class MainWindow : GenericWindow
     {
         brushPanel.SetActive(!brushPanel.activeSelf);
         CloseSoap();
+        showerImageObject.SetActive(false);
 
         if (brushPanel.activeSelf)
         {
@@ -228,6 +234,9 @@ public class MainWindow : GenericWindow
         {
             GameManager.Instance.isShowering = false;
         }
+
+        soapPanel.SetActive(false);
+        brushPanel.SetActive(false);
 
         GameManager.Instance.isSoaping = false;
         if (GameManager.Instance.soapItemImage != null)

@@ -188,6 +188,7 @@ public class Shop : MonoBehaviour
             if (slot != null)
             {
                 slot.isPurchased = false;
+                slot.purchaseButtonText.text = "±¸¸Å";
                 slot.ClearSlot();
             }
         }

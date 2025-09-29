@@ -189,7 +189,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("S키로 수동 저장");
         }
 
-        // 테스트용 로드 (L키)
         if (Input.GetKeyDown(KeyCode.L))
         {
             LoadGame();
@@ -367,18 +366,21 @@ public class GameManager : MonoBehaviour
         if (dragonHealth == null)
         {
             AlarmManager.Instance.ShowAlarm("밥 먹일 드래곤이 없어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.isPassOut)
         {
             AlarmManager.Instance.ShowAlarm("드래곤이 죽기직전인가봐요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!canFeed)
         {
             AlarmManager.Instance.ShowAlarm("방금 밥먹었어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
@@ -422,18 +424,21 @@ public class GameManager : MonoBehaviour
         if (dragonHealth == null)
         {
             AlarmManager.Instance.ShowAlarm("목욕시킬 드래곤이 없어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.isPassOut)
         {
             AlarmManager.Instance.ShowAlarm("드래곤이 기절했어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!canBath)
         {
             AlarmManager.Instance.ShowAlarm("아직 목욕할 수 없어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
@@ -445,18 +450,21 @@ public class GameManager : MonoBehaviour
         if (dragonHealth == null)
         {
             AlarmManager.Instance.ShowAlarm("목욕시킬 드래곤이 없어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.isPassOut)
         {
             AlarmManager.Instance.ShowAlarm("드래곤이 기절했어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!canBath)
         {
             AlarmManager.Instance.ShowAlarm("아직 목욕할 수 없어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
@@ -470,18 +478,21 @@ public class GameManager : MonoBehaviour
         if (dragonHealth == null)
         {
             AlarmManager.Instance.ShowAlarm("목욕시킬 드래곤이 없어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.isPassOut)
         {
             AlarmManager.Instance.ShowAlarm("드래곤이 기절했어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!canBath)
         {
             AlarmManager.Instance.ShowAlarm("아직 목욕할 수 없어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
@@ -495,30 +506,35 @@ public class GameManager : MonoBehaviour
         if (dragonHealth == null)
         {
             AlarmManager.Instance.ShowAlarm("샤워시킬 드래곤이 없어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.isPassOut)
         {
             AlarmManager.Instance.ShowAlarm("드래곤이 기절했어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!canBath)
         {
             AlarmManager.Instance.ShowAlarm("아직 목욕할 수 없어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!hasSoaped)
         {
             AlarmManager.Instance.ShowAlarm("먼저 비누를 사용해주세요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!hasBrushed)
         {
             AlarmManager.Instance.ShowAlarm("먼저 브러쉬를 사용해주세요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
@@ -531,23 +547,28 @@ public class GameManager : MonoBehaviour
         if (dragonHealth == null)
         {
             AlarmManager.Instance.ShowAlarm("드래곤이랑 같이 노는게 좋지 않을까요?!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.isPassOut)
         {
             AlarmManager.Instance.ShowAlarm("드래곤이 KO 상태네요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.stats.FullFatigue())
         {
             AlarmManager.Instance.ShowAlarm("드래곤이 과로했습니다..");
+            SoundManager.Instance.PlayErrorSound();
+            return;
         }
 
         if (!canPlay)
         {
             AlarmManager.Instance.ShowAlarm("아직 놀 수 없어요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
@@ -561,15 +582,20 @@ public class GameManager : MonoBehaviour
 
     public void OnClickRest()
     {
-        if (!canRest) { Debug.Log("휴식 쿨 진행 중"); return; }
-
-        if (dragonHealth.isPassOut)
+        if (!canRest)
         {
-            dragonHealth.Recover();
-
-            canRest = false;
-            restTimer = 0f;
+            Debug.Log("휴식 쿨 진행 중");
+            SoundManager.Instance.PlayErrorSound();
+            return;
         }
+
+        //if (dragonHealth.isPassOut)
+        //{
+        //    dragonHealth.Recover();
+
+        //    canRest = false;
+        //    restTimer = 0f;
+        //}
         else
         {
             var data = DataTableManger.NurtureTable.Get(4020301);
@@ -580,8 +606,11 @@ public class GameManager : MonoBehaviour
                 Debug.Log("휴식 조건 불충족: 피로도가 80% 미만");
 
                 AlarmManager.Instance.ShowAlarm("휴식하기엔 아직 팔팔합니다!");
+                SoundManager.Instance.PlayErrorSound();
                 return;
             }
+
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.restAudioClip);
 
             float fatigueRecovery = dragonHealth.stats.maxFatigue * data.REC_PERCENT / 100;
             dragonHealth.stats.ChangeStat(StatType.Fatigue, -fatigueRecovery);
@@ -837,6 +866,7 @@ public class GameManager : MonoBehaviour
         if (!inventoryManager.HasItem(itemId, amount))
         {
             AlarmManager.Instance.ShowAlarm("아이템이 부족합니다!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
@@ -845,6 +875,7 @@ public class GameManager : MonoBehaviour
         if (dragonHealth.stats.hunger >= dragonHealth.stats.maxHunger)
         {
             AlarmManager.Instance.ShowAlarm("배가 터져 죽을것같아요");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
@@ -859,6 +890,8 @@ public class GameManager : MonoBehaviour
         dragonHealth.stats.ChangeStat(StatType.Experience, ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery);
         string itemName = itemData.StringName;
         AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 배부름 +{((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery}");
+
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.eatAudioClip);
 
         canFeed = false;
         feedTimer = 0f;
@@ -880,6 +913,7 @@ public class GameManager : MonoBehaviour
         if (!inventoryManager.HasItem(itemId, amount))
         {
             AlarmManager.Instance.ShowAlarm("아이템이 부족합니다!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
@@ -888,6 +922,7 @@ public class GameManager : MonoBehaviour
         if (dragonHealth.stats.intimacy >= dragonHealth.stats.maxIntimacy)
         {
             AlarmManager.Instance.ShowAlarm("이미 너무 친합니다!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
@@ -900,6 +935,8 @@ public class GameManager : MonoBehaviour
         dragonHealth.stats.ChangeStat(StatType.Intimacy, ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
         dragonHealth.stats.ChangeStat(StatType.Fatigue, nurtureData.RECEIVE_FTG);
         dragonHealth.stats.ChangeStat(StatType.Experience, ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
+
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.successAudioClip);
 
         if (TutorialManager.Instance.currentStep == 12)
             TutorialManager.Instance.NextStep();
@@ -924,6 +961,7 @@ public class GameManager : MonoBehaviour
         if (!inventoryManager.HasItem(itemId, amount))
         {
             AlarmManager.Instance.ShowAlarm("아이템이 부족합니다!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
@@ -955,12 +993,14 @@ public class GameManager : MonoBehaviour
         if (!hasSoaped)
         {
             AlarmManager.Instance.ShowAlarm("먼저 비누를 사용해주세요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!inventoryManager.HasItem(itemId, amount))
         {
             AlarmManager.Instance.ShowAlarm("아이템이 부족합니다!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
@@ -992,6 +1032,7 @@ public class GameManager : MonoBehaviour
         if (!hasSoaped || !hasBrushed)
         {
             AlarmManager.Instance.ShowAlarm("비누와 브러쉬를 먼저 사용해주세요!");
+            SoundManager.Instance.PlayErrorSound();
             return;
         }
 
@@ -1088,6 +1129,15 @@ public class GameManager : MonoBehaviour
         if (saveData.CurrentDragon != null)
         {
             dragonHealth = saveData.CurrentDragon.CreateDragon(this);
+
+            if (dragonHealth != null)
+            {
+                var behavior = dragonHealth.GetComponent<DragonBehavior>();
+                if (behavior != null)
+                {
+                    behavior.SetTouchUI(dragonFeedback);
+                }
+            }
         }
 
         if (saveData.EggVault != null)
@@ -1164,76 +1214,45 @@ public class GameManager : MonoBehaviour
         {
             if (string.IsNullOrEmpty(lastSaveTimeString))
             {
-                Debug.Log("CalculateOfflineProgress: LastSaveTime이 비어있음");
                 return;
             }
-
-            Debug.Log($"=== 오프라인 계산 시작 ===");
-            Debug.Log($"LastSaveTimeString: {lastSaveTimeString}");
 
             long lastSaveTimeBinary = System.Convert.ToInt64(lastSaveTimeString);
             System.DateTime lastSaveTime = System.DateTime.FromBinary(lastSaveTimeBinary);
             System.DateTime currentTime = System.DateTime.Now;
 
-            Debug.Log($"마지막 저장 시간: {lastSaveTime:yyyy-MM-dd HH:mm:ss}");
-            Debug.Log($"현재 시간: {currentTime:yyyy-MM-dd HH:mm:ss}");
 
             double offlineMinutes = (currentTime - lastSaveTime).TotalMinutes;
-            Debug.Log($"오프라인 경과 시간: {offlineMinutes:F2}분");
 
             if (offlineMinutes <= 0)
             {
-                Debug.Log("오프라인 시간이 0 이하 - 시간 조작 의심 또는 시간 오류");
                 return;
             }
 
             if (dragonHealth == null)
             {
-                Debug.LogWarning("dragonHealth가 null입니다");
                 return;
             }
 
             if (dragonHealth.currentTableData == null)
             {
-                Debug.LogWarning("dragonHealth.currentTableData가 null입니다");
                 return;
             }
 
             int decreaseCycles = (int)(offlineMinutes);
-            Debug.Log($"감소 사이클 횟수: {decreaseCycles}회");
 
             if (decreaseCycles > 0)
             {
                 var tableData = dragonHealth.currentTableData;
 
-                Debug.Log($"=== 감소 전 스탯 ===");
-                Debug.Log($"배고픔: {dragonHealth.stats.hunger}/{dragonHealth.stats.maxHunger}");
-                Debug.Log($"청결도: {dragonHealth.stats.clean}/{dragonHealth.stats.maxClean}");
-                Debug.Log($"친밀도: {dragonHealth.stats.intimacy}/{dragonHealth.stats.maxIntimacy}");
-                Debug.Log($"체력: {dragonHealth.stats.stamina}/{dragonHealth.stats.maxStamina}");
-
-                Debug.Log($"=== 테이블 데이터 ===");
-                Debug.Log($"DEP_FOOD: {tableData.DEP_FOOD}");
-                Debug.Log($"DEP_HYG: {tableData.DEP_HYG}");
-                Debug.Log($"DEP_FRN: {tableData.DEP_FRN}");
-
                 float hungerDecrease = tableData.DEP_FOOD * decreaseCycles;
                 float cleanDecrease = tableData.DEP_HYG * decreaseCycles;
                 float intimacyDecrease = tableData.DEP_FRN * decreaseCycles;
 
-                Debug.Log($"=== 계산된 감소량 ===");
-                Debug.Log($"배고픔 감소: -{hungerDecrease}");
-                Debug.Log($"청결도 감소: -{cleanDecrease}");
-                Debug.Log($"친밀도 감소: -{intimacyDecrease}");
 
                 dragonHealth.stats.ChangeStat(StatType.Hunger, -hungerDecrease);
                 dragonHealth.stats.ChangeStat(StatType.Clean, -cleanDecrease);
                 dragonHealth.stats.ChangeStat(StatType.Intimacy, -intimacyDecrease);
-
-                Debug.Log($"=== 감소 후 스탯 ===");
-                Debug.Log($"배고픔: {dragonHealth.stats.hunger}/{dragonHealth.stats.maxHunger}");
-                Debug.Log($"청결도: {dragonHealth.stats.clean}/{dragonHealth.stats.maxClean}");
-                Debug.Log($"친밀도: {dragonHealth.stats.intimacy}/{dragonHealth.stats.maxIntimacy}");
 
                 if (dragonHealth.stats.hunger > 0)
                 {
@@ -1244,15 +1263,11 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("배고픔이 0 이하이므로 체력 회복 없음");
-                }
 
-                AlarmManager.Instance.ShowAlarm($"오프라인 중 {decreaseCycles}분 경과했습니다.");
-                Debug.Log($"=== 오프라인 계산 완료 ===");
+                }
             }
             else
             {
-                Debug.Log("decreaseCycles가 0 이하 - 계산 불필요");
             }
         }
         catch (System.Exception e)

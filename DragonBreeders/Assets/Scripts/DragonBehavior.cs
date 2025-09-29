@@ -82,6 +82,7 @@ public class DragonBehavior : MonoBehaviour
                     string message = touchMessage[Random.Range(0, touchMessage.Length)];
                     dragonFeedback.text = message;
 
+                    SoundManager.Instance.PlaySFX(SoundManager.Instance.dragonScreamAudioClip);
 
                     RectTransform rect = dragonFeedback.GetComponent<RectTransform>();
                     float x = Random.Range(-15f, 15f);

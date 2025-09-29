@@ -281,9 +281,13 @@ public class BattleManager : MonoBehaviour
             monster.PlayDieAnimation();
             GameManager.Instance.playerManager.UpdateCoinUI();
             ShowAlarm("승리하였습니다!");
+
             yield return new WaitForSeconds(5f);
             endBattlePanel.SetActive(true);
             GameManager.Instance.trainingWinCount++;
+
+            SoundManager.Instance.StopBGM();
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.battleWinAudioClip);
 
             GetCoin();
             DisplayRewards(rewards);
@@ -298,7 +302,11 @@ public class BattleManager : MonoBehaviour
             ShowAlarm("패배하였습니다!");
             GameManager.Instance.trainingLoseCount++;
 
+            SoundManager.Instance.StopBGM();
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.battleLoseAudioClip);
+
             yield return new WaitForSeconds(5f);
+            SoundManager.Instance.RandomMainBGMPlay();
             OnClickQuitOut();
         }
     }
@@ -524,6 +532,8 @@ public class BattleManager : MonoBehaviour
         GameManager.Instance.isFighting = false;
         GameManager.Instance.dragonHealth.gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
         GameManager.Instance.dragonHealth.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+
+        SoundManager.Instance.RandomMainBGMPlay();
 
         GameManager.Instance.MoveSceneOnOff();
         SceneManager.UnloadSceneAsync("BattleScene");
