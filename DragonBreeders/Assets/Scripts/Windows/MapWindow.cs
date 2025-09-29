@@ -102,17 +102,14 @@ public class MapWindow : GenericWindow
     public void OnClickBack()
     {
         manager.Open(Windows.Game);
-
-        if (tutorialManager != null && GameManager.Instance.dragonHealth != null)
-            tutorialManager.OnWindowOpened(mainWindowObject);
     }
 
     public void OnClickEgg()
     {
         manager.Open(Windows.EggVault);
 
-        if (tutorialManager != null)
-            tutorialManager.OnWindowOpened(eggVaultWindowObject);
+        if (TutorialManager.Instance.currentStep == 3 && TutorialManager.Instance.tutorialActive)
+            TutorialManager.Instance.NextStep();
     }
 
     public void OnClickTrainingStart()

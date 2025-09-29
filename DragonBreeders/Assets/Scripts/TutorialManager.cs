@@ -116,50 +116,37 @@ public class TutorialManager : MonoBehaviour
             case 1:
                 break;
             case 2:
-                Debug.Log("step 2");
-                if (window == mapWindow)
-                    NextStep();
                 break;
             case 3:
-                Debug.Log("step 3");
-                if (window == eggVaultWindow)
-                    NextStep();
                 break;
             case 4:
-                Debug.Log("step 4");
                 break;
             case 5: // 알 깨기
-                Debug.Log("step 5");
-                if (gameManager.dragonHealth != null)
-                {
-                    GameManager.Instance.dragonHealth.stats.experience += 100f;
-                    NextStep();
-                }
+                //Debug.Log("step 5");
+                //if (gameManager.dragonHealth != null)
+                //{
+                //    GameManager.Instance.dragonHealth.stats.experience += 100f;
+                //    NextStep();
+                //}
                 break;
             case 6: // 메인윈도우로 돌아오기
-                Debug.Log("step 6");
-                if (window == mainWindow)
-                {
-                    NextStep();
-                }
+                //Debug.Log("step 6");
+                //if (window == mainWindow)
+                //{
+                //    NextStep();
+                //}
                 break;
             case 7:
                 Debug.Log("step 7");
                 break;
             case 8:
                 Debug.Log("step 8");
-                if (isFeedPanelOpen)
-                    NextStep();
                 break;
             case 9:
                 Debug.Log("step 9");
-                if (isFeedPanelOpen)
-                    NextStep();
                 break;
             case 10:
                 Debug.Log("step 10");
-                if (hasDragonEatFood)
-                    NextStep();
                 break;
         }
     }
@@ -171,51 +158,55 @@ public class TutorialManager : MonoBehaviour
         switch (step)
         {
             case 1:
-                tutorialText.text = text.Get("TUTORIAL1");
+                tutorialText.text = text.Get("TUTORIAL1"); //어서 와, 신입 브리더!\n여기는 네가 드래곤을 키우게 될 둥지야.
                 Debug.Log("step 1");
                 break;
             case 2:
-                tutorialText.text = text.Get("TUTORIAL2");
+                tutorialText.text = text.Get("TUTORIAL2"); //드래곤을 데리러 가보자.\n먼저 알을 부화시켜야 돼. 지도를 눌러봐.
                 Debug.Log("step 2");
                 nextButton.gameObject.SetActive(false);
                 break;
             case 3:
-                tutorialText.text = text.Get("TUTORIAL3");
+                tutorialText.text = text.Get("TUTORIAL3"); //알 보관소로 가자.
                 Debug.Log("step 3");
                 break;
             case 4:
-                tutorialText.text = text.Get("TUTORIAL4");
+                tutorialText.text = text.Get("TUTORIAL4"); //처음이니까 알을 준비해놨어.\n다음부터는 훈련을 하면 일정 확률로 알을\n받을 수 있어.
                 Debug.Log("step 4");
                 nextButton.gameObject.SetActive(true);
                 break;
             case 5:
-                tutorialText.text = text.Get("TUTORIAL5");
+                tutorialText.text = text.Get("TUTORIAL5"); //알을 꾹 눌러 부화시켜봐
                 Debug.Log("step 5");
                 nextButton.gameObject.SetActive(false);
                 break;
             case 6:
-                tutorialText.text = text.Get("TUTORIAL6");
+                tutorialText.text = text.Get("TUTORIAL6"); // 너의 첫번째 드래곤이야! 드래곤에게 이름을 지어줄래?
                 Debug.Log("step 6");
                 var dragonStat = GameManager.Instance.dragonHealth.stats;
                 if(dragonStat.experience < 100f) GameManager.Instance.dragonHealth.stats.experience = 120f;
-                if (dragonStat.hunger > 90f) GameManager.Instance.dragonHealth.stats.hunger = 90f;
+                if (dragonStat.hunger > 80f) GameManager.Instance.dragonHealth.stats.hunger = 80f;
                 break;
             case 7:
-                tutorialText.text = text.Get("TUTORIAL7");
+                tutorialText.text = text.Get("TUTORIAL7"); //메뉴버튼 누르자
                 Debug.Log("step 7");
-                nextButton.gameObject.SetActive(true);
+                //nextButton.gameObject.SetActive(true);
                 break;
             case 8:
-                tutorialText.text = text.Get("TUTORIAL8");
+                tutorialText.text = text.Get("TUTORIAL8"); //스탯버튼 누르자
+                statArrow.SetActive(true);
                 Debug.Log("step 8");
-                nextButton.gameObject.SetActive(false);
+                //nextButton.gameObject.SetActive(false);
                 break;
             case 9:
-                tutorialText.text = text.Get("TUTORIAL9");
+                tutorialText.text = text.Get("TUTORIAL9"); // 먹이버튼 눌러서 밥을 줘보자
+                feedArrow.SetActive(true);
+                statArrow.SetActive(false);
                 Debug.Log("step 9");
                 break;
             case 10:
                 tutorialText.text = text.Get("TUTORIAL10");
+                feedArrow.SetActive(false);
                 break;
             case 11:
                 tutorialText.text = text.Get("TUTORIAL11"); //아이템을 사용해서 드래곤과 놀자
@@ -223,11 +214,13 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 12:
                 tutorialText.text = text.Get("TUTORIAL12");
+                playArrow.SetActive(true);
                 nextButton.gameObject.SetActive(false);
                 break;
             case 13:
                 tutorialText.text = text.Get("TUTORIAL13"); // 상점으로 가봐
                 nextButton.gameObject.SetActive(true);
+                playArrow.SetActive(false);
                 break;
             case 14:
                 tutorialText.text = text.Get("TUTORIAL14"); //감이 좀 잡혔을까?

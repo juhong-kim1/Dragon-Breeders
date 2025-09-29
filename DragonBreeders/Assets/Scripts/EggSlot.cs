@@ -43,9 +43,6 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 HatchEgg();
                 isPressing = false;
                 ResetProgress();
-
-                if (tutorialManager != null && tutorialManager.tutorialActive)
-                    tutorialManager.NextStep();
             }
         }
     }
@@ -113,6 +110,9 @@ public class EggSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     gameManager.dragonHealth = newHealth;
                 }
             }
+
+            if (TutorialManager.Instance.currentStep == 5 && TutorialManager.Instance.tutorialActive)
+                TutorialManager.Instance.NextStep();
 
             Handheld.Vibrate();
 

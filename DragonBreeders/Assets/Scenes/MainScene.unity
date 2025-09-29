@@ -8619,9 +8619,9 @@ MonoBehaviour:
   isStatPanelOpen: 0
   isFeedPanelOpen: 0
   hasDragonEatFood: 0
-  statArrow: {fileID: 0}
-  feedArrow: {fileID: 0}
-  playArrow: {fileID: 0}
+  statArrow: {fileID: 1970769246}
+  feedArrow: {fileID: 144056855}
+  playArrow: {fileID: 550555935}
   currentStep: 0
   tutorialActive: 0
   isTutorialClear: 0

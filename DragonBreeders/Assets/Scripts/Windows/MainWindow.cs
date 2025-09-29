@@ -90,19 +90,23 @@ public class MainWindow : GenericWindow
     {
         manager.Open(Windows.Map);
 
-        if (tutorialManager != null)
-            tutorialManager.OnWindowOpened(mapWindowObject);
+        if (TutorialManager.Instance.currentStep == 2 && TutorialManager.Instance.tutorialActive)
+            TutorialManager.Instance.NextStep();
     }
 
     private void ToggleMenu()
     {
         menuPanel.SetActive(!menuPanel.activeSelf);
+
+        if (TutorialManager.Instance.currentStep == 7 && TutorialManager.Instance.tutorialActive)
+            TutorialManager.Instance.NextStep();
     }
 
     private void ToggleStat()
     {
         statPanel.SetActive(!statPanel.activeSelf);
-        if (TutorialManager.Instance.currentStep == 8)
+
+        if (TutorialManager.Instance.currentStep == 8 && TutorialManager.Instance.tutorialActive)
             TutorialManager.Instance.NextStep();
     }
 
@@ -128,7 +132,7 @@ public class MainWindow : GenericWindow
     { 
         feedPanel.SetActive(!feedPanel.activeSelf);
         
-        if(TutorialManager.Instance.currentStep == 9)
+        if(TutorialManager.Instance.currentStep == 9 && TutorialManager.Instance.tutorialActive)
         TutorialManager.Instance.NextStep();
 
         ClosePlay();
@@ -302,6 +306,9 @@ public class MainWindow : GenericWindow
         nameInputField.text = string.Empty;
 
         AlarmManager.Instance.ShowAlarm($"{inputName}! 앞으로 잘해보자~");
+
+        if (TutorialManager.Instance.currentStep == 6 && TutorialManager.Instance.tutorialActive)
+            TutorialManager.Instance.NextStep();
     }
 
     public void CloseStat()
