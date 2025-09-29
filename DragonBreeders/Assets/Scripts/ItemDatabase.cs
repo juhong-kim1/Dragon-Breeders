@@ -8,11 +8,11 @@ public class ItemDatabase : MonoBehaviour
 
         if (itemData != null)
         {
-            Debug.Log($"아이템 데이터 찾음: ID={itemData.ITEM_ID}");
-            Debug.Log($"아이템 이름 키: {itemData.ITEM_NAME}");
-            Debug.Log($"다국어 이름: {itemData.StringName}");
-            Debug.Log($"아이콘 이름: {itemData.ITEM_IMAGE}");
-            Debug.Log($"아이콘 스프라이트: {itemData.SpriteIcon}");
+            //Debug.Log($"아이템 데이터 찾음: ID={itemData.ITEM_ID}");
+            //Debug.Log($"아이템 이름 키: {itemData.ITEM_NAME}");
+            //Debug.Log($"다국어 이름: {itemData.StringName}");
+            //Debug.Log($"아이콘 이름: {itemData.ITEM_IMAGE}");
+            //Debug.Log($"아이콘 스프라이트: {itemData.SpriteIcon}");
 
             return new Item
             {

@@ -145,6 +145,8 @@ public class SaveDragonData
 
         EggSlot.isDragonActive = true;
 
+        dragonHealth.ApplyTableData();
+
         Debug.Log($"드래곤 데이터 복원 완료: {stats?.dragonName}, 성장단계: {currentGrowth}, 경험치: {stats?.experience}/{stats?.experienceMax}");
     }
 

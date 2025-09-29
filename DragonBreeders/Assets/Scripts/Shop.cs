@@ -182,6 +182,16 @@ public class Shop : MonoBehaviour
     {
         SaveLoadManager.Data.LastShopResetTime = System.DateTime.Now.ToBinary().ToString();
         SaveLoadManager.Data.ShopItems.Clear();
+
+        foreach (var slot in shopSlots)
+        {
+            if (slot != null)
+            {
+                slot.isPurchased = false;
+                slot.ClearSlot();
+            }
+        }
+
         PopulateShop();
         Debug.Log("상점이 리셋되었습니다!");
     }

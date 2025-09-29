@@ -1159,38 +1159,104 @@ public class GameManager : MonoBehaviour
     {
         try
         {
+            if (string.IsNullOrEmpty(lastSaveTimeString))
+            {
+                Debug.Log("CalculateOfflineProgress: LastSaveTime이 비어있음");
+                return;
+            }
+
+            Debug.Log($"=== 오프라인 계산 시작 ===");
+            Debug.Log($"LastSaveTimeString: {lastSaveTimeString}");
+
             long lastSaveTimeBinary = System.Convert.ToInt64(lastSaveTimeString);
             System.DateTime lastSaveTime = System.DateTime.FromBinary(lastSaveTimeBinary);
             System.DateTime currentTime = System.DateTime.Now;
 
+            Debug.Log($"마지막 저장 시간: {lastSaveTime:yyyy-MM-dd HH:mm:ss}");
+            Debug.Log($"현재 시간: {currentTime:yyyy-MM-dd HH:mm:ss}");
+
             double offlineMinutes = (currentTime - lastSaveTime).TotalMinutes;
+            Debug.Log($"오프라인 경과 시간: {offlineMinutes:F2}분");
 
-            Debug.Log($"오프라인 시간: {offlineMinutes:F1}분");
+            if (offlineMinutes <= 0)
+            {
+                Debug.Log("오프라인 시간이 0 이하 - 시간 조작 의심 또는 시간 오류");
+                return;
+            }
 
-            // 60초마다 감소하는 걸 분 단위로 계산
+            if (dragonHealth == null)
+            {
+                Debug.LogWarning("dragonHealth가 null입니다");
+                return;
+            }
+
+            if (dragonHealth.currentTableData == null)
+            {
+                Debug.LogWarning("dragonHealth.currentTableData가 null입니다");
+                return;
+            }
+
             int decreaseCycles = (int)(offlineMinutes);
+            Debug.Log($"감소 사이클 횟수: {decreaseCycles}회");
 
             if (decreaseCycles > 0)
             {
                 var tableData = dragonHealth.currentTableData;
 
-                // 배고픔, 청결도, 친밀도 감소
-                dragonHealth.stats.ChangeStat(StatType.Hunger, -tableData.DEP_FOOD * decreaseCycles);
-                dragonHealth.stats.ChangeStat(StatType.Clean, -tableData.DEP_HYG * decreaseCycles);
-                dragonHealth.stats.ChangeStat(StatType.Intimacy, -tableData.DEP_FRN * decreaseCycles);
+                Debug.Log($"=== 감소 전 스탯 ===");
+                Debug.Log($"배고픔: {dragonHealth.stats.hunger}/{dragonHealth.stats.maxHunger}");
+                Debug.Log($"청결도: {dragonHealth.stats.clean}/{dragonHealth.stats.maxClean}");
+                Debug.Log($"친밀도: {dragonHealth.stats.intimacy}/{dragonHealth.stats.maxIntimacy}");
+                Debug.Log($"체력: {dragonHealth.stats.stamina}/{dragonHealth.stats.maxStamina}");
 
-                // 배고픔이 0보다 크면 체력 회복
+                Debug.Log($"=== 테이블 데이터 ===");
+                Debug.Log($"DEP_FOOD: {tableData.DEP_FOOD}");
+                Debug.Log($"DEP_HYG: {tableData.DEP_HYG}");
+                Debug.Log($"DEP_FRN: {tableData.DEP_FRN}");
+
+                float hungerDecrease = tableData.DEP_FOOD * decreaseCycles;
+                float cleanDecrease = tableData.DEP_HYG * decreaseCycles;
+                float intimacyDecrease = tableData.DEP_FRN * decreaseCycles;
+
+                Debug.Log($"=== 계산된 감소량 ===");
+                Debug.Log($"배고픔 감소: -{hungerDecrease}");
+                Debug.Log($"청결도 감소: -{cleanDecrease}");
+                Debug.Log($"친밀도 감소: -{intimacyDecrease}");
+
+                dragonHealth.stats.ChangeStat(StatType.Hunger, -hungerDecrease);
+                dragonHealth.stats.ChangeStat(StatType.Clean, -cleanDecrease);
+                dragonHealth.stats.ChangeStat(StatType.Intimacy, -intimacyDecrease);
+
+                Debug.Log($"=== 감소 후 스탯 ===");
+                Debug.Log($"배고픔: {dragonHealth.stats.hunger}/{dragonHealth.stats.maxHunger}");
+                Debug.Log($"청결도: {dragonHealth.stats.clean}/{dragonHealth.stats.maxClean}");
+                Debug.Log($"친밀도: {dragonHealth.stats.intimacy}/{dragonHealth.stats.maxIntimacy}");
+
                 if (dragonHealth.stats.hunger > 0)
                 {
-                    dragonHealth.stats.ChangeStat(StatType.Stamina, tableData.DEP_FOOD * decreaseCycles);
+                    float staminaIncrease = tableData.DEP_FOOD * decreaseCycles;
+                    Debug.Log($"배고픔이 0보다 크므로 체력 회복: +{staminaIncrease}");
+                    dragonHealth.stats.ChangeStat(StatType.Stamina, staminaIncrease);
+                    Debug.Log($"체력: {dragonHealth.stats.stamina}/{dragonHealth.stats.maxStamina}");
+                }
+                else
+                {
+                    Debug.Log("배고픔이 0 이하이므로 체력 회복 없음");
                 }
 
                 AlarmManager.Instance.ShowAlarm($"오프라인 중 {decreaseCycles}분 경과했습니다.");
+                Debug.Log($"=== 오프라인 계산 완료 ===");
+            }
+            else
+            {
+                Debug.Log("decreaseCycles가 0 이하 - 계산 불필요");
             }
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"오프라인 시간 계산 오류: {e.Message}");
+            Debug.LogError($"CalculateOfflineProgress 오류 발생!");
+            Debug.LogError($"오류 메시지: {e.Message}");
+            Debug.LogError($"스택 트레이스: {e.StackTrace}");
         }
     }
 }

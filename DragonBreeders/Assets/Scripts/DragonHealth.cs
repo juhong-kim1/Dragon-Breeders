@@ -83,7 +83,7 @@ public class DragonHealth : MonoBehaviour
         CheckPassOutStat();
     }
 
-    private void ApplyTableData()
+    public void ApplyTableData()
     {
         int growthType = GetGrowthTypeFromState(currentGrowth);
         currentTableData = DataTableManger.DragonStatTable.GetByTypes(currentSpeciesType, currentElementType, growthType);
