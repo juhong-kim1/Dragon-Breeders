@@ -28,6 +28,10 @@ public class TutorialManager : MonoBehaviour
     public bool isFeedPanelOpen;
     public bool hasDragonEatFood;
 
+    public GameObject statArrow;
+    public GameObject feedArrow;
+    public GameObject playArrow;
+
     public int currentStep = 0;
     public bool tutorialActive = false;
     public bool isTutorialClear = false;
@@ -61,6 +65,10 @@ public class TutorialManager : MonoBehaviour
         nextButton.onClick.AddListener(OnClickNextButton);
         clearTutorialButton.onClick.AddListener(OnClickNextButton);
         reTutorialButton.onClick.AddListener(OnClickReTutorialButton);
+
+        statArrow.SetActive(false);
+        feedArrow.SetActive(false);
+        playArrow.SetActive(false);
     }
 
     public void OnGameStart()

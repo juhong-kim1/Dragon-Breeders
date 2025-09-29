@@ -1,5 +1,8 @@
-using UnityEngine.SceneManagement;
+using NUnit.Framework.Constraints;
+using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MapWindow : GenericWindow
@@ -12,6 +15,8 @@ public class MapWindow : GenericWindow
     public Button statButton;
     public Button helpButton;
     public Button trainingButton;
+    public Button inventoryButton;
+    public Button indexButton;
 
     public Button[] locationButtons = new Button[5];
     public Button[] difficultyButtons = new Button[3];
@@ -31,6 +36,13 @@ public class MapWindow : GenericWindow
     [SerializeField] private GameObject trainingStartPanel;
     [SerializeField] private Image difficultyPanelImage;
     [SerializeField] private Image trainingStartPanelImage;
+    [SerializeField] private GameObject InventoryPanel;
+    [SerializeField] private GameObject indexPanel;
+
+    public IndexUI indexUI;
+
+    public TextMeshProUGUI locationText;
+    public TextMeshProUGUI difficultyText;
 
     private readonly Color32[] locationColors = {
     new Color32(209,241,88,255),
@@ -46,6 +58,8 @@ public class MapWindow : GenericWindow
         statButton.onClick.AddListener(ToggleStat);
         helpButton.onClick.AddListener(ToggleHelp);
         trainingButton.onClick.AddListener(ToggleTraining);
+        inventoryButton.onClick.AddListener(ToggleInventory);
+        indexButton.onClick.AddListener(ToggleIndex);
 
         for (int i = 0; i < locationButtons.Length; ++i)
         {
@@ -72,12 +86,17 @@ public class MapWindow : GenericWindow
         trainingLocationPanel.SetActive(false);
         difficultyPanel.SetActive(false);
         trainingStartPanel.SetActive(false);
+        InventoryPanel.SetActive(false);
+        indexPanel.SetActive(false);
+
     }
 
     public void OnClickStart()
     {
         manager.Open(Windows.Start);
         GameManager.Instance.alarmPanel.gameObject.SetActive(false);
+
+        SoundManager.Instance.PlayBGM(SoundManager.Instance.StartBGM);
     }
 
     public void OnClickBack()
@@ -114,11 +133,17 @@ public class MapWindow : GenericWindow
     private void ToggleStat()
     {
         statPanel.SetActive(!statPanel.activeSelf);
+
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
+
     }
 
     private void ToggleHelp()
     {
         helpPanel.SetActive(!helpPanel.activeSelf);
+
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
+
     }
 
     public void OnClickShop()
@@ -139,6 +164,8 @@ public class MapWindow : GenericWindow
 
     private void ToggleLocation(int index)
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickTraining);
+
         GameManager.Instance.TrainingPlace = (TrainingPlace)index + 1;
         locationIndex = index;
         difficultyPanel.SetActive(true);
@@ -150,16 +177,95 @@ public class MapWindow : GenericWindow
 
     private void ToggleDifficulty(int index)
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickTraining);
+
+
         GameManager.Instance.Difficulty = (Difficulty)index + 1;
 
         trainingStartPanel.SetActive(true);
         trainingStartPanelImage.color = locationColors[locationIndex];
+
+        TrainingTextSet();
     }
 
     private void ToggleXButton()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickBack);
+
+
         trainingStartPanel.SetActive(false);
         difficultyPanel.SetActive(false);
         trainingLocationPanel.SetActive(false);
+    }
+    public void CloseStat()
+    {
+        statPanel.SetActive(false);
+    }
+
+    private void ToggleInventory()
+    {
+        InventoryPanel.SetActive(!InventoryPanel.activeSelf);
+    }
+
+    public void CloseInventory()
+    {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickBack);
+
+        if (InventoryPanel.activeSelf)
+            InventoryPanel.SetActive(false);
+    }
+
+    public void ToggleIndex()
+    {
+        indexPanel.SetActive(!indexPanel.activeSelf);
+
+        if (indexPanel.activeSelf && indexUI != null && GameManager.Instance.dragonIndex != null)
+        {
+            indexUI.ShowIndex(GameManager.Instance.dragonIndex);
+        }
+    }
+
+    public void CloseIndex()
+    {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickBack);
+
+        if (indexPanel.activeSelf)
+            indexPanel.SetActive(false);
+    }
+
+    private void TrainingTextSet()
+    {
+        switch (GameManager.Instance.TrainingPlace)
+        {
+            case TrainingPlace.Desert:
+                locationText.text = "사막";
+                break;
+            case TrainingPlace.Marine:
+                locationText.text = "해양";
+                break;
+            case TrainingPlace.Forest:
+                locationText.text = "숲";
+                break;
+            case TrainingPlace.GrassField:
+                locationText.text = "초원";
+                break;
+            case TrainingPlace.SnowField:
+                locationText.text = "설원";
+                break;
+        }
+
+        switch (GameManager.Instance.Difficulty)
+        {
+            case Difficulty.Low:
+                difficultyText.text = "하";
+                break;
+            case Difficulty.Medium:
+                difficultyText.text = "중";
+                break;
+            case Difficulty.High:
+                difficultyText.text = "상";
+                break;
+        }
+
     }
 }

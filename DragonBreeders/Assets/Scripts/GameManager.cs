@@ -1040,6 +1040,7 @@ public class GameManager : MonoBehaviour
         dragonHealth.stats.ChangeStat(StatType.Experience, accumulatedClean);
 
         AlarmManager.Instance.ShowAlarm($"목욕 완료! 청결도 +{accumulatedClean}");
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.successAudioClip);
 
         hasSoaped = false;
         hasBrushed = false;

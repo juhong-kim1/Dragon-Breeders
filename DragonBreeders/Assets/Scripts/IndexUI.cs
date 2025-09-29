@@ -7,15 +7,11 @@ public class IndexUI : MonoBehaviour
 {
     [Header("UI References")]
     public GameObject indexPanel;
+    public GameObject indexPanelMap;
     public Transform contentParent;
     public GameObject dragonSlotPrefab;
 
     private DragonIndex currentIndex;
-
-    private void Start()
-    {
-        indexPanel.SetActive(false);
-    }
 
     public void ShowIndex(DragonIndex index)
     {
@@ -23,11 +19,6 @@ public class IndexUI : MonoBehaviour
         currentIndex = index;
         indexPanel.SetActive(true);
         RefreshIndex();
-    }
-
-    public void CloseIndex()
-    {
-        indexPanel.SetActive(false);
     }
 
     private void RefreshIndex()

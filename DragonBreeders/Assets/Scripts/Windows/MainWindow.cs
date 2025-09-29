@@ -118,6 +118,8 @@ public class MainWindow : GenericWindow
 
     public void CloseInventory()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickBack);
+
         if (InventoryPanel.activeSelf)
             InventoryPanel.SetActive(false);
     }
@@ -139,6 +141,8 @@ public class MainWindow : GenericWindow
 
     public void CloseFeed()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickBack);
+
         if (feedPanel.activeSelf)
             feedPanel.SetActive(false);
 
@@ -159,6 +163,8 @@ public class MainWindow : GenericWindow
 
     public void ClosePlay()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickBack);
+
         if (playPanel.activeSelf)
             playPanel.SetActive(false);
 
@@ -249,6 +255,8 @@ public class MainWindow : GenericWindow
 
     public void CloseSoap()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickBack);
+
         if (soapPanel.activeSelf)
             soapPanel.SetActive(false);
 
@@ -259,6 +267,8 @@ public class MainWindow : GenericWindow
 
     public void CloseBrush()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickBack);
+
         if (brushPanel.activeSelf)
             brushPanel.SetActive(false);
 
@@ -269,6 +279,8 @@ public class MainWindow : GenericWindow
 
     public void CloseIndex()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickBack);
+
         if (indexPanel.activeSelf)
             indexPanel.SetActive(false);
     }
@@ -290,5 +302,10 @@ public class MainWindow : GenericWindow
         nameInputField.text = string.Empty;
 
         AlarmManager.Instance.ShowAlarm($"{inputName}! 앞으로 잘해보자~");
+    }
+
+    public void CloseStat()
+    { 
+        statPanel.SetActive(false);
     }
 }

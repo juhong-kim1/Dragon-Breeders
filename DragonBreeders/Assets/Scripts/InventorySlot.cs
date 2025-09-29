@@ -108,6 +108,8 @@ public class InventorySlot : MonoBehaviour
 
         int itemType = currentItem.GetItemType();
 
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickItem);
+
         if (GameManager.Instance.isFeeding && itemType == 2)
         {
             GameManager.Instance.feedItemDiscription.text = currentItem.GetDescription();

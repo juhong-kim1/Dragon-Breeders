@@ -25,9 +25,19 @@ public class SoundManager : MonoBehaviour
     public AudioClip errorAudioClip;
     public AudioClip successAudioClip;
     public AudioClip restAudioClip;
+    public AudioClip uiClickItem;
+    public AudioClip uiClickTraining;
+    public AudioClip uiClickBack;
 
     public AudioClip battleWinAudioClip;
     public AudioClip battleLoseAudioClip;
+    public AudioClip dragonAttackAudioClip;
+    public AudioClip dragonSkillAudioClip;
+    public AudioClip mosnterAttackAudioClip;
+    public AudioClip mosnterSkillAudioClip;
+
+    public Slider volumeSliderStart;
+    public float masterVolume = 1f;
 
     private void Awake()
     {
@@ -40,6 +50,8 @@ public class SoundManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        masterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
     }
 
     private void Start()
@@ -54,8 +66,32 @@ public class SoundManager : MonoBehaviour
             });
         }
 
+        if (volumeSliderStart != null)
+        {
+            volumeSliderStart.minValue = 0f;
+            volumeSliderStart.maxValue = 1f;
+            volumeSliderStart.value = masterVolume;
+            volumeSliderStart.onValueChanged.AddListener(SetMasterVolume);
+        }
+
+        ApplyVolume();
+
         PlayBGM(StartBGM);
 
+    }
+
+    public void SetMasterVolume(float volume)
+    {
+        masterVolume = Mathf.Clamp01(volume);
+        ApplyVolume();
+
+        PlayerPrefs.SetFloat("MasterVolume", masterVolume);
+        PlayerPrefs.Save();
+    }
+
+    private void ApplyVolume()
+    {
+        AudioListener.volume = masterVolume;
     }
 
     public void PlayBGM(AudioClip clip)

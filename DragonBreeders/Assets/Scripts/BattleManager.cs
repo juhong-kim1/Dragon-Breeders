@@ -90,8 +90,18 @@ public class BattleManager : MonoBehaviour
     public ParticleSystem enemyHitEffect;
     public ParticleSystem enemySkillEffect;
 
+    public Slider volumeSlider;
+
     private void Start()
     {
+        if (volumeSlider != null && SoundManager.Instance != null)
+        {
+            volumeSlider.minValue = 0f;
+            volumeSlider.maxValue = 1f;
+            volumeSlider.value = SoundManager.Instance.masterVolume;
+            volumeSlider.onValueChanged.AddListener(SoundManager.Instance.SetMasterVolume);
+        }
+
         stopButton.onClick.AddListener(() => ToggleStopButton());
         stopPanel.gameObject.SetActive(false);
 
@@ -638,6 +648,8 @@ public class BattleManager : MonoBehaviour
         monster.stamina -= finalDamage;
         monster.stamina = Mathf.Max(0, monster.stamina);
 
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.dragonAttackAudioClip);
+
         fireHitEffect.Play();
 
         ShowMonsterDamage(Mathf.RoundToInt(finalDamage));
@@ -665,6 +677,9 @@ public class BattleManager : MonoBehaviour
         monster.stamina -= finalDamage;
         skillCooldown = dragonSpecialSkill.SKILL_CD;
 
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.dragonSkillAudioClip);
+
+
         ShowMonsterDamage(Mathf.RoundToInt(finalDamage));
         UpdateUI();
 
@@ -690,6 +705,8 @@ public class BattleManager : MonoBehaviour
         playerDragon.stats.ChangeStat(StatType.Stamina, -finalDamage);
         ShowPlayerDamage(Mathf.RoundToInt(finalDamage));
         UpdateUI();
+
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.mosnterAttackAudioClip);
 
         enemyHitEffect.Play();
 
@@ -720,6 +737,9 @@ public class BattleManager : MonoBehaviour
         playerDragon.stats.ChangeStat(StatType.Stamina, -finalDamage);
         ShowPlayerDamage(Mathf.RoundToInt(finalDamage));
         UpdateUI();
+
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.mosnterSkillAudioClip);
+
 
         enemySkillEffect.Play();
 
@@ -927,5 +947,10 @@ public class BattleManager : MonoBehaviour
 
         GameManager.Instance.dragonHealth.fireBreath.Stop();
         fireEffect.Stop();
+    }
+
+    public void KeepGame()
+    { 
+        stopPanel.SetActive(false);
     }
 }
