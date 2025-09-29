@@ -1023,9 +1023,7 @@ public class GameManager : MonoBehaviour
         var saveData = SaveLoadManager.Data;
 
         saveData.InventoryItems = inventoryManager.GetAllItems();
-
         saveData.Coin = playerManager.coin;
-
         saveData.DragonIndex = dragonIndex.GetAllEntries();
 
         if (dragonHealth != null)
@@ -1056,6 +1054,11 @@ public class GameManager : MonoBehaviour
         saveData.LastSaveTime = System.DateTime.Now.ToBinary().ToString();
 
         bool success = SaveLoadManager.Save();
+
+        if (success)
+        {
+            Debug.Log("게임 저장 완료");
+        }
     }
 
     public void LoadGame()
