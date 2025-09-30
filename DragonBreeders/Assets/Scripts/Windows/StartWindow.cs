@@ -25,6 +25,14 @@ public class StartWindow : GenericWindow
 
     public void OnClickStart()
     {
+        if (!TutorialManager.Instance.isTutorialClear)
+        {
+            TutorialManager.Instance.tutorialPanel.SetActive(true);
+        }
+
+        Debug.Log($"튜토리얼클리어 {TutorialManager.Instance.isTutorialClear}");
+        Debug.Log($"튜토리얼액티브 {TutorialManager.Instance.tutorialActive}");
+
         manager.Open(Windows.Game);
         gameManager.alarmPanel.gameObject.SetActive(true);
 

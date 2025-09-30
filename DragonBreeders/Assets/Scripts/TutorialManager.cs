@@ -58,9 +58,9 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        tutorialPanel.SetActive(false);
         clearTutorialButton.gameObject.SetActive(false);
-        isTutorialClear = PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
+        //isTutorialClear = PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
+        OnGameStart();
 
         nextButton.onClick.AddListener(OnClickNextButton);
         clearTutorialButton.onClick.AddListener(OnClickNextButton);
