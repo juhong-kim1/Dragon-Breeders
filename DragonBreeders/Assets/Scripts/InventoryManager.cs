@@ -69,7 +69,16 @@ public class InventoryManager : MonoBehaviour
             inventoryUI.RefreshDisplay(GetAllItems());
         }
 
-        if (foodInventoryUI != null && foodInventoryUI.gameObject.activeInHierarchy)
+        if (inventoryMapUI != null)
+        {
+            if (inventoryMapUI.gameObject.activeInHierarchy)
+            {
+                inventoryMapUI.RefreshDisplay(GetAllItems());
+                Debug.Log("[InventoryManager] 맵 인벤토리 UI 새로고침 완료");
+            }
+        }
+
+            if (foodInventoryUI != null && foodInventoryUI.gameObject.activeInHierarchy)
         {
             foodInventoryUI.RefreshDisplay(GetAllItems(), 2);
         }

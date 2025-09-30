@@ -96,6 +96,8 @@ public class MapWindow : GenericWindow
         manager.Open(Windows.Start);
         GameManager.Instance.alarmPanel.gameObject.SetActive(false);
 
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
+
         SoundManager.Instance.PlayBGM(SoundManager.Instance.StartBGM);
     }
 
@@ -118,7 +120,7 @@ public class MapWindow : GenericWindow
 
         SoundManager.Instance.PlayBGM(SoundManager.Instance.BattleBGM);
 
-        if(TutorialManager.Instance.currentStep == 17)
+        if(TutorialManager.Instance.currentStep == 21)
         TutorialManager.Instance.NextStep();
     }
 
@@ -168,7 +170,7 @@ public class MapWindow : GenericWindow
         difficultyPanel.SetActive(true);
         difficultyPanelImage.color = locationColors[index];
 
-        if(TutorialManager.Instance.currentStep == 16)
+        if(TutorialManager.Instance.currentStep == 20)
         TutorialManager.Instance.NextStep();
     }
 
@@ -189,7 +191,6 @@ public class MapWindow : GenericWindow
     {
         SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickBack);
 
-
         trainingStartPanel.SetActive(false);
         difficultyPanel.SetActive(false);
         trainingLocationPanel.SetActive(false);
@@ -197,11 +198,29 @@ public class MapWindow : GenericWindow
     public void CloseStat()
     {
         statPanel.SetActive(false);
+
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickBack);
     }
 
     private void ToggleInventory()
     {
         InventoryPanel.SetActive(!InventoryPanel.activeSelf);
+
+        SoundManager.Instance.PlayBGM(SoundManager.Instance.uiClickSource);
+
+        if (InventoryPanel.activeSelf)
+        {
+            if (GameManager.Instance?.inventoryManager != null)
+            {
+                if (GameManager.Instance.inventoryManager.inventoryMapUI != null)
+                {
+                    GameManager.Instance.inventoryManager.inventoryMapUI.RefreshDisplay(
+                        GameManager.Instance.inventoryManager.GetAllItems()
+                    );
+                    Debug.Log("[MapWindow] 맵 인벤토리 새로고침 완료");
+                }
+            }
+        }
     }
 
     public void CloseInventory()
@@ -215,6 +234,8 @@ public class MapWindow : GenericWindow
     public void ToggleIndex()
     {
         indexPanel.SetActive(!indexPanel.activeSelf);
+
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
 
         if (indexPanel.activeSelf && indexUI != null && GameManager.Instance.dragonIndex != null)
         {

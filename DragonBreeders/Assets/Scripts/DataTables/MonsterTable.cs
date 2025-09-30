@@ -15,7 +15,8 @@ public class MonsterTableData
         public int MONSKILL2_ID { get; set; }
         public string MONSKILL2_ANIM { get; set; }
         public int ORDER { get; set; }
-    
+
+    public string StringMonName => DataTableManger.StringTable.Get(MON_NAME);
 
     public override string ToString()
     {

@@ -92,6 +92,9 @@ public class BattleManager : MonoBehaviour
 
     public Slider volumeSlider;
 
+    public TextMeshProUGUI dragonNameText;
+    public TextMeshProUGUI monsterNameText;
+
     private void Start()
     {
         if (volumeSlider != null && SoundManager.Instance != null)
@@ -138,6 +141,9 @@ public class BattleManager : MonoBehaviour
             Debug.LogError("몬스터가 널입니다.");
             return;
         }
+
+        dragonNameText.text = playerDragon.stats.dragonName;
+        monsterNameText.text = monster.monsterName;
 
 
         LoadSkills();

@@ -29,6 +29,7 @@ public class MonsterHealth : MonoBehaviour
     public float stamina;
     public float attack;
     public float defense;
+    public string monsterName;
 
    public MonsterTableData monsterTableData;
 
@@ -60,6 +61,7 @@ public class MonsterHealth : MonoBehaviour
         attack = monsterTableData.MONATT;
         defense = monsterTableData.MONDEF;
         difficulty = monsterTableData.MON_TYPE;
+        monsterName = monsterTableData.MON_NAME;
 
         Debug.Log($"[MonsterHealth] 몬스터 데이터 초기화 완료: {monsterType}");
     }

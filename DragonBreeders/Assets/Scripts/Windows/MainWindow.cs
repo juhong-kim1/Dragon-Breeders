@@ -89,7 +89,7 @@ public class MainWindow : GenericWindow
     {
         menuPanel.SetActive(!menuPanel.activeSelf);
 
-        if (TutorialManager.Instance.currentStep == 7 && TutorialManager.Instance.tutorialActive)
+        if (TutorialManager.Instance.currentStep == 8 && TutorialManager.Instance.tutorialActive)
             TutorialManager.Instance.NextStep();
     }
 
@@ -97,7 +97,7 @@ public class MainWindow : GenericWindow
     {
         statPanel.SetActive(!statPanel.activeSelf);
 
-        if (TutorialManager.Instance.currentStep == 8 && TutorialManager.Instance.tutorialActive)
+        if (TutorialManager.Instance.currentStep == 9 && TutorialManager.Instance.tutorialActive)
             TutorialManager.Instance.NextStep();
     }
 
@@ -121,8 +121,14 @@ public class MainWindow : GenericWindow
 
     private void ToggleFeed()
     {
-        if(TutorialManager.Instance.currentStep == 9 && TutorialManager.Instance.tutorialActive)
+        if(TutorialManager.Instance.currentStep == 10 && TutorialManager.Instance.tutorialActive)
         TutorialManager.Instance.NextStep();
+
+        if (GameManager.Instance.dragonHealth == null)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤 데려오세요!");
+            return;
+        }
 
         feedPanel.SetActive(!feedPanel.activeSelf);
 
@@ -147,6 +153,12 @@ public class MainWindow : GenericWindow
 
     public void TogglePlay()
     {
+        if (GameManager.Instance.dragonHealth == null)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤 데려오세요!");
+            return;
+        }
+
         var dragon = GameManager.Instance.dragonHealth.stats;
 
         if (dragon.fatigue / dragon.maxFatigue >= 0.75f)
@@ -177,6 +189,12 @@ public class MainWindow : GenericWindow
 
     public void ToggleBath()
     {
+        if (GameManager.Instance.dragonHealth == null)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤 데려오세요!");
+            return;
+        }
+
         if (GameManager.Instance.dragonHealth.stats.FullFatigue())
         {
             AlarmManager.Instance.ShowAlarm("드래곤의 과로했어요!");

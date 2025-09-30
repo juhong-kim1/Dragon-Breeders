@@ -34,6 +34,8 @@ public class TutorialManager : MonoBehaviour
     public GameObject feedArrow;
     public GameObject playArrow;
 
+    public GameObject tutorialWall;
+
     public int currentStep = 0;
     public bool tutorialActive = false;
     public bool isTutorialClear = false;
@@ -72,6 +74,7 @@ public class TutorialManager : MonoBehaviour
         feedArrow.SetActive(false);
         playArrow.SetActive(false);
         eggCoverPanel.SetActive(false);
+        tutorialWall.SetActive(false);
     }
 
     public void OnGameStart()
@@ -81,6 +84,7 @@ public class TutorialManager : MonoBehaviour
             tutorialActive = true;
             currentStep = 1;
             tutorialPanel.SetActive(true);
+            tutorialWall.SetActive(true);
             ShowStep(currentStep);
         }
     }
@@ -110,50 +114,6 @@ public class TutorialManager : MonoBehaviour
     //    }
     //}
 
-    public void OnWindowOpened(GameObject window)
-    {
-        if (!tutorialActive) return;
-
-        switch (currentStep)
-        {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5: // 알 깨기
-                //Debug.Log("step 5");
-                //if (gameManager.dragonHealth != null)
-                //{
-                //    GameManager.Instance.dragonHealth.stats.experience += 100f;
-                //    NextStep();
-                //}
-                break;
-            case 6: // 메인윈도우로 돌아오기
-                //Debug.Log("step 6");
-                //if (window == mainWindow)
-                //{
-                //    NextStep();
-                //}
-                break;
-            case 7:
-                Debug.Log("step 7");
-                break;
-            case 8:
-                Debug.Log("step 8");
-                break;
-            case 9:
-                Debug.Log("step 9");
-                break;
-            case 10:
-                Debug.Log("step 10");
-                break;
-        }
-    }
-
     private void ShowStep(int step)
     {
         var text = DataTableManger.StringTable;
@@ -162,10 +122,12 @@ public class TutorialManager : MonoBehaviour
         {
             case 1:
                 tutorialText.text = text.Get("TUTORIAL1"); //어서 와, 신입 브리더!\n여기는 네가 드래곤을 키우게 될 둥지야.
+                tutorialWall.SetActive(true);
                 Debug.Log("step 1");
                 break;
             case 2:
                 tutorialText.text = text.Get("TUTORIAL2"); //드래곤을 데리러 가보자.\n먼저 알을 부화시켜야 돼. 지도를 눌러봐.
+                tutorialWall.SetActive(false);
                 Debug.Log("step 2");
                 nextButton.gameObject.SetActive(false);
                 break;
@@ -174,7 +136,7 @@ public class TutorialManager : MonoBehaviour
                 Debug.Log("step 3");
                 break;
             case 4:
-                tutorialText.text = text.Get("TUTORIAL4"); //처음이니까 알을 준비해놨어.\n다음부터는 훈련을 하면 일정 확률로 알을\n받을 수 있어.
+                tutorialText.text = text.Get("TUTORIAL4"); //처음이니까 알을 준비해놨어.\n다음부터는 훈련을 하면 일정 확률로 알을 받을 수 있어.
                 Debug.Log("step 4");
                 nextButton.gameObject.SetActive(true);
                 eggCoverPanel.SetActive(true);
@@ -193,54 +155,68 @@ public class TutorialManager : MonoBehaviour
                 if (dragonStat.hunger > 80f) GameManager.Instance.dragonHealth.stats.hunger = 80f;
                 break;
             case 7:
-                tutorialText.text = text.Get("TUTORIAL7"); //메뉴버튼 누르자
+                tutorialText.text = $"{GameManager.Instance.dragonHealth.stats.dragonName}! {text.Get("TUTORIAL7_1")}"; //이름
+                nextButton.gameObject.SetActive(true);
                 Debug.Log("step 7");
                 //nextButton.gameObject.SetActive(true);
                 break;
             case 8:
+                tutorialText.text = text.Get("TUTORIAL7_2"); //메뉴버튼 누르자
+                nextButton.gameObject.SetActive(false);
+                Debug.Log("step 7");
+                break;
+            case 9:
                 tutorialText.text = text.Get("TUTORIAL8"); //스탯버튼 누르자
                 statArrow.SetActive(true);
                 Debug.Log("step 8");
-                //nextButton.gameObject.SetActive(false);
                 break;
-            case 9:
+            case 10:
                 tutorialText.text = text.Get("TUTORIAL9"); // 먹이버튼 눌러서 밥을 줘보자
                 feedArrow.SetActive(true);
                 statArrow.SetActive(false);
                 Debug.Log("step 9");
                 break;
-            case 10:
+            case 11:
                 tutorialText.text = text.Get("TUTORIAL10");
                 feedArrow.SetActive(false);
                 break;
-            case 11:
-                tutorialText.text = text.Get("TUTORIAL11"); //아이템을 사용해서 드래곤과 놀자
+            case 12:
+                tutorialText.text = text.Get("TUTORIAL11_1"); //좋아!
                 nextButton.gameObject.SetActive(true);
                 break;
-            case 12:
-                tutorialText.text = text.Get("TUTORIAL12");
+            case 13:
+                tutorialText.text = text.Get("TUTORIAL11_2"); //아이템을 사용해서 드래곤과 놀자
+                break;
+            case 14:
+                tutorialText.text = text.Get("TUTORIAL12_1");
                 playArrow.SetActive(true);
                 nextButton.gameObject.SetActive(false);
                 break;
-            case 13:
-                tutorialText.text = text.Get("TUTORIAL13"); // 상점으로 가봐
-                nextButton.gameObject.SetActive(true);
-                playArrow.SetActive(false);
-                break;
-            case 14:
-                tutorialText.text = text.Get("TUTORIAL14"); //감이 좀 잡혔을까?
-                break;
             case 15:
-                tutorialText.text = text.Get("TUTORIAL15"); //마지막이야 지도로 가서 훈련을 해보자
+                tutorialText.text = text.Get("TUTORIAL12_2");
+                nextButton.gameObject.SetActive(true);
                 break;
             case 16:
+                tutorialText.text = text.Get("TUTORIAL12_3");
+                break;
+            case 17:
+                tutorialText.text = text.Get("TUTORIAL13"); // 상점으로 가봐
+                playArrow.SetActive(false);
+                break;
+            case 18:
+                tutorialText.text = text.Get("TUTORIAL14"); //감이 좀 잡혔을까?
+                break;
+            case 19:
+                tutorialText.text = text.Get("TUTORIAL15"); //마지막이야 지도로 가서 훈련을 해보자
+                break;
+            case 20:
                 tutorialText.text = text.Get("TUTORIAL16");
                 nextButton.gameObject.SetActive(false); //훈련지역은 5개로 나눠져있어, 맘에드는 지역을 골라봐
                 break;
-            case 17:
+            case 21:
                 tutorialText.text = text.Get("TUTORIAL17"); // 하급 훈련부터 해보자
                 break;
-            case 18:
+            case 22:
                 tutorialText.text = text.Get("TUTORIAL18");
                 clearTutorialButton.gameObject.SetActive(true);// 드래곤이 공격할 차례야 스킬을 써봐
                 break;
@@ -251,7 +227,7 @@ public class TutorialManager : MonoBehaviour
     {
         currentStep++;
 
-        if (currentStep > 18)
+        if (currentStep > 22)
         {
             EndTutorial();
             return;

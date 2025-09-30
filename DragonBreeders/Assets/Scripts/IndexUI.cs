@@ -17,7 +17,10 @@ public class IndexUI : MonoBehaviour
     {
         Debug.Log("ShowIndex »£√‚µ ");
         currentIndex = index;
-        indexPanel.SetActive(true);
+        if (!indexPanel.activeSelf)
+        {
+            indexPanel.SetActive(true);
+        }
         RefreshIndex();
     }
 

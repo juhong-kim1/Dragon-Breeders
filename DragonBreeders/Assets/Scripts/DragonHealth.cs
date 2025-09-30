@@ -113,9 +113,12 @@ public class DragonHealth : MonoBehaviour
 
         stats.dragonSpecies = currentTableData.StringSpecies;
 
-        if (stats.stamina <= 0) stats.stamina = stats.maxStamina;
-        if (stats.hunger <= 0) stats.hunger = stats.maxHunger;
-        if (stats.clean <= 0) stats.clean = stats.maxClean;
+        if (!isLoadedFromSave)
+        {
+            if (stats.stamina <= 0) stats.stamina = stats.maxStamina;
+            if (stats.hunger <= 0) stats.hunger = stats.maxHunger;
+            if (stats.clean <= 0) stats.clean = stats.maxClean;
+        }
 
         if (currentGrowth == DragonGrowthState.Adult)
         {
@@ -194,7 +197,7 @@ public class DragonHealth : MonoBehaviour
         }
     }
 
-    private void OnPassOut()
+    public void OnPassOut()
     {
         if (isPassOut)
         {
@@ -205,10 +208,9 @@ public class DragonHealth : MonoBehaviour
 
         isPassOut = true;
 
-
         hasTriggerPassOut = true;
         status.AddStatus(StatusType.PassOut);
-        stats.ChangeStat(StatType.Fatigue, -50f);
+        stats.ChangeStat(StatType.Intimacy, -50f);
         GameManager.Instance.passOutCount++;
         AlarmManager.Instance.ShowAlarm("드래곤이 의식을 잃었어요!");
         animator.SetTrigger(isPassOutTrigger);
@@ -339,5 +341,10 @@ public class DragonHealth : MonoBehaviour
         animator.SetTrigger(Action);
 
         Destroy(gameObject, 5f);
+    }
+
+    public void PlayPassOutAnimation()
+    {
+        animator.SetTrigger(isPassOutTrigger);
     }
 }

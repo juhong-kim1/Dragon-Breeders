@@ -841,7 +841,7 @@ public class GameManager : MonoBehaviour
         canFeed = false;
         feedTimer = 0f;
 
-        if (TutorialManager.Instance.currentStep == 10)
+        if (TutorialManager.Instance.currentStep == 11)
             TutorialManager.Instance.NextStep();
 
         if (feedItemImage != null)
@@ -892,7 +892,7 @@ public class GameManager : MonoBehaviour
 
         SoundManager.Instance.PlaySFX(SoundManager.Instance.successAudioClip);
 
-        if (TutorialManager.Instance.currentStep == 12)
+        if (TutorialManager.Instance.currentStep == 14)
             TutorialManager.Instance.NextStep();
 
         string itemName = itemData.StringName;
@@ -1087,6 +1087,11 @@ public class GameManager : MonoBehaviour
                 if (behavior != null)
                 {
                     behavior.SetTouchUI(dragonFeedback);
+                }
+
+                if (dragonHealth.stats.IsStatPassOut())
+                {
+                    dragonHealth.PlayPassOutAnimation();
                 }
             }
         }
