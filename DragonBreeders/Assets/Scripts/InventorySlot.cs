@@ -126,6 +126,13 @@ public class InventorySlot : MonoBehaviour
         if (GameManager.Instance.isPlaying && itemType == 6)
         {
             GameManager.Instance.playItemDiscription.text = currentItem.GetDescription();
+
+            if (!GameManager.Instance.canPlay)
+            {
+                AlarmManager.Instance.ShowAlarm("방금 놀았어요!");
+                return;
+            }
+
             GameManager.Instance.playItemImage.enabled = true;
             GameManager.Instance.playItemImage.sprite = currentItem.GetIcon();
 

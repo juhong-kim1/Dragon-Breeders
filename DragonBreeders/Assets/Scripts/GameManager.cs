@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] dragonPrefabs;
     public Sprite[] icon;
+    public Sprite[] dragonImages;
 
     public TextMeshProUGUI growthStateText;
     public TextMeshProUGUI currentStatusText;
@@ -129,8 +130,10 @@ public class GameManager : MonoBehaviour
 
     public bool isFeeding = false;
     public bool isPlaying = false;
-    public bool isSoaping;
-    public bool isBrushing;
+    public bool isSoaping = false;
+    public bool isBrushing = false;
+
+    public bool isReadyShower = false;
 
     public bool isShowering = false;
     public Image showerItemImage;
@@ -391,32 +394,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("음식 아이템만 표시됨");
 
 
-        //if (dragonHealth.isPassOut) return;
-        //if (!canFeed) { Debug.Log("먹이주기 쿨 진행 중"); return; }
-
-        //var data = DataTableManger.NurtureTable.Get(4030101);
-        //if (data == null) return;
-
-        //if (!CanExecuteNurture(data))
-        //{
-        //    Debug.Log("먹이주기 조건 불충족: 배고픔이 100%");
-        //    alarmText.text = "먹이주기 조건 불충족: 배부름이 100%";
-        //    return;
-        //}
-
-        //levelUpParticle.Play();
-        //int hungerRecovery = (int)(dragonHealth.stats.maxHunger * data.REC_PERCENT / 100);
-        //dragonHealth.stats.ChangeStat(StatType.Hunger, hungerRecovery);
-
-        //// 경험치 추가
-        //dragonHealth.GainExperience(data.EXPGROWTH);
-
-        //alarmText.text = "먹이주기 완료, 배부름이 25% 증가";
-
-        //canFeed = false;
-        //feedTimer = 0f;
-
-
     }
 
     public void OnClickBath()
@@ -558,7 +535,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (dragonHealth.stats.FullFatigue())
+        if (dragonHealth.stats.fatigue/dragonHealth.stats.maxFatigue >= 0.75f)
         {
             AlarmManager.Instance.ShowAlarm("드래곤이 과로했습니다..");
             SoundManager.Instance.PlayErrorSound();
@@ -615,9 +592,6 @@ public class GameManager : MonoBehaviour
             float fatigueRecovery = dragonHealth.stats.maxFatigue * data.REC_PERCENT / 100;
             dragonHealth.stats.ChangeStat(StatType.Fatigue, -fatigueRecovery);
 
-
-            dragonHealth.GainExperience(data.EXPGROWTH);
-
             AlarmManager.Instance.ShowAlarm("개운하다~");
 
             restCount++;
@@ -660,58 +634,25 @@ public class GameManager : MonoBehaviour
 
     public void OnClickEggCheat()
     {
-        int random = Random.Range(0, 4);
-        int randomTypeDragon = Random.Range(0, 4);
+        int randomElement = Random.Range(0, 4);
+        int randomSpecies = Random.Range(0, 4);
 
         Debug.Log("랜덤 알 생성");
 
-        switch (random)
+        int prefabIndex = (randomSpecies * 4) + randomElement;
+
+        string[] eggNames = { "Grass Egg", "Fire Egg", "Water Egg", "Wind Egg" };
+
+        Egg newEgg = new Egg
         {
-            case 0:
-                Egg egg1 = new Egg
-                {
-                    eggName = "Grass Egg",
-                    icon = icon[random],
-                    dragonPrefab = dragonPrefabs[randomTypeDragon],
-                    speciesType = randomTypeDragon + 1,
-                    elementType = 1
-                };
-                vault.AddEgg(egg1);
-                break;
-            case 1:
-                Egg egg2 = new Egg
-                {
-                    eggName = "FIre Egg",
-                    icon = icon[random],
-                    dragonPrefab = dragonPrefabs[randomTypeDragon + 4],
-                    speciesType = randomTypeDragon + 1,
-                    elementType = 2
-                };
-                vault.AddEgg(egg2);
-                break;
-            case 2:
-                Egg egg3 = new Egg
-                {
-                    eggName = "Water Egg",
-                    icon = icon[random],
-                    dragonPrefab = dragonPrefabs[randomTypeDragon + 8],
-                    speciesType = randomTypeDragon + 1,
-                    elementType = 3
-                };
-                vault.AddEgg(egg3);
-                break;
-            case 3:
-                Egg egg4 = new Egg
-                {
-                    eggName = "Wind Egg",
-                    icon = icon[random],
-                    dragonPrefab = dragonPrefabs[randomTypeDragon + 12],
-                    speciesType = randomTypeDragon + 1,
-                    elementType = 4
-                };
-                vault.AddEgg(egg4);
-                break;
-        }
+            eggName = eggNames[randomElement],
+            icon = icon[randomElement],
+            dragonPrefab = dragonPrefabs[prefabIndex],
+            speciesType = randomSpecies + 1,
+            elementType = randomElement + 1 
+        };
+
+        vault.AddEgg(newEgg);
     }
 
     public void CoolTimeResetButton()
@@ -887,7 +828,11 @@ public class GameManager : MonoBehaviour
         int hungerRecovery = itemData.EFFECT1_VALUE;
 
         dragonHealth.stats.ChangeStat(StatType.Hunger, ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery);
-        dragonHealth.stats.ChangeStat(StatType.Experience, ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery);
+
+        float experience = ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery;
+
+        dragonHealth.GainExperience(experience);
+
         string itemName = itemData.StringName;
         AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 배부름 +{((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery}");
 
@@ -926,6 +871,12 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        if (!canRest)
+        {
+            AlarmManager.Instance.ShowAlarm("방금 놀았어요!");
+            return;
+        }
+
         inventoryManager.RemoveItem(itemId, amount);
         inventoryManager.RefreshPlayUI();
 
@@ -934,7 +885,10 @@ public class GameManager : MonoBehaviour
         int increaseIntimacy = itemData.EFFECT1_VALUE;
         dragonHealth.stats.ChangeStat(StatType.Intimacy, ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
         dragonHealth.stats.ChangeStat(StatType.Fatigue, nurtureData.RECEIVE_FTG);
-        dragonHealth.stats.ChangeStat(StatType.Experience, ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy);
+
+        float experience = ((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy;
+
+        dragonHealth.GainExperience(experience);
 
         SoundManager.Instance.PlaySFX(SoundManager.Instance.successAudioClip);
 
@@ -1017,6 +971,7 @@ public class GameManager : MonoBehaviour
         accumulatedClean += cleanAmount;
         hasBrushed = true;
 
+
         string itemName = itemData.StringName;
         AlarmManager.Instance.ShowAlarm($"{itemName} 사용! 이제 샤워를 하세요");
 
@@ -1029,15 +984,10 @@ public class GameManager : MonoBehaviour
     }
     public void CompleteShower()
     {
-        if (!hasSoaped || !hasBrushed)
-        {
-            AlarmManager.Instance.ShowAlarm("비누와 브러쉬를 먼저 사용해주세요!");
-            SoundManager.Instance.PlayErrorSound();
-            return;
-        }
-
         dragonHealth.stats.ChangeStat(StatType.Clean, accumulatedClean);
         dragonHealth.stats.ChangeStat(StatType.Experience, accumulatedClean);
+
+        dragonHealth.GainExperience(accumulatedClean);
 
         AlarmManager.Instance.ShowAlarm($"목욕 완료! 청결도 +{accumulatedClean}");
         SoundManager.Instance.PlaySFX(SoundManager.Instance.successAudioClip);

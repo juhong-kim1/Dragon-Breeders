@@ -140,7 +140,7 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         float dragonCenterX = Screen.width * 0.5f;
         float dragonCenterY = Screen.height * 0.5f;
-        float dragonRange = Screen.width * 0.3f;
+        float dragonRange = Screen.width * 0.5f;
 
         Vector2 dragonCenter = new Vector2(dragonCenterX, dragonCenterY);
         float distance = Vector2.Distance(screenPos, dragonCenter);

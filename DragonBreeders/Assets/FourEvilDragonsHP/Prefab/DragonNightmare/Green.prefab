@@ -1872,6 +1872,8 @@ MonoBehaviour:
     maxClean: 100
     experience: 0
     experienceMax: 100
+    dragonName: 
+    dragonSpecies: 
   status:
     currentStatuses: 0
     maxTimer: 60
@@ -1884,6 +1886,8 @@ MonoBehaviour:
   isFormChanging: 0
   fireBreath: {fileID: 7628931517937711297}
   fire: {fileID: 0}
+  currentGrowthText: 
+  isLoadedFromSave: 0
 --- !u!1 &169100
 GameObject:
   m_ObjectHideFlags: 0
@@ -2630,43 +2634,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 786889566517218708, guid: 612cc49f17b4f1b4d8a7f19eb1baf850, type: 3}
       propertyPath: m_LocalScale.x
-      value: 10000.01
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 786889566517218708, guid: 612cc49f17b4f1b4d8a7f19eb1baf850, type: 3}
       propertyPath: m_LocalScale.y
-      value: 9999.999
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 786889566517218708, guid: 612cc49f17b4f1b4d8a7f19eb1baf850, type: 3}
       propertyPath: m_LocalScale.z
-      value: 9999.998
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 786889566517218708, guid: 612cc49f17b4f1b4d8a7f19eb1baf850, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -82.27497
+      value: -121.00001
       objectReference: {fileID: 0}
     - target: {fileID: 786889566517218708, guid: 612cc49f17b4f1b4d8a7f19eb1baf850, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -55.67362
+      value: -3.9999194
       objectReference: {fileID: 0}
     - target: {fileID: 786889566517218708, guid: 612cc49f17b4f1b4d8a7f19eb1baf850, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.0000025712804
       objectReference: {fileID: 0}
     - target: {fileID: 786889566517218708, guid: 612cc49f17b4f1b4d8a7f19eb1baf850, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.018301457
+      value: -0.0000000026189912
       objectReference: {fileID: 0}
     - target: {fileID: 786889566517218708, guid: 612cc49f17b4f1b4d8a7f19eb1baf850, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.000000011478859
+      value: -0.000000027008346
       objectReference: {fileID: 0}
     - target: {fileID: 786889566517218708, guid: 612cc49f17b4f1b4d8a7f19eb1baf850, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0000000071553834
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 786889566517218708, guid: 612cc49f17b4f1b4d8a7f19eb1baf850, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.9998325
+      value: 0.0000000020779007
       objectReference: {fileID: 0}
     - target: {fileID: 786889566517218708, guid: 612cc49f17b4f1b4d8a7f19eb1baf850, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

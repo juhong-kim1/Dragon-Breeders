@@ -24,6 +24,8 @@ public class TutorialManager : MonoBehaviour
     public Button clearTutorialButton;
     public Button reTutorialButton;
 
+    public GameObject eggCoverPanel;
+
     public bool isStatPanelOpen;
     public bool isFeedPanelOpen;
     public bool hasDragonEatFood;
@@ -69,6 +71,7 @@ public class TutorialManager : MonoBehaviour
         statArrow.SetActive(false);
         feedArrow.SetActive(false);
         playArrow.SetActive(false);
+        eggCoverPanel.SetActive(false);
     }
 
     public void OnGameStart()
@@ -174,17 +177,19 @@ public class TutorialManager : MonoBehaviour
                 tutorialText.text = text.Get("TUTORIAL4"); //처음이니까 알을 준비해놨어.\n다음부터는 훈련을 하면 일정 확률로 알을\n받을 수 있어.
                 Debug.Log("step 4");
                 nextButton.gameObject.SetActive(true);
+                eggCoverPanel.SetActive(true);
                 break;
             case 5:
                 tutorialText.text = text.Get("TUTORIAL5"); //알을 꾹 눌러 부화시켜봐
                 Debug.Log("step 5");
                 nextButton.gameObject.SetActive(false);
+                eggCoverPanel.SetActive(false);
                 break;
             case 6:
                 tutorialText.text = text.Get("TUTORIAL6"); // 너의 첫번째 드래곤이야! 드래곤에게 이름을 지어줄래?
                 Debug.Log("step 6");
                 var dragonStat = GameManager.Instance.dragonHealth.stats;
-                if(dragonStat.experience < 100f) GameManager.Instance.dragonHealth.stats.experience = 120f;
+                if(dragonStat.experience < 100f) GameManager.Instance.dragonHealth.stats.experience = 70f;
                 if (dragonStat.hunger > 80f) GameManager.Instance.dragonHealth.stats.hunger = 80f;
                 break;
             case 7:
@@ -267,10 +272,15 @@ public class TutorialManager : MonoBehaviour
     public void TutorialOff()
     {
         tutorialActive = false;
+        isTutorialClear = true;
         tutorialPanel.SetActive(false);
 
         nextButton.gameObject.SetActive(true);
         clearTutorialButton.gameObject.SetActive(false);
+
+        feedArrow.SetActive(false);
+        playArrow.SetActive(false);
+        statArrow.SetActive(false);
     }
 
     private void OnClickNextButton()

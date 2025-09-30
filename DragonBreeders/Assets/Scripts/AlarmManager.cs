@@ -5,6 +5,7 @@ public class AlarmManager : MonoBehaviour
 {
     public static AlarmManager Instance { get; private set; }
 
+    [SerializeField] private GameObject alarmPanel;
     [SerializeField] private TextMeshProUGUI alarmText;
     [SerializeField] private float displayTime = 2f;
 
@@ -21,6 +22,11 @@ public class AlarmManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Start()
+    {
+       alarmPanel.SetActive(false);
+    }
+
     public void ShowAlarm(string message)
     {
         if (currentAlarmCoroutine != null)
@@ -34,11 +40,13 @@ public class AlarmManager : MonoBehaviour
         if (alarmText == null) yield break;
 
         alarmText.text = message;
+        alarmPanel.SetActive(true);
         alarmText.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(displayTime);
 
-        alarmText.gameObject.SetActive(false);
+        //alarmText.gameObject.SetActive(false);
+        alarmPanel.SetActive(false);
         alarmText.text = "";
         currentAlarmCoroutine = null;
     }

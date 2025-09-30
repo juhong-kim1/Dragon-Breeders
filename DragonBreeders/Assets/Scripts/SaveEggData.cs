@@ -48,7 +48,7 @@ public class SaveEggData
     {
         if (gameManager?.dragonPrefabs == null) return null;
 
-        int index = ((elementType - 1) * 4) + (speciesType - 1);
+        int index = ((speciesType - 1) * 4) + (elementType - 1);
 
         if (index >= 0 && index < gameManager.dragonPrefabs.Length)
         {

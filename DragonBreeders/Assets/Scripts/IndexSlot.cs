@@ -21,6 +21,8 @@ public class IndexSlot : MonoBehaviour
     public TextMeshProUGUI restCountText;
     public TextMeshProUGUI passOutCountText;
 
+    public Image dragonImage;
+
     public void SetEntry(DragonEntry entry)
     {
         customNameText.text = entry.customName;
@@ -38,5 +40,28 @@ public class IndexSlot : MonoBehaviour
         bathCountText.text = $"¸ñ¿åÇÑ È½¼ö: {entry.bathCount}";
         restCountText.text = $"ÈŞ½ÄÇÑ È½¼ö: {entry.restCount}";
         passOutCountText.text = $"±âÀıÇÑ È½¼ö: {entry.passOutCount}";
+
+        FindSprite(entry);
+    }
+
+    private void FindSprite(DragonEntry entry)
+    {
+        int index = ((entry.species - 1) * 4) + (entry.elements - 1);
+
+        Debug.Log($"µå·¡°ï: {entry.customName}, species={entry.species}, elements={entry.elements}, °è»êµÈ ÀÎµ¦½º={index}");
+
+        if (index >= 0 && index < GameManager.Instance.dragonImages.Length)
+        {
+            if (dragonImage != null)
+            {
+                dragonImage.sprite = GameManager.Instance.dragonImages[index];
+                dragonImage.enabled = true;
+                Debug.Log($"ÇÒ´çµÈ ½ºÇÁ¶óÀÌÆ®: {GameManager.Instance.dragonImages[index].name}");
+            }
+        }
+        else
+        {
+            Debug.LogError($"ÀÎµ¦½º ¹üÀ§ ÃÊ°ú!");
+        }
     }
 }

@@ -63,18 +63,7 @@ public class MainWindow : GenericWindow
         confirmNameButton.onClick.AddListener(ConfirmDragonName);
         indexButton.onClick.AddListener(ToggleIndex);
 
-        menuPanel.SetActive(false);
-        statPanel.SetActive(false);
-        helpPanel.SetActive(false);
-        InventoryPanel.SetActive(false);
-        feedPanel.SetActive(false);
-        playPanel.SetActive(false);
-        bathUi.SetActive(false);
-        soapPanel.SetActive(false);
-        brushPanel.SetActive(false);
-        showerImageObject.SetActive(false);
-        dragonNameInputPanel.SetActive(false);
-        indexPanel.SetActive(false);
+        AllMainPanelsOut();
     }
 
     public void OnClickStart()
@@ -89,6 +78,8 @@ public class MainWindow : GenericWindow
     public void OnClickMap()
     {
         manager.Open(Windows.Map);
+
+        AllMainPanelsOut();
 
         if (TutorialManager.Instance.currentStep == 2 && TutorialManager.Instance.tutorialActive)
             TutorialManager.Instance.NextStep();
@@ -129,11 +120,11 @@ public class MainWindow : GenericWindow
     }
 
     private void ToggleFeed()
-    { 
-        feedPanel.SetActive(!feedPanel.activeSelf);
-        
+    {
         if(TutorialManager.Instance.currentStep == 9 && TutorialManager.Instance.tutorialActive)
         TutorialManager.Instance.NextStep();
+
+        feedPanel.SetActive(!feedPanel.activeSelf);
 
         ClosePlay();
 
@@ -155,7 +146,15 @@ public class MainWindow : GenericWindow
     }
 
     public void TogglePlay()
-    { 
+    {
+        var dragon = GameManager.Instance.dragonHealth.stats;
+
+        if (dragon.fatigue / dragon.maxFatigue >= 0.75f)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤의 과로했어요!");
+            return;
+        }
+
         playPanel.SetActive(!playPanel.activeSelf);
         CloseFeed();
 
@@ -177,7 +176,13 @@ public class MainWindow : GenericWindow
     }
 
     public void ToggleBath()
-    { 
+    {
+        if (GameManager.Instance.dragonHealth.stats.FullFatigue())
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤의 과로했어요!");
+            return;
+        }
+
         downUi.SetActive(false);
         bathUi.SetActive(true);
         playPanel.SetActive(false);
@@ -191,6 +196,7 @@ public class MainWindow : GenericWindow
 
         soapPanel.SetActive(false);
         brushPanel.SetActive(false);
+        showerImageObject.SetActive(false);
     }
     public void ToggleSoap()
     {
@@ -228,6 +234,20 @@ public class MainWindow : GenericWindow
 
     public void ToggleShower()
     {
+        if (!GameManager.Instance.hasSoaped)
+        {
+            AlarmManager.Instance.ShowAlarm("비누칠부터 해야해요!");
+            SoundManager.Instance.PlayErrorSound();
+            return;
+        }
+
+        if (!GameManager.Instance.hasBrushed)
+        {
+            AlarmManager.Instance.ShowAlarm("브러싱부터 해야해요!");
+            SoundManager.Instance.PlayErrorSound();
+            return;
+        }
+
         showerImageObject.SetActive(!showerImageObject.activeSelf);
 
         if (showerImageObject.activeSelf)
@@ -314,5 +334,21 @@ public class MainWindow : GenericWindow
     public void CloseStat()
     { 
         statPanel.SetActive(false);
+    }
+
+    private void AllMainPanelsOut()
+    {
+        menuPanel.SetActive(false);
+        statPanel.SetActive(false);
+        helpPanel.SetActive(false);
+        InventoryPanel.SetActive(false);
+        feedPanel.SetActive(false);
+        playPanel.SetActive(false);
+        bathUi.SetActive(false);
+        soapPanel.SetActive(false);
+        brushPanel.SetActive(false);
+        showerImageObject.SetActive(false);
+        dragonNameInputPanel.SetActive(false);
+        indexPanel.SetActive(false);
     }
 }

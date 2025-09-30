@@ -76,7 +76,6 @@ public class DragonBehavior : MonoBehaviour
                         int random = Random.Range(0, action.Length);
 
                         animator.SetTrigger(action[random]);
-                        dragonHealth.stats.ChangeStat(StatType.Intimacy, 1);
                     }
 
                     string message = touchMessage[Random.Range(0, touchMessage.Length)];

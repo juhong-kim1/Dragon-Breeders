@@ -39,6 +39,7 @@ public class SaveDragonData
             stats.experienceMax = dragonHealth.stats.experienceMax;
             stats.dragonName = dragonHealth.stats.dragonName;
             stats.dragonSpecies = dragonHealth.stats.dragonSpecies;
+            
 
             currentSpeciesType = dragonHealth.currentSpeciesType;
             currentElementType = dragonHealth.currentElementType;
@@ -154,7 +155,7 @@ public class SaveDragonData
     {
         if (gameManager?.dragonPrefabs == null) return null;
 
-        int index = ((currentElementType - 1) * 4) + (currentSpeciesType - 1);
+        int index = ((currentSpeciesType - 1) * 4) + (currentElementType - 1);
 
         if (index >= 0 && index < gameManager.dragonPrefabs.Length)
         {

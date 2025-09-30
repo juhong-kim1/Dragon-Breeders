@@ -3,7 +3,7 @@ using UnityEngine;
 public class EggVaultTest : MonoBehaviour
 {
     public EggVault vault;
-    public Sprite grassEggIcon;
+    public Sprite windEggIcon;
     public GameObject dragonPrefab;
 
     void Start()
@@ -15,11 +15,11 @@ public class EggVaultTest : MonoBehaviour
 
         Egg firstEgg = new Egg
         {
-            eggName = "Grass Egg",
-            icon = grassEggIcon,
+            eggName = "Wind Egg",
+            icon = windEggIcon,
             dragonPrefab = dragonPrefab,
-            speciesType = 1,
-            elementType = 1
+            speciesType = 2,
+            elementType = 4
         };
 
         vault.AddEgg(firstEgg);

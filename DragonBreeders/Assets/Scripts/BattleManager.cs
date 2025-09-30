@@ -252,13 +252,13 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator BattleEnd(bool playerWon)
     {
+        var Nuture = DataTableManger.NurtureTable;
+
         if (playerWon)
         {
             currentState = BattleState.Won;
 
             DisplayExperience();
-
-            var Nuture = DataTableManger.NurtureTable;
 
             switch (Difficulty)
             {
@@ -266,19 +266,19 @@ public class BattleManager : MonoBehaviour
                     Debug.Log("잘못 된 난이도입니다.");
                     break;
                 case Difficulty.Low:
-                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, Nuture.Get(4000501).EXPGROWTH);
+                    GameManager.Instance.dragonHealth.GainExperience(Nuture.Get(4000501).EXPGROWTH);
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Hunger, -Nuture.Get(4000501).DEPLETE_FOOD);
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Clean, -Nuture.Get(4000501).DEPLETE_HYG);
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Fatigue, Nuture.Get(4000501).RECEIVE_FTG);
                     break;
                 case Difficulty.Medium:
-                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, Nuture.Get(4000502).EXPGROWTH);
+                    GameManager.Instance.dragonHealth.GainExperience(Nuture.Get(4000502).EXPGROWTH);
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Hunger, -Nuture.Get(4000501).DEPLETE_FOOD);
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Clean, -Nuture.Get(4000501).DEPLETE_HYG);
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Fatigue, Nuture.Get(4000501).RECEIVE_FTG);
                     break;
                 case Difficulty.High:
-                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Experience, Nuture.Get(4000503).EXPGROWTH);
+                    GameManager.Instance.dragonHealth.GainExperience(Nuture.Get(4000503).EXPGROWTH);
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Hunger, -Nuture.Get(4000501).DEPLETE_FOOD);
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Clean, -Nuture.Get(4000501).DEPLETE_HYG);
                     GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Fatigue, Nuture.Get(4000501).RECEIVE_FTG);
@@ -309,6 +309,29 @@ public class BattleManager : MonoBehaviour
         {
             monster.PlayWinAnimation();
             currentState = BattleState.Lost;
+
+            switch (Difficulty)
+            {
+                case Difficulty.None:
+                    Debug.Log("잘못 된 난이도입니다.");
+                    break;
+                case Difficulty.Low:
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Hunger, -Nuture.Get(4000501).DEPLETE_FOOD);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Clean, -Nuture.Get(4000501).DEPLETE_HYG);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Fatigue, Nuture.Get(4000501).RECEIVE_FTG);
+                    break;
+                case Difficulty.Medium:
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Hunger, -Nuture.Get(4000501).DEPLETE_FOOD);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Clean, -Nuture.Get(4000501).DEPLETE_HYG);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Fatigue, Nuture.Get(4000501).RECEIVE_FTG);
+                    break;
+                case Difficulty.High:
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Hunger, -Nuture.Get(4000501).DEPLETE_FOOD);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Clean, -Nuture.Get(4000501).DEPLETE_HYG);
+                    GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Fatigue, Nuture.Get(4000501).RECEIVE_FTG);
+                    break;
+            }
+
             ShowAlarm("패배하였습니다!");
             GameManager.Instance.trainingLoseCount++;
 
@@ -895,44 +918,48 @@ public class BattleManager : MonoBehaviour
     {
         if (GameManager.Instance == null) return null;
 
+        int randomSpecies = Random.Range(1, 5); // 1~4
+        int elementType = 0;
+        int iconIndex = 0;
+        string eggName = "";
+
         switch (itemId)
         {
-            case 6010201:
-                return new Egg
-                {
-                    eggName = "Mystery Egg 1",
-                    icon = GameManager.Instance.icon[0],
-                    dragonPrefab = GameManager.Instance.dragonPrefabs[Random.Range(0, 4)]
-                };
-
-            case 6010202:
-                return new Egg
-                {
-                    eggName = "Mystery Egg 2",
-                    icon = GameManager.Instance.icon[1],
-                    dragonPrefab = GameManager.Instance.dragonPrefabs[Random.Range(4, 8)]
-                };
-
-            case 6010203:
-                return new Egg
-                {
-                    eggName = "Mystery Egg 3",
-                    icon = GameManager.Instance.icon[2],
-                    dragonPrefab = GameManager.Instance.dragonPrefabs[Random.Range(8, 12)]
-                };
-
-            case 6010204:
-                return new Egg
-                {
-                    eggName = "Mystery Egg 4",
-                    icon = GameManager.Instance.icon[3],
-                    dragonPrefab = GameManager.Instance.dragonPrefabs[Random.Range(12, 16)]
-                };
-
+            case 6010201: // Grass
+                elementType = 1;
+                iconIndex = 0;
+                eggName = "Mystery Egg 1";
+                break;
+            case 6010202: // Fire
+                elementType = 2;
+                iconIndex = 1;
+                eggName = "Mystery Egg 2";
+                break;
+            case 6010203: // Water
+                elementType = 3;
+                iconIndex = 2;
+                eggName = "Mystery Egg 3";
+                break;
+            case 6010204: // Wind
+                elementType = 4;
+                iconIndex = 3;
+                eggName = "Mystery Egg 4";
+                break;
             default:
                 Debug.LogError($"알려지지 않은 알 아이템 ID: {itemId}");
                 return null;
         }
+
+        int prefabIndex = ((randomSpecies - 1) * 4) + (elementType - 1);
+
+        return new Egg
+        {
+            eggName = eggName,
+            icon = GameManager.Instance.icon[iconIndex],
+            dragonPrefab = GameManager.Instance.dragonPrefabs[prefabIndex],
+            speciesType = randomSpecies,
+            elementType = elementType
+        };
     }
 
     private IEnumerator CoSkillEffectPlay()

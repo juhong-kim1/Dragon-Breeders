@@ -7,6 +7,8 @@ public class InventoryManager : MonoBehaviour
     public ItemDatabase itemDatabase;
 
     public InventoryUI inventoryUI;
+    public InventoryUI inventoryMapUI;
+
     public InventoryUI foodInventoryUI;
     public InventoryUI playInventoryUI;
     public InventoryUI soapInventoryUI;
@@ -40,7 +42,7 @@ public class InventoryManager : MonoBehaviour
 
     public void RemoveItem(int itemID, int amount = 1)
     {
-        if (items.ContainsKey(5040001) || items.ContainsKey(5050001) || items.ContainsKey(5090001)) return;
+        if (itemID == 5040001 || itemID == 5050001 || itemID == 5090001) return;
 
         if (items.ContainsKey(itemID))
         {

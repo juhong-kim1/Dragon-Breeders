@@ -22,6 +22,9 @@ public class DragonEntry
     public int restCount;
     public int passOutCount;
 
+    public int species;
+    public int elements;
+
     public DragonEntry() { }
 
     public DragonEntry(DragonHealth dragon)
@@ -35,6 +38,8 @@ public class DragonEntry
         finalHunger = dragon.stats.hunger;
         finalIntimacy = dragon.stats.intimacy;
         finalClean = dragon.stats.clean;
+        species = dragon.currentSpeciesType;
+        elements = dragon.currentElementType;
 
         var gameManager = GameManager.Instance;
 
