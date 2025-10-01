@@ -71,7 +71,6 @@ public class TutorialManager : MonoBehaviour
 
         nextButton.onClick.AddListener(OnClickNextButton);
         clearTutorialButton.onClick.AddListener(OnClickNextButton);
-        reTutorialButton.onClick.AddListener(OnClickReTutorialButton);
 
         statArrow.SetActive(false);
         feedArrow.SetActive(false);
