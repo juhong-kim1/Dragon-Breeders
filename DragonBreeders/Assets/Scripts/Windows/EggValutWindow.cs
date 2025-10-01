@@ -8,6 +8,8 @@ public class EggVaultWindow : GenericWindow
 
     public void OnClickBack()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickBack);
+
         manager.Open(Windows.Map);
     }
 }

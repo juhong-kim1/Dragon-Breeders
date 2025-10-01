@@ -345,6 +345,19 @@ public class DragonHealth : MonoBehaviour
 
     public void PlayPassOutAnimation()
     {
-        animator.SetTrigger(isPassOutTrigger);
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+        }
+
+        if (animator != null)
+        {
+            animator.SetTrigger(isPassOutTrigger);
+            Debug.Log("[PlayPassOutAnimation] 기절 애니메이션 실행");
+        }
+        else
+        {
+            Debug.LogError("[PlayPassOutAnimation] Animator를 찾을 수 없습니다!");
+        }
     }
 }

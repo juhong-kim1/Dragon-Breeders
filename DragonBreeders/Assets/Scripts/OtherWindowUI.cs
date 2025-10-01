@@ -30,27 +30,27 @@ public class OtherWindowUI : MonoBehaviour
         if (dragon == null) return;
         var stats = dragon.stats;
 
-        growthText.text = $"{dragon.currentGrowth}";
+        growthText.text = $"{dragon.currentGrowthText}";
 
-        currentStamina.text = $"{stats.stamina}";
-        currentFatigue.text = $"{stats.fatigue}";
-        currentHungry.text = $"{stats.hunger}";
-        currentIntimacy.text = $"{stats.intimacy}";
-        currentClean.text = $"{stats.clean}";
-        currentExperience.text = $"{stats.experience}";
+        currentStamina.text = $"{(int)stats.stamina}";
+        currentFatigue.text = $"{(int)stats.fatigue}";
+        currentHungry.text = $"{(int)stats.hunger}";
+        currentIntimacy.text = $"{(int)stats.intimacy}";
+        currentClean.text = $"{(int)stats.clean}";
+        currentExperience.text = $"{(int)stats.experience}";
 
-        maxStamina.text = $"{stats.maxStamina}";
-        maxFatigue.text = $"{stats.maxFatigue}";
-        maxHungry.text = $"{stats.maxHunger}";
-        maxIntimacy.text = $"{stats.maxIntimacy}";
-        maxClean.text = $"{stats.maxClean}";
-        maxExperience.text = $"{stats.experienceMax}";
+        maxStamina.text = $"{(int)stats.maxStamina}";
+        maxFatigue.text = $"{(int)stats.maxFatigue}";
+        maxHungry.text = $"{(int)stats.maxHunger}";
+        maxIntimacy.text = $"{(int)stats.maxIntimacy}";
+        maxClean.text = $"{(int)stats.maxClean}";
+        maxExperience.text = $"{(int)stats.experienceMax}";
 
-        staminaSlider.value = Mathf.Clamp01((float)stats.stamina / stats.maxStamina);
-        fatigueSlider.value = Mathf.Clamp01((float)stats.fatigue / stats.maxFatigue);
-        hungrySlider.value = Mathf.Clamp01((float)stats.hunger / stats.maxHunger);
-        intimacySlider.value = Mathf.Clamp01((float)stats.intimacy / stats.maxIntimacy);
-        cleanSlider.value = Mathf.Clamp01((float)stats.clean / stats.maxClean);
+        staminaSlider.value = Mathf.Clamp01(stats.stamina / stats.maxStamina);
+        fatigueSlider.value = Mathf.Clamp01(stats.fatigue / stats.maxFatigue);
+        hungrySlider.value = Mathf.Clamp01(stats.hunger / stats.maxHunger);
+        intimacySlider.value = Mathf.Clamp01(stats.intimacy / stats.maxIntimacy);
+        cleanSlider.value = Mathf.Clamp01(stats.clean / stats.maxClean);
         experienceSlider.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
     }
 }

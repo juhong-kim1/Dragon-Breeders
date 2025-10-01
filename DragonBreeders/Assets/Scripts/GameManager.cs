@@ -1089,9 +1089,15 @@ public class GameManager : MonoBehaviour
                     behavior.SetTouchUI(dragonFeedback);
                 }
 
-                if (dragonHealth.stats.IsStatPassOut())
+                if (dragonHealth.isPassOut && dragonHealth.stats.stamina >= 1f)
                 {
-                    dragonHealth.PlayPassOutAnimation();
+                    dragonHealth.isPassOut = false;
+                    dragonHealth.status.RemoveStatus(StatusType.PassOut);
+                    Debug.Log("[LoadGame] 체력이 회복되어 기절 상태 해제");
+                }
+                else if (dragonHealth.stats.IsStatPassOut() || dragonHealth.isPassOut)
+                {
+                    StartCoroutine(PlayPassOutAfterInit(dragonHealth));
                 }
             }
         }
@@ -1231,6 +1237,17 @@ public class GameManager : MonoBehaviour
             Debug.LogError($"CalculateOfflineProgress 오류 발생!");
             Debug.LogError($"오류 메시지: {e.Message}");
             Debug.LogError($"스택 트레이스: {e.StackTrace}");
+        }
+    }
+
+    private System.Collections.IEnumerator PlayPassOutAfterInit(DragonHealth dragon)
+    {
+        yield return null;
+
+        if (dragon != null)
+        {
+            dragon.PlayPassOutAnimation();
+            Debug.Log("[LoadGame] 기절 애니메이션 재생 완료");
         }
     }
 }

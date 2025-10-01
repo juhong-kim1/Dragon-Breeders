@@ -103,11 +103,15 @@ public class MapWindow : GenericWindow
 
     public void OnClickBack()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
+
         manager.Open(Windows.Game);
     }
 
     public void OnClickEgg()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
+
         manager.Open(Windows.EggVault);
 
         if (TutorialManager.Instance.currentStep == 3 && TutorialManager.Instance.tutorialActive)
@@ -126,6 +130,8 @@ public class MapWindow : GenericWindow
 
     private void ToggleMenu()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
+
         menuPanel.SetActive(!menuPanel.activeSelf);
     }
 
@@ -147,11 +153,15 @@ public class MapWindow : GenericWindow
 
     public void OnClickShop()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
+
         manager.Open(Windows.Shop);
     }
 
     private void ToggleTraining()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
+
         if (GameManager.Instance.dragonHealth == null)
         {
             AlarmManager.Instance.ShowAlarm("È¥ÀÚ¼± ½Î¿ï ¼ö ¾ø¾î¿ä!");
@@ -206,7 +216,7 @@ public class MapWindow : GenericWindow
     {
         InventoryPanel.SetActive(!InventoryPanel.activeSelf);
 
-        SoundManager.Instance.PlayBGM(SoundManager.Instance.uiClickSource);
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
 
         if (InventoryPanel.activeSelf)
         {

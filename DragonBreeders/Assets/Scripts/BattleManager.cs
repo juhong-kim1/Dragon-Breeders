@@ -986,4 +986,13 @@ public class BattleManager : MonoBehaviour
     { 
         stopPanel.SetActive(false);
     }
+
+    public void OnClickRunAway()
+    {
+        GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Hunger, -10f);
+        GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Clean, -10f);
+        GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Fatigue, 10f);
+
+        OnClickQuitOut();
+    }
 }

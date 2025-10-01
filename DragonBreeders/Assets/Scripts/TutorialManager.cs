@@ -34,6 +34,9 @@ public class TutorialManager : MonoBehaviour
     public GameObject feedArrow;
     public GameObject playArrow;
 
+    public GameObject eggVaultArrow;
+    public GameObject trainingArrow;
+
     public GameObject tutorialWall;
 
     public int currentStep = 0;
@@ -73,6 +76,9 @@ public class TutorialManager : MonoBehaviour
         statArrow.SetActive(false);
         feedArrow.SetActive(false);
         playArrow.SetActive(false);
+        eggVaultArrow.SetActive(false);
+        trainingArrow.SetActive(false);
+
         eggCoverPanel.SetActive(false);
         tutorialWall.SetActive(false);
     }
@@ -133,12 +139,14 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 3:
                 tutorialText.text = text.Get("TUTORIAL3"); //알 보관소로 가자.
+                eggVaultArrow.SetActive(true);
                 Debug.Log("step 3");
                 break;
             case 4:
                 tutorialText.text = text.Get("TUTORIAL4"); //처음이니까 알을 준비해놨어.\n다음부터는 훈련을 하면 일정 확률로 알을 받을 수 있어.
                 Debug.Log("step 4");
                 nextButton.gameObject.SetActive(true);
+                eggVaultArrow.SetActive(false);
                 eggCoverPanel.SetActive(true);
                 break;
             case 5:
@@ -194,6 +202,7 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 15:
                 tutorialText.text = text.Get("TUTORIAL12_2");
+                playArrow.SetActive(false);
                 nextButton.gameObject.SetActive(true);
                 break;
             case 16:
@@ -201,20 +210,21 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 17:
                 tutorialText.text = text.Get("TUTORIAL13"); // 상점으로 가봐
-                playArrow.SetActive(false);
                 break;
             case 18:
                 tutorialText.text = text.Get("TUTORIAL14"); //감이 좀 잡혔을까?
                 break;
             case 19:
                 tutorialText.text = text.Get("TUTORIAL15"); //마지막이야 지도로 가서 훈련을 해보자
+                trainingArrow.SetActive(true);
                 break;
             case 20:
                 tutorialText.text = text.Get("TUTORIAL16");
                 nextButton.gameObject.SetActive(false); //훈련지역은 5개로 나눠져있어, 맘에드는 지역을 골라봐
                 break;
             case 21:
-                tutorialText.text = text.Get("TUTORIAL17"); // 하급 훈련부터 해보자
+                tutorialText.text = text.Get("TUTORIAL17");
+                trainingArrow.SetActive(false);// 하급 훈련부터 해보자
                 break;
             case 22:
                 tutorialText.text = text.Get("TUTORIAL18");

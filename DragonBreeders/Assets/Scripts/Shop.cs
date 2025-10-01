@@ -43,7 +43,7 @@ public class Shop : MonoBehaviour
 
         long lastResetTimeBinary = System.Convert.ToInt64(SaveLoadManager.Data.LastShopResetTime);
         System.DateTime lastResetTime = System.DateTime.FromBinary(lastResetTimeBinary);
-        System.DateTime nextResetTime = lastResetTime.AddHours(1);
+        System.DateTime nextResetTime = lastResetTime.AddMinutes(15);
         System.DateTime currentTime = System.DateTime.Now;
 
         if (currentTime >= nextResetTime)

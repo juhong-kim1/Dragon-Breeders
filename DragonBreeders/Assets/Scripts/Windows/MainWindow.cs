@@ -121,6 +121,8 @@ public class MainWindow : GenericWindow
 
     private void ToggleFeed()
     {
+        CloseStat();
+
         if(TutorialManager.Instance.currentStep == 10 && TutorialManager.Instance.tutorialActive)
         TutorialManager.Instance.NextStep();
 
@@ -142,6 +144,8 @@ public class MainWindow : GenericWindow
 
     public void CloseFeed()
     {
+        CloseStat();
+
         SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickBack);
 
         if (feedPanel.activeSelf)

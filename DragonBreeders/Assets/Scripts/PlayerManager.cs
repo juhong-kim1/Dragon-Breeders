@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour
 
     void Start()
     {
-        coin = 10000;
+        coin = 3000;
         UpdateCoinUI();
     }
 

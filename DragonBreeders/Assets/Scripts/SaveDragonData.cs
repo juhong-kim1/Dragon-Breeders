@@ -94,6 +94,8 @@ public class SaveDragonData
         dragonHealth.currentGrowth = currentGrowth;
         dragonHealth.isPassOut = isPassOut;
 
+        Debug.Log($"[ApplyDataToDragon] 로드된 성장 단계: {currentGrowth}, isPassOut: {isPassOut}");
+
         if (stats != null && dragonHealth.stats != null)
         {
             dragonHealth.stats.stamina = stats.stamina;
