@@ -42,7 +42,7 @@ public class InventoryManager : MonoBehaviour
 
     public void RemoveItem(int itemID, int amount = 1)
     {
-        if (itemID == 5040001 || itemID == 5050001 || itemID == 5090001) return;
+        if (itemID == 5040001 || itemID == 5050001 || itemID == 5060001) return;
 
         if (items.ContainsKey(itemID))
         {

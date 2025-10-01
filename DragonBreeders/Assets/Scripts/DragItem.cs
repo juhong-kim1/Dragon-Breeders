@@ -33,8 +33,7 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void SetCurrentItem(IItem item)
     {
         currentItem = item;
-    }
-
+    }    
     public void OnBeginDrag(PointerEventData eventData)
     {
         if ((currentItem == null && !GameManager.Instance.isShowering) || !gameObject.activeInHierarchy) return;
