@@ -62,7 +62,7 @@ public class Shop : MonoBehaviour
 
     private void PopulateShop()
     {
-        allItems = DataTableManger.ShopTable.GetAll();
+        allItems = DataTableManger.ShopTable.GetShopItems();
 
         List<ShopTableData> randomItems = GetRandomItems(6);
 

@@ -55,4 +55,18 @@ public class ShopTable : DataTable
     {
         return new List<ShopTableData>(table.Values);
     }
+    public List<ShopTableData> GetShopItems()
+    {
+        List<ShopTableData> shopItems = new List<ShopTableData>();
+
+        foreach (var item in table.Values)
+        {
+            if (item.SHOP_TYPE == 1)
+            {
+                shopItems.Add(item);
+            }
+        }
+
+        return shopItems;
+    }
 }
