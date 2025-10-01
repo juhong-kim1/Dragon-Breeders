@@ -270,6 +270,7 @@ public class TutorialManager : MonoBehaviour
 
     private void OnClickNextButton()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
         NextStep();
     }
 

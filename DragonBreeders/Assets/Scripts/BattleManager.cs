@@ -568,6 +568,8 @@ public class BattleManager : MonoBehaviour
 
     public void OnClickQuitOut()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
+
         GameManager.Instance.isFighting = false;
         GameManager.Instance.dragonHealth.gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
         GameManager.Instance.dragonHealth.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
@@ -983,12 +985,15 @@ public class BattleManager : MonoBehaviour
     }
 
     public void KeepGame()
-    { 
+    {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
+
         stopPanel.SetActive(false);
     }
 
     public void OnClickRunAway()
     {
+
         GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Hunger, -10f);
         GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Clean, -10f);
         GameManager.Instance.dragonHealth.stats.ChangeStat(StatType.Fatigue, 10f);
