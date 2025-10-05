@@ -129,6 +129,11 @@ public class BattleManager : MonoBehaviour
         currentState = BattleState.Start;
 
         playerDragon = GameManager.Instance.dragonHealth;
+
+        if (playerDragon != null && playerDragon.status != null)
+        {
+            playerDragon.status.TryApplyTrainingDebuff();
+        }
         if (playerDragon == null)
         {
             Debug.LogError("드래곤이 널입니다.");
@@ -502,7 +507,9 @@ public class BattleManager : MonoBehaviour
 
         float damage = combatPower * playerDragon.currentTableData.ATT_MULT;
 
-        return damage * skill;
+        float attackMultiplier = playerDragon.status.GetAttackMultiplier();
+
+        return damage * skill * attackMultiplier;
     }
 
     private float MonsterAttack(float skill)
@@ -513,8 +520,11 @@ public class BattleManager : MonoBehaviour
     private float PlayerDefense()
     {
         float combatPower = playerDragon.stats.experience * playerDragon.currentTableData.GROWTH_MULT;
+        float defense = combatPower * playerDragon.currentTableData.DEF_MULT;
 
-        return combatPower * playerDragon.currentTableData.DEF_MULT;
+        float defenseMultiplier = playerDragon.status.GetDefenseMultiplier();
+
+        return defense * defenseMultiplier;
 
     }
 

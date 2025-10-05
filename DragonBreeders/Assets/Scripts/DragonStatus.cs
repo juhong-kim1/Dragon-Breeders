@@ -6,17 +6,12 @@ using System;
 public enum StatusType
 {
     None = 0,
-    Cold = 1,           // 감기
-    FoodPoisoning = 2,  // 식중독
-    HighFever = 4,      // 고열
-    Infection = 8,      // 감염
-    Scratches = 16,     // 상처
-    Bleeding = 32,      // 출혈
-    Fracture = 64,      // 골절
-    Dirty = 128,        // 더러움
-    Hungry = 256,       // 배고픔
-    Fatigue = 512,      // 피로
-    PassOut = 1024,     // 기절
+    Disease = 1,        // 질병
+    Injury = 2,         // 부상
+    Dirty = 4,          // 더러움
+    Hungry = 8,         // 배고픔
+    Fatigue = 16,       // 피로
+    PassOut = 32,       // 기절
 }
 
 [System.Serializable]
@@ -26,31 +21,15 @@ public class DragonStatus
     private Dictionary<StatusType, float> statusTimers = new Dictionary<StatusType, float>();
     private StatusType previousStatuses = StatusType.None;
 
-    public float maxTimer = 60f;
+    [Header("질병/부상 확률 설정")]
+    public float diseaseChance = 10f;
+    public float injuryChance = 10f;
+    public float dirtyDiseaseMultiplier = 2f;
 
-    private static readonly Dictionary<StatusType, int> StatusToTableID = new Dictionary<StatusType, int>
-    {
-        { StatusType.Cold, 20101 },
-        { StatusType.FoodPoisoning, 20102 },
-        { StatusType.HighFever, 20103 },
-        { StatusType.Infection, 20104 },
-        { StatusType.Scratches, 20205 },
-        { StatusType.Bleeding, 20201 },
-        { StatusType.Fracture, 20204 },
-        { StatusType.Dirty, 20305 },
-        { StatusType.Hungry, 20304 },
-        { StatusType.Fatigue, 20303 },
-        { StatusType.PassOut, 20306 }
-    };
-
-    public DebuffTableData GetDebuffData(StatusType status)
-    {
-        if (StatusToTableID.TryGetValue(status, out int id))
-        {
-            return DataTableManger.DebuffTable.Get(id);
-        }
-        return null;
-    }
+    [Header("디버프 효과")]
+    public float attackDebuff = 0.7f;
+    public float defenseDebuff = 0.7f;
+    public float passOutIntimacyLoss = 50f;
 
     public bool HasStatus(StatusType status)
     {
@@ -63,22 +42,31 @@ public class DragonStatus
         {
             currentStatuses |= status;
             statusTimers[status] = 0f;
+
+            string statusName = GetStatusName(status);
+            AlarmManager.Instance?.ShowAlarm($"상태이상: {statusName}");
+            Debug.Log($"[DragonStatus] {statusName} 상태 추가됨");
         }
     }
 
     public void RemoveStatus(StatusType status)
     {
-        currentStatuses &= ~status;
-        statusTimers.Remove(status);
+        if (HasStatus(status))
+        {
+            currentStatuses &= ~status;
+            statusTimers.Remove(status);
+
+            string statusName = GetStatusName(status);
+            Debug.Log($"[DragonStatus] {statusName} 상태 제거됨");
+        }
     }
 
     public StatusType CheckStatusByStats(DragonStats stats)
     {
-        StatusType newStatuses = StatusType.None;
+        StatusType newStatuses = currentStatuses & (StatusType.Disease | StatusType.Injury);
 
         if (stats.stamina <= 0)
             newStatuses |= StatusType.PassOut;
-
         else if (stats.fatigue >= (stats.maxFatigue * 0.8f))
             newStatuses |= StatusType.Fatigue;
 
@@ -94,6 +82,23 @@ public class DragonStatus
             ApplyImmediateEffects(addedStatuses, stats);
         }
 
+        StatusType removedStatuses = previousStatuses & ~newStatuses;
+        if (removedStatuses != StatusType.None)
+        {
+            foreach (StatusType status in Enum.GetValues(typeof(StatusType)))
+            {
+                if (status != StatusType.None && (removedStatuses & status) != 0)
+                {
+                    if (status == StatusType.Hungry || status == StatusType.Dirty ||
+                        status == StatusType.Fatigue)
+                    {
+                        string statusName = GetStatusName(status);
+                        AlarmManager.Instance?.ShowAlarm($"{statusName} 상태 해제!");
+                    }
+                }
+            }
+        }
+
         currentStatuses = newStatuses;
         previousStatuses = newStatuses;
 
@@ -102,93 +107,76 @@ public class DragonStatus
 
     private void ApplyImmediateEffects(StatusType statuses, DragonStats stats)
     {
-        for (int i = 0; i < 11; i++)
+        if ((statuses & StatusType.PassOut) != 0)
         {
-            StatusType status = (StatusType)(1 << i);
-            if ((statuses & status) != 0)
-            {
-                var debuffData = GetDebuffData(status);
-                if (debuffData != null && debuffData.TRIGGER_TYPE == 1)
-                {
-                    ApplyDebuffEffect(debuffData, stats);
-                }
-            }
+            stats.ChangeStat(StatType.Intimacy, -passOutIntimacyLoss);
         }
     }
 
     public void UpdateTimersAndEffects(DragonStats stats)
     {
-        for (int i = 0; i < 11; i++)
+        foreach (var status in new List<StatusType>(statusTimers.Keys))
         {
-            StatusType status = (StatusType)(1 << i);
             if (HasStatus(status))
             {
-                if (!statusTimers.ContainsKey(status))
-                    statusTimers[status] = 0f;
-
                 statusTimers[status] += Time.deltaTime;
-                EffectByStatus(status, stats);
             }
         }
     }
 
-    public void EffectByStatus(StatusType status, DragonStats stats)
+    public void TryApplyTrainingDebuff()
     {
-        if (!statusTimers.ContainsKey(status)) return;
+        float currentDiseaseChance = diseaseChance;
 
-        var debuffData = GetDebuffData(status);
-        if (debuffData == null || debuffData.TRIGGER_TYPE != 2) return;
-
-        float timer = statusTimers[status];
-        float interval = 60f / debuffData.TRIGGER_RATE;
-
-        if (timer >= interval)
+        if (HasStatus(StatusType.Dirty))
         {
-            ApplyDebuffEffect(debuffData, stats);
-            statusTimers[status] = 0f;
+            currentDiseaseChance *= dirtyDiseaseMultiplier;
+        }
+
+        float diseaseRoll = UnityEngine.Random.Range(0f, 100f);
+        if (diseaseRoll < currentDiseaseChance)
+        {
+            AddStatus(StatusType.Disease);
+        }
+
+        float injuryRoll = UnityEngine.Random.Range(0f, 100f);
+        if (injuryRoll < injuryChance)
+        {
+            AddStatus(StatusType.Injury);
         }
     }
 
-    private void ApplyDebuffEffect(DebuffTableData debuffData, DragonStats stats)
+    public float GetAttackMultiplier()
     {
-        switch (debuffData.EFFECT_TYPE)
+        if (HasStatus(StatusType.Disease))
         {
-            case 1:
-                int maxFatigueReduction = Mathf.RoundToInt(stats.maxFatigue * debuffData.VALUE / 100f);
-                stats.maxFatigue -= maxFatigueReduction;
-                break;
-            case 2:
-                float hungerDrain = stats.maxHunger * debuffData.VALUE / 100f;
-                stats.ChangeStat(StatType.Hunger, -Mathf.RoundToInt(hungerDrain));
-                break;
-            case 3:
-                float fatigueAmount = stats.maxFatigue * debuffData.VALUE / 100f;
-                stats.ChangeStat(StatType.Fatigue, Mathf.RoundToInt(fatigueAmount));
-                break;
-            case 4:
-                float staminaDrain = stats.maxStamina * debuffData.VALUE / 100f;
-                stats.ChangeStat(StatType.Stamina, -Mathf.RoundToInt(staminaDrain));
-                break;
-            case 5: // 탐험 시 질병 확률 증가
-                break;
-            case 6:
-                stats.ChangeStat(StatType.Intimacy, -Mathf.RoundToInt(debuffData.VALUE));
-                break;
+            return attackDebuff;
         }
+        return 1f;
     }
 
-    public void TryApplyRandomDebuff(StatusType status)
+    public float GetDefenseMultiplier()
     {
-        var debuffData = GetDebuffData(status);
-        if (debuffData != null &&
-            (debuffData.TRIGGER_TYPE == 1 || debuffData.TRIGGER_TYPE == 2))
+        if (HasStatus(StatusType.Injury))
         {
-            float random = UnityEngine.Random.Range(0f, 100f);
-            if (random < debuffData.TRIGGER_RATE)
+            return defenseDebuff;
+        }
+        return 1f;
+    }
+
+    public List<StatusType> GetActiveStatuses()
+    {
+        List<StatusType> activeStatuses = new List<StatusType>();
+
+        foreach (StatusType status in Enum.GetValues(typeof(StatusType)))
+        {
+            if (status != StatusType.None && HasStatus(status))
             {
-                AddStatus(status);
+                activeStatuses.Add(status);
             }
         }
+
+        return activeStatuses;
     }
 
     public int GetStatusCount()
@@ -204,46 +192,17 @@ public class DragonStatus
         return count;
     }
 
-    public float GetDiseaseRiskMultiplier()
+    private string GetStatusName(StatusType status)
     {
-        float multiplier = 1f;
-
-        for (int i = 0; i < 11; i++)
+        switch (status)
         {
-            StatusType status = (StatusType)(1 << i);
-            if (HasStatus(status))
-            {
-                var debuffData = GetDebuffData(status);
-                if (debuffData != null && debuffData.EFFECT_TYPE == 5)
-                {
-                    multiplier += debuffData.VALUE / 100f;
-                }
-            }
+            case StatusType.Disease: return "질병";
+            case StatusType.Injury: return "부상";
+            case StatusType.Dirty: return "더러움";
+            case StatusType.Hungry: return "배고픔";
+            case StatusType.Fatigue: return "피로";
+            case StatusType.PassOut: return "기절";
+            default: return "알 수 없음";
         }
-
-        return multiplier;
-    }
-
-    public bool CanCureWith(StatusType status, int cureType)
-    {
-        var debuffData = GetDebuffData(status);
-        return debuffData != null && debuffData.CURE_TYPE == cureType;
-    }
-
-    public List<StatusType> GetCurableStatuses(int cureType)
-    {
-        var result = new List<StatusType>();
-
-        for (int i = 0; i < 11; i++)
-        {
-            StatusType status = (StatusType)(1 << i);
-            if (HasStatus(status) && CanCureWith(status, cureType))
-            {
-                result.Add(status);
-            }
-        }
-
-        return result;
     }
 }
-

@@ -161,6 +161,9 @@ public class GameManager : MonoBehaviour
 
     public Shop shop;
 
+    public Sprite[] statusSprites;
+    public StatusUI statusUI;
+
     public void Awake()
     {
         if (Instance == null)
@@ -289,6 +292,11 @@ public class GameManager : MonoBehaviour
 
 
         GrowUpEffect();
+
+        if (dragonHealth != null && statusUI != null)
+        {
+            statusUI.UpdateStatusIcons(dragonHealth.status);
+        }
     }
 
     public void UpdateStatText()
@@ -1107,7 +1115,7 @@ public class GameManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(saveData.LastSaveTime) && dragonHealth != null)
         {
-            CalculateOfflineProgress(saveData.LastSaveTime);
+            //CalculateOfflineProgress(saveData.LastSaveTime);
         }
 
         if (TutorialManager.Instance != null)
