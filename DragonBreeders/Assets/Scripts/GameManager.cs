@@ -373,13 +373,6 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (dragonHealth.isPassOut)
-        {
-            AlarmManager.Instance.ShowAlarm("µå·¡°ïÀÌ Á×±âÁ÷ÀüÀÎ°¡ºÁ¿ä!");
-            SoundManager.Instance.PlayErrorSound();
-            return;
-        }
-
         if (!canFeed)
         {
             AlarmManager.Instance.ShowAlarm("¹æ±İ ¹ä¸Ô¾ú¾î¿ä!");
