@@ -85,18 +85,12 @@ public class DragonStatus
         StatusType removedStatuses = previousStatuses & ~newStatuses;
         if (removedStatuses != StatusType.None)
         {
-            foreach (StatusType status in Enum.GetValues(typeof(StatusType)))
-            {
-                if (status != StatusType.None && (removedStatuses & status) != 0)
-                {
-                    if (status == StatusType.Hungry || status == StatusType.Dirty ||
-                        status == StatusType.Fatigue)
-                    {
-                        string statusName = GetStatusName(status);
-                        AlarmManager.Instance?.ShowAlarm($"{statusName} 상태 해제!");
-                    }
-                }
-            }
+            if ((removedStatuses & StatusType.Hungry) != 0)
+                AlarmManager.Instance?.ShowAlarm("배고픔 상태 해제!");
+            if ((removedStatuses & StatusType.Dirty) != 0)
+                AlarmManager.Instance?.ShowAlarm("더러움 상태 해제!");
+            if ((removedStatuses & StatusType.Fatigue) != 0)
+                AlarmManager.Instance?.ShowAlarm("피로 상태 해제!");
         }
 
         currentStatuses = newStatuses;
@@ -168,13 +162,12 @@ public class DragonStatus
     {
         List<StatusType> activeStatuses = new List<StatusType>();
 
-        foreach (StatusType status in Enum.GetValues(typeof(StatusType)))
-        {
-            if (status != StatusType.None && HasStatus(status))
-            {
-                activeStatuses.Add(status);
-            }
-        }
+        if (HasStatus(StatusType.Disease)) activeStatuses.Add(StatusType.Disease);
+        if (HasStatus(StatusType.Injury)) activeStatuses.Add(StatusType.Injury);
+        if (HasStatus(StatusType.Dirty)) activeStatuses.Add(StatusType.Dirty);
+        if (HasStatus(StatusType.Hungry)) activeStatuses.Add(StatusType.Hungry);
+        if (HasStatus(StatusType.Fatigue)) activeStatuses.Add(StatusType.Fatigue);
+        if (HasStatus(StatusType.PassOut)) activeStatuses.Add(StatusType.PassOut);
 
         return activeStatuses;
     }
