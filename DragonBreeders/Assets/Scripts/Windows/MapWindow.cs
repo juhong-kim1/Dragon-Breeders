@@ -128,6 +128,13 @@ public class MapWindow : GenericWindow
         TutorialManager.Instance.NextStep();
     }
 
+    public void OnClickHospital()
+    {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
+
+        manager.Open(Windows.Hospital);
+    }
+
     private void ToggleMenu()
     {
         SoundManager.Instance.PlaySFX(SoundManager.Instance.uiClickSource);
