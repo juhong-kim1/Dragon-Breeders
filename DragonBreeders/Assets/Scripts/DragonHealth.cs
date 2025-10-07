@@ -178,6 +178,11 @@ public class DragonHealth : MonoBehaviour
                     Debug.Log("자동 회복: 체력이 1 이상이 되어 깨어남");
                 }
             }
+            else
+            {
+                stats.ChangeStat(StatType.Stamina, -currentTableData.DEP_FOOD);
+                Debug.Log("배고픔 0: 체력 감소 중");
+            }
 
             hungryTimer = 0f;
         }

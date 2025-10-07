@@ -1115,7 +1115,7 @@ public class GameManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(saveData.LastSaveTime) && dragonHealth != null)
         {
-            //CalculateOfflineProgress(saveData.LastSaveTime);
+            CalculateOfflineProgress(saveData.LastSaveTime);
         }
 
         if (TutorialManager.Instance != null)
@@ -1226,7 +1226,10 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-
+                    float staminaDecrease = tableData.DEP_FOOD * decreaseCycles;
+                    Debug.Log($"배고픔이 0이므로 체력 감소: -{staminaDecrease}");
+                    dragonHealth.stats.ChangeStat(StatType.Stamina, -staminaDecrease);
+                    Debug.Log($"체력: {dragonHealth.stats.stamina}/{dragonHealth.stats.maxStamina}");
                 }
             }
             else
@@ -1250,5 +1253,35 @@ public class GameManager : MonoBehaviour
             dragon.PlayPassOutAnimation();
             Debug.Log("[LoadGame] 기절 애니메이션 재생 완료");
         }
+    }
+
+    public void OnClickTreatment()
+    {
+        if (dragonHealth == null)
+        {
+            AlarmManager.Instance.ShowAlarm("치료할 드래곤이 없어요!");
+            SoundManager.Instance.PlayErrorSound();
+            return;
+        }
+
+        if (!dragonHealth.isPassOut)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤이 완전히 건강해요!");
+            SoundManager.Instance.PlayErrorSound();
+            return;
+        }
+
+        dragonHealth.isPassOut = false;
+        dragonHealth.status.RemoveStatus(StatusType.PassOut);
+
+        dragonHealth.stats.ChangeStat(StatType.Stamina, 10f);
+
+        dragonHealth.GetComponent<DragonBehavior>().PlayRecoverAnimation();
+
+        AlarmManager.Instance.ShowAlarm("치료 완료! 체력 +10");
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.successAudioClip);
+
+        Debug.Log("드래곤 치료 완료");
+
     }
 }

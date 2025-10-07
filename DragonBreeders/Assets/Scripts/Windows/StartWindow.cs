@@ -34,7 +34,7 @@ public class StartWindow : GenericWindow
         Debug.Log($"튜토리얼액티브 {TutorialManager.Instance.tutorialActive}");
 
         manager.Open(Windows.Game);
-        gameManager.alarmPanel.gameObject.SetActive(true);
+        //gameManager.alarmPanel.gameObject.SetActive(true);
 
         SoundManager.Instance.RandomMainBGMPlay();
     }
