@@ -89,6 +89,8 @@ public class ShopSlot : MonoBehaviour
     { 
         if (item == null) return;
 
+        Debug.Log("아이템 클릭");
+
         itemDiscription.text = item.GetDescription();
     }
 

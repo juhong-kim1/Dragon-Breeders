@@ -202,7 +202,7 @@ public class DragonHealth : MonoBehaviour
         }
     }
 
-    public void OnPassOut()
+    public void OnPassOut(bool showAlarm = true)
     {
         if (isPassOut)
         {
@@ -217,7 +217,10 @@ public class DragonHealth : MonoBehaviour
         status.AddStatus(StatusType.PassOut);
         stats.ChangeStat(StatType.Intimacy, -50f);
         GameManager.Instance.passOutCount++;
-        AlarmManager.Instance.ShowAlarm("드래곤이 의식을 잃었어요!");
+        if (showAlarm)
+        {
+            AlarmManager.Instance.ShowAlarm("드래곤이 의식을 잃었어요!");
+        }
         animator.SetTrigger(isPassOutTrigger);
     }
 

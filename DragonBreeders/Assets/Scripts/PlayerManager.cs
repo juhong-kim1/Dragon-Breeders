@@ -6,6 +6,7 @@ public class PlayerManager : MonoBehaviour
     public TextMeshProUGUI coinText;
     public TextMeshProUGUI coinTextShop;
     public TextMeshProUGUI coinTextMap;
+    public TextMeshProUGUI coinTextPhamacy;
 
     public int coin;
     public int famePoint = 0;
@@ -21,5 +22,6 @@ public class PlayerManager : MonoBehaviour
         coinText.text = coin.ToString();
         coinTextShop.text = coin.ToString();
         coinTextMap.text = coin.ToString();
+        coinTextPhamacy.text = coin.ToString();
     }
 }

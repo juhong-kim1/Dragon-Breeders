@@ -7,8 +7,8 @@ public class Pharmacy : MonoBehaviour
     private const int MEDICINE_ID = 5030601; // °¨±â¾à
     private const int BANDAGE_ID = 5031101;  // ºØ´ë
 
-    private const int MEDICINE_PRICE = 100;
-    private const int BANDAGE_PRICE = 100;
+    private const int MEDICINE_PRICE = 1000;
+    private const int BANDAGE_PRICE = 1000;
 
     private void Start()
     {

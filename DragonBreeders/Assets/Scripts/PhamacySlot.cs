@@ -106,7 +106,7 @@ public class PharmacySlot : MonoBehaviour
         }
     }
 
-    private void OnClickItemImage()
+    public void OnClickItemImage()
     {
         if (item == null) return;
         if (itemDiscription != null)

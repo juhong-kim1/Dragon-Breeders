@@ -381,6 +381,12 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        if (dragonHealth.isPassOut)
+        {
+            AlarmManager.Instance.ShowAlarm("응급실에 가야해요!");
+            return;
+        }
+
         if (!canFeed)
         {
             AlarmManager.Instance.ShowAlarm("방금 밥먹었어요!");
@@ -554,8 +560,6 @@ public class GameManager : MonoBehaviour
         isPlaying = true;
 
         inventoryManager.RefreshPlayUI();
-
-        Debug.Log("음식 아이템만 표시됨");
     }
 
     public void OnClickRest()
