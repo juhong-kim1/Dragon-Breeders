@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -192,13 +192,13 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             SaveGame();
-            Debug.Log("SÅ°·Î ¼öµ¿ ÀúÀå");
+            Debug.Log("Sí‚¤ë¡œ ìˆ˜ë™ ì €ì¥");
         }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
             LoadGame();
-            Debug.Log("LÅ°·Î ¼öµ¿ ·Îµå");
+            Debug.Log("Lí‚¤ë¡œ ìˆ˜ë™ ë¡œë“œ");
         }
 
         CheckFPS();
@@ -376,20 +376,20 @@ public class GameManager : MonoBehaviour
     {
         if (dragonHealth == null)
         {
-            AlarmManager.Instance.ShowAlarm("¹ä ¸ÔÀÏ µå·¡°ïÀÌ ¾ø¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ë°¥ ë¨¹ì¼ ë“œë˜ê³¤ì´ ì—†ì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.isPassOut)
         {
-            AlarmManager.Instance.ShowAlarm("ÀÀ±Ş½Ç¿¡ °¡¾ßÇØ¿ä!");
+            AlarmManager.Instance.ShowAlarm("ì‘ê¸‰ì‹¤ì— ê°€ì•¼í•´ìš”!");
             return;
         }
 
         if (!canFeed)
         {
-            AlarmManager.Instance.ShowAlarm("¹æ±İ ¹ä¸Ô¾ú¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ë°©ê¸ˆ ë°¥ë¨¹ì—ˆì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
@@ -398,7 +398,7 @@ public class GameManager : MonoBehaviour
 
         inventoryManager.RefreshFoodUI();
 
-        Debug.Log("À½½Ä ¾ÆÀÌÅÛ¸¸ Ç¥½ÃµÊ");
+        Debug.Log("ìŒì‹ ì•„ì´í…œë§Œ í‘œì‹œë¨");
 
 
     }
@@ -407,21 +407,21 @@ public class GameManager : MonoBehaviour
     {
         if (dragonHealth == null)
         {
-            AlarmManager.Instance.ShowAlarm("¸ñ¿å½ÃÅ³ µå·¡°ïÀÌ ¾ø¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ëª©ìš•ì‹œí‚¬ ë“œë˜ê³¤ì´ ì—†ì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.isPassOut)
         {
-            AlarmManager.Instance.ShowAlarm("µå·¡°ïÀÌ ±âÀıÇß¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ë“œë˜ê³¤ì´ ê¸°ì ˆí–ˆì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!canBath)
         {
-            AlarmManager.Instance.ShowAlarm("¾ÆÁ÷ ¸ñ¿åÇÒ ¼ö ¾ø¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ì•„ì§ ëª©ìš•í•  ìˆ˜ ì—†ì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
@@ -433,125 +433,125 @@ public class GameManager : MonoBehaviour
     {
         if (dragonHealth == null)
         {
-            AlarmManager.Instance.ShowAlarm("¸ñ¿å½ÃÅ³ µå·¡°ïÀÌ ¾ø¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ëª©ìš•ì‹œí‚¬ ë“œë˜ê³¤ì´ ì—†ì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.isPassOut)
         {
-            AlarmManager.Instance.ShowAlarm("µå·¡°ïÀÌ ±âÀıÇß¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ë“œë˜ê³¤ì´ ê¸°ì ˆí–ˆì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!canBath)
         {
-            AlarmManager.Instance.ShowAlarm("¾ÆÁ÷ ¸ñ¿åÇÒ ¼ö ¾ø¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ì•„ì§ ëª©ìš•í•  ìˆ˜ ì—†ì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         isSoaping = true;
         inventoryManager.RefreshSoapUI();
-        Debug.Log("ºñ´© ¾ÆÀÌÅÛ¸¸ Ç¥½ÃµÊ");
+        Debug.Log("ë¹„ëˆ„ ì•„ì´í…œë§Œ í‘œì‹œë¨");
     }
 
     public void GetBrush()
     {
         if (dragonHealth == null)
         {
-            AlarmManager.Instance.ShowAlarm("¸ñ¿å½ÃÅ³ µå·¡°ïÀÌ ¾ø¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ëª©ìš•ì‹œí‚¬ ë“œë˜ê³¤ì´ ì—†ì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.isPassOut)
         {
-            AlarmManager.Instance.ShowAlarm("µå·¡°ïÀÌ ±âÀıÇß¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ë“œë˜ê³¤ì´ ê¸°ì ˆí–ˆì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!canBath)
         {
-            AlarmManager.Instance.ShowAlarm("¾ÆÁ÷ ¸ñ¿åÇÒ ¼ö ¾ø¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ì•„ì§ ëª©ìš•í•  ìˆ˜ ì—†ì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         isBrushing = true;
         inventoryManager.RefreshBrushUI();
-        Debug.Log("ºê·¯½¬ ¾ÆÀÌÅÛ¸¸ Ç¥½ÃµÊ");
+        Debug.Log("ë¸ŒëŸ¬ì‰¬ ì•„ì´í…œë§Œ í‘œì‹œë¨");
     }
 
     public void GetShower()
     {
         if (dragonHealth == null)
         {
-            AlarmManager.Instance.ShowAlarm("»ş¿ö½ÃÅ³ µå·¡°ïÀÌ ¾ø¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ìƒ¤ì›Œì‹œí‚¬ ë“œë˜ê³¤ì´ ì—†ì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.isPassOut)
         {
-            AlarmManager.Instance.ShowAlarm("µå·¡°ïÀÌ ±âÀıÇß¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ë“œë˜ê³¤ì´ ê¸°ì ˆí–ˆì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!canBath)
         {
-            AlarmManager.Instance.ShowAlarm("¾ÆÁ÷ ¸ñ¿åÇÒ ¼ö ¾ø¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ì•„ì§ ëª©ìš•í•  ìˆ˜ ì—†ì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!hasSoaped)
         {
-            AlarmManager.Instance.ShowAlarm("¸ÕÀú ºñ´©¸¦ »ç¿ëÇØÁÖ¼¼¿ä!");
+            AlarmManager.Instance.ShowAlarm("ë¨¼ì € ë¹„ëˆ„ë¥¼ ì‚¬ìš©í•´ì£¼ì„¸ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!hasBrushed)
         {
-            AlarmManager.Instance.ShowAlarm("¸ÕÀú ºê·¯½¬¸¦ »ç¿ëÇØÁÖ¼¼¿ä!");
+            AlarmManager.Instance.ShowAlarm("ë¨¼ì € ë¸ŒëŸ¬ì‰¬ë¥¼ ì‚¬ìš©í•´ì£¼ì„¸ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         isShowering = true;
-        Debug.Log("»ş¿ö ¸ğµå È°¼ºÈ­");
+        Debug.Log("ìƒ¤ì›Œ ëª¨ë“œ í™œì„±í™”");
     }
 
     public void GetPlay()
     {
         if (dragonHealth == null)
         {
-            AlarmManager.Instance.ShowAlarm("µå·¡°ïÀÌ¶û °°ÀÌ ³ë´Â°Ô ÁÁÁö ¾ÊÀ»±î¿ä?!");
+            AlarmManager.Instance.ShowAlarm("ë“œë˜ê³¤ì´ë‘ ê°™ì´ ë…¸ëŠ”ê²Œ ì¢‹ì§€ ì•Šì„ê¹Œìš”?!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.isPassOut)
         {
-            AlarmManager.Instance.ShowAlarm("µå·¡°ïÀÌ KO »óÅÂ³×¿ä!");
+            AlarmManager.Instance.ShowAlarm("ë“œë˜ê³¤ì´ KO ìƒíƒœë„¤ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (dragonHealth.stats.fatigue/dragonHealth.stats.maxFatigue >= 0.75f)
         {
-            AlarmManager.Instance.ShowAlarm("µå·¡°ïÀÌ °ú·ÎÇß½À´Ï´Ù..");
+            AlarmManager.Instance.ShowAlarm("ë“œë˜ê³¤ì´ ê³¼ë¡œí–ˆìŠµë‹ˆë‹¤..");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!canPlay)
         {
-            AlarmManager.Instance.ShowAlarm("¾ÆÁ÷ ³î ¼ö ¾ø¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ì•„ì§ ë†€ ìˆ˜ ì—†ì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
@@ -566,7 +566,7 @@ public class GameManager : MonoBehaviour
     {
         if (!canRest)
         {
-            Debug.Log("ÈŞ½Ä Äğ ÁøÇà Áß");
+            Debug.Log("íœ´ì‹ ì¿¨ ì§„í–‰ ì¤‘");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
@@ -585,9 +585,9 @@ public class GameManager : MonoBehaviour
 
             if (!CanExecuteNurture(data))
             {
-                Debug.Log("ÈŞ½Ä Á¶°Ç ºÒÃæÁ·: ÇÇ·Îµµ°¡ 80% ¹Ì¸¸");
+                Debug.Log("íœ´ì‹ ì¡°ê±´ ë¶ˆì¶©ì¡±: í”¼ë¡œë„ê°€ 80% ë¯¸ë§Œ");
 
-                AlarmManager.Instance.ShowAlarm("ÈŞ½ÄÇÏ±â¿£ ¾ÆÁ÷ ÆÈÆÈÇÕ´Ï´Ù!");
+                AlarmManager.Instance.ShowAlarm("íœ´ì‹í•˜ê¸°ì—” ì•„ì§ íŒ”íŒ”í•©ë‹ˆë‹¤!");
                 SoundManager.Instance.PlayErrorSound();
                 return;
             }
@@ -597,7 +597,7 @@ public class GameManager : MonoBehaviour
             float fatigueRecovery = dragonHealth.stats.maxFatigue * data.REC_PERCENT / 100;
             dragonHealth.stats.ChangeStat(StatType.Fatigue, -fatigueRecovery);
 
-            AlarmManager.Instance.ShowAlarm("°³¿îÇÏ´Ù~");
+            AlarmManager.Instance.ShowAlarm("ê°œìš´í•˜ë‹¤~");
 
             restCount++;
 
@@ -617,19 +617,19 @@ public class GameManager : MonoBehaviour
             case 0:
                 return true;
 
-            case 1: // ¹èºÎ¸§ ¼öÄ¡°¡ 100% º¸´Ù ÀûÀ» ¶§
+            case 1: // ë°°ë¶€ë¦„ ìˆ˜ì¹˜ê°€ 100% ë³´ë‹¤ ì ì„ ë•Œ
                 return dragonHealth.stats.hunger < dragonHealth.stats.maxHunger;
 
-            case 2: // Ã»°á ¼öÄ¡°¡ 100% º¸´Ù ÀûÀ» ¶§
+            case 2: // ì²­ê²° ìˆ˜ì¹˜ê°€ 100% ë³´ë‹¤ ì ì„ ë•Œ
                 return dragonHealth.stats.clean < dragonHealth.stats.maxClean;
 
-            case 3: // ÇÇ·Îµµ ¼öÄ¡°¡ 80% ÀÌ»óÀÏ ¶§
+            case 3: // í”¼ë¡œë„ ìˆ˜ì¹˜ê°€ 80% ì´ìƒì¼ ë•Œ
                 return dragonHealth.stats.fatigue >= (dragonHealth.stats.maxFatigue * 0.8f);
 
-            case 4: // ÇÇ·Îµµ ¼öÄ¡°¡ 75% ÀÌÇÏÀÏ ¶§
+            case 4: // í”¼ë¡œë„ ìˆ˜ì¹˜ê°€ 75% ì´í•˜ì¼ ë•Œ
                 return dragonHealth.stats.fatigue <= (dragonHealth.stats.maxFatigue * 0.75f);
 
-            case 5: // ÇÇ·Îµµ ¼öÄ¡°¡ 65% ÀÌÇÏÀÏ ¶§
+            case 5: // í”¼ë¡œë„ ìˆ˜ì¹˜ê°€ 65% ì´í•˜ì¼ ë•Œ
                 return dragonHealth.stats.fatigue <= (dragonHealth.stats.maxFatigue * 0.65f);
 
             default:
@@ -642,7 +642,7 @@ public class GameManager : MonoBehaviour
         int randomElement = Random.Range(0, 4);
         int randomSpecies = Random.Range(0, 4);
 
-        Debug.Log("·£´ı ¾Ë »ı¼º");
+        Debug.Log("ëœë¤ ì•Œ ìƒì„±");
 
         int prefabIndex = (randomSpecies * 4) + randomElement;
 
@@ -695,11 +695,11 @@ public class GameManager : MonoBehaviour
             inventoryManager.RefreshPlayUI();
             inventoryManager.RefreshFoodUI();
 
-            Debug.Log($"·£´ı ¾ÆÀÌÅÛ Ãß°¡: {randomItem.ITEM_NAME} (ID: {randomItem.ITEM_ID})");
+            Debug.Log($"ëœë¤ ì•„ì´í…œ ì¶”ê°€: {randomItem.ITEM_NAME} (ID: {randomItem.ITEM_ID})");
         }
         else
         {
-            Debug.LogError("¾ÆÀÌÅÛ Å×ÀÌºíÀÌ ºñ¾îÀÖ½À´Ï´Ù!");
+            Debug.LogError("ì•„ì´í…œ í…Œì´ë¸”ì´ ë¹„ì–´ìˆìŠµë‹ˆë‹¤!");
         }
     }
 
@@ -742,8 +742,8 @@ public class GameManager : MonoBehaviour
 
         playerManager.UpdateCoinUI();
 
-        AlarmManager.Instance.ShowAlarm("Àß°¡ µå·¡°ï~");
-        Debug.Log("µå·¡°ïÀ» ¹æ»ıÇß½À´Ï´Ù!");
+        AlarmManager.Instance.ShowAlarm("ì˜ê°€ ë“œë˜ê³¤~");
+        Debug.Log("ë“œë˜ê³¤ì„ ë°©ìƒí–ˆìŠµë‹ˆë‹¤!");
 
         mainWindow.dragonNameText.text = string.Empty;
 
@@ -796,6 +796,7 @@ public class GameManager : MonoBehaviour
         light1.gameObject.SetActive(!light1.gameObject.activeSelf);
         light2.gameObject.SetActive(!light2.gameObject.activeSelf);
     }
+
     public void FullStaminaCheat()
     {
         float staminaToAdd = dragonHealth.stats.maxStamina - dragonHealth.stats.stamina;
@@ -811,7 +812,7 @@ public class GameManager : MonoBehaviour
     {
         if (!inventoryManager.HasItem(itemId, amount))
         {
-            AlarmManager.Instance.ShowAlarm("¾ÆÀÌÅÛÀÌ ºÎÁ·ÇÕ´Ï´Ù!");
+            AlarmManager.Instance.ShowAlarm("ì•„ì´í…œì´ ë¶€ì¡±í•©ë‹ˆë‹¤!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
@@ -820,7 +821,7 @@ public class GameManager : MonoBehaviour
 
         if (dragonHealth.stats.hunger >= dragonHealth.stats.maxHunger)
         {
-            AlarmManager.Instance.ShowAlarm("¹è°¡ ÅÍÁ® Á×À»°Í°°¾Æ¿ä");
+            AlarmManager.Instance.ShowAlarm("ë°°ê°€ í„°ì ¸ ì£½ì„ê²ƒê°™ì•„ìš”");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
@@ -839,7 +840,7 @@ public class GameManager : MonoBehaviour
         dragonHealth.GainExperience(experience);
 
         string itemName = itemData.StringName;
-        AlarmManager.Instance.ShowAlarm($"{itemName} »ç¿ë! ¹èºÎ¸§ +{((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery}");
+        AlarmManager.Instance.ShowAlarm($"{itemName} ì‚¬ìš©! ë°°ë¶€ë¦„ +{((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxHunger) + hungerRecovery}");
 
         SoundManager.Instance.PlaySFX(SoundManager.Instance.eatAudioClip);
 
@@ -855,14 +856,14 @@ public class GameManager : MonoBehaviour
         }
 
         feedCount++;
-        Debug.Log($"{itemName} »ç¿ë ¿Ï·á - ¹èºÎ¸§ {hungerRecovery} È¸º¹");
+        Debug.Log($"{itemName} ì‚¬ìš© ì™„ë£Œ - ë°°ë¶€ë¦„ {hungerRecovery} íšŒë³µ");
     }
 
     public void UsePlayItem(int itemId, int amount = 1)
     {
         if (!inventoryManager.HasItem(itemId, amount))
         {
-            AlarmManager.Instance.ShowAlarm("¾ÆÀÌÅÛÀÌ ºÎÁ·ÇÕ´Ï´Ù!");
+            AlarmManager.Instance.ShowAlarm("ì•„ì´í…œì´ ë¶€ì¡±í•©ë‹ˆë‹¤!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
@@ -871,14 +872,14 @@ public class GameManager : MonoBehaviour
 
         if (dragonHealth.stats.intimacy >= dragonHealth.stats.maxIntimacy)
         {
-            AlarmManager.Instance.ShowAlarm("ÀÌ¹Ì ³Ê¹« Ä£ÇÕ´Ï´Ù!");
+            AlarmManager.Instance.ShowAlarm("ì´ë¯¸ ë„ˆë¬´ ì¹œí•©ë‹ˆë‹¤!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!canRest)
         {
-            AlarmManager.Instance.ShowAlarm("¹æ±İ ³î¾Ò¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ë°©ê¸ˆ ë†€ì•˜ì–´ìš”!");
             return;
         }
 
@@ -901,7 +902,7 @@ public class GameManager : MonoBehaviour
             TutorialManager.Instance.NextStep();
 
         string itemName = itemData.StringName;
-        AlarmManager.Instance.ShowAlarm($"{itemName} »ç¿ë! Ä£¹Ğµµ +{((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy}");
+        AlarmManager.Instance.ShowAlarm($"{itemName} ì‚¬ìš©! ì¹œë°€ë„ +{((nurtureData.REC_PERCENT / 100f) * dragonHealth.stats.maxIntimacy) + increaseIntimacy}");
 
         canPlay = false;
         playTimer = 0f;
@@ -912,14 +913,14 @@ public class GameManager : MonoBehaviour
         }
 
         playCount++;
-        Debug.Log($"{itemName} »ç¿ë ¿Ï·á - Ä£¹Ğµµ {increaseIntimacy} Áõ°¡");
+        Debug.Log($"{itemName} ì‚¬ìš© ì™„ë£Œ - ì¹œë°€ë„ {increaseIntimacy} ì¦ê°€");
     }
 
     public void UseSoapItem(int itemId, int amount = 1)
     {
         if (!inventoryManager.HasItem(itemId, amount))
         {
-            AlarmManager.Instance.ShowAlarm("¾ÆÀÌÅÛÀÌ ºÎÁ·ÇÕ´Ï´Ù!");
+            AlarmManager.Instance.ShowAlarm("ì•„ì´í…œì´ ë¶€ì¡±í•©ë‹ˆë‹¤!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
@@ -938,27 +939,27 @@ public class GameManager : MonoBehaviour
         hasSoaped = true;
 
         string itemName = itemData.StringName;
-        AlarmManager.Instance.ShowAlarm($"{itemName} »ç¿ë! ÀÌÁ¦ ºê·¯½¬¸¦ »ç¿ëÇÏ¼¼¿ä");
+        AlarmManager.Instance.ShowAlarm($"{itemName} ì‚¬ìš©! ì´ì œ ë¸ŒëŸ¬ì‰¬ë¥¼ ì‚¬ìš©í•˜ì„¸ìš”");
 
         if (soapItemImage != null)
         {
             soapItemImage.enabled = false;
         }
 
-        Debug.Log($"{itemName} »ç¿ë ¿Ï·á - Ã»°áµµ {cleanAmount} ´©Àû");
+        Debug.Log($"{itemName} ì‚¬ìš© ì™„ë£Œ - ì²­ê²°ë„ {cleanAmount} ëˆ„ì ");
     }
     public void UseBrushItem(int itemId, int amount = 1)
     {
         if (!hasSoaped)
         {
-            AlarmManager.Instance.ShowAlarm("¸ÕÀú ºñ´©¸¦ »ç¿ëÇØÁÖ¼¼¿ä!");
+            AlarmManager.Instance.ShowAlarm("ë¨¼ì € ë¹„ëˆ„ë¥¼ ì‚¬ìš©í•´ì£¼ì„¸ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!inventoryManager.HasItem(itemId, amount))
         {
-            AlarmManager.Instance.ShowAlarm("¾ÆÀÌÅÛÀÌ ºÎÁ·ÇÕ´Ï´Ù!");
+            AlarmManager.Instance.ShowAlarm("ì•„ì´í…œì´ ë¶€ì¡±í•©ë‹ˆë‹¤!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
@@ -978,15 +979,16 @@ public class GameManager : MonoBehaviour
 
 
         string itemName = itemData.StringName;
-        AlarmManager.Instance.ShowAlarm($"{itemName} »ç¿ë! ÀÌÁ¦ »ş¿ö¸¦ ÇÏ¼¼¿ä");
+        AlarmManager.Instance.ShowAlarm($"{itemName} ì‚¬ìš©! ì´ì œ ìƒ¤ì›Œë¥¼ í•˜ì„¸ìš”");
 
         if (brushItemImage != null)
         {
             brushItemImage.enabled = false;
         }
 
-        Debug.Log($"{itemName} »ç¿ë ¿Ï·á - Ã»°áµµ {cleanAmount} ´©Àû");
+        Debug.Log($"{itemName} ì‚¬ìš© ì™„ë£Œ - ì²­ê²°ë„ {cleanAmount} ëˆ„ì ");
     }
+
     public void CompleteShower()
     {
         dragonHealth.stats.ChangeStat(StatType.Clean, accumulatedClean);
@@ -994,7 +996,7 @@ public class GameManager : MonoBehaviour
 
         dragonHealth.GainExperience(accumulatedClean);
 
-        AlarmManager.Instance.ShowAlarm($"¸ñ¿å ¿Ï·á! Ã»°áµµ +{accumulatedClean}");
+        AlarmManager.Instance.ShowAlarm($"ëª©ìš• ì™„ë£Œ! ì²­ê²°ë„ +{accumulatedClean}");
         SoundManager.Instance.PlaySFX(SoundManager.Instance.successAudioClip);
 
         hasSoaped = false;
@@ -1012,7 +1014,7 @@ public class GameManager : MonoBehaviour
 
         bathCount++;
 
-        Debug.Log("¸ñ¿å ½ÃÄö½º ¿Ï·á");
+        Debug.Log("ëª©ìš• ì‹œí€€ìŠ¤ ì™„ë£Œ");
     }
 
     public void SaveGame()
@@ -1054,7 +1056,7 @@ public class GameManager : MonoBehaviour
 
         if (success)
         {
-            Debug.Log("°ÔÀÓ ÀúÀå ¿Ï·á");
+            Debug.Log("ê²Œì„ ì €ì¥ ì™„ë£Œ");
         }
     }
 
@@ -1098,7 +1100,7 @@ public class GameManager : MonoBehaviour
                 {
                     dragonHealth.isPassOut = false;
                     dragonHealth.status.RemoveStatus(StatusType.PassOut);
-                    Debug.Log("[LoadGame] Ã¼·ÂÀÌ È¸º¹µÇ¾î ±âÀı »óÅÂ ÇØÁ¦");
+                    Debug.Log("[LoadGame] ì²´ë ¥ì´ íšŒë³µë˜ì–´ ê¸°ì ˆ ìƒíƒœ í•´ì œ");
                 }
                 else if (dragonHealth.stats.IsStatPassOut() || dragonHealth.isPassOut)
                 {
@@ -1172,7 +1174,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"{eggDataList.Count}°³ÀÇ ¾ËÀ» ·ÎµåÇß½À´Ï´Ù.");
+        Debug.Log($"{eggDataList.Count}ê°œì˜ ì•Œì„ ë¡œë“œí–ˆìŠµë‹ˆë‹¤.");
     }
 
     private void CalculateOfflineProgress(string lastSaveTimeString)
@@ -1224,16 +1226,16 @@ public class GameManager : MonoBehaviour
                 if (dragonHealth.stats.hunger > 0)
                 {
                     float staminaIncrease = tableData.DEP_FOOD * decreaseCycles;
-                    Debug.Log($"¹è°íÇÄÀÌ 0º¸´Ù Å©¹Ç·Î Ã¼·Â È¸º¹: +{staminaIncrease}");
+                    Debug.Log($"ë°°ê³ í””ì´ 0ë³´ë‹¤ í¬ë¯€ë¡œ ì²´ë ¥ íšŒë³µ: +{staminaIncrease}");
                     dragonHealth.stats.ChangeStat(StatType.Stamina, staminaIncrease);
-                    Debug.Log($"Ã¼·Â: {dragonHealth.stats.stamina}/{dragonHealth.stats.maxStamina}");
+                    Debug.Log($"ì²´ë ¥: {dragonHealth.stats.stamina}/{dragonHealth.stats.maxStamina}");
                 }
                 else
                 {
                     float staminaDecrease = tableData.DEP_FOOD * decreaseCycles;
-                    Debug.Log($"¹è°íÇÄÀÌ 0ÀÌ¹Ç·Î Ã¼·Â °¨¼Ò: -{staminaDecrease}");
+                    Debug.Log($"ë°°ê³ í””ì´ 0ì´ë¯€ë¡œ ì²´ë ¥ ê°ì†Œ: -{staminaDecrease}");
                     dragonHealth.stats.ChangeStat(StatType.Stamina, -staminaDecrease);
-                    Debug.Log($"Ã¼·Â: {dragonHealth.stats.stamina}/{dragonHealth.stats.maxStamina}");
+                    Debug.Log($"ì²´ë ¥: {dragonHealth.stats.stamina}/{dragonHealth.stats.maxStamina}");
                 }
             }
             else
@@ -1242,9 +1244,9 @@ public class GameManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"CalculateOfflineProgress ¿À·ù ¹ß»ı!");
-            Debug.LogError($"¿À·ù ¸Ş½ÃÁö: {e.Message}");
-            Debug.LogError($"½ºÅÃ Æ®·¹ÀÌ½º: {e.StackTrace}");
+            Debug.LogError($"CalculateOfflineProgress ì˜¤ë¥˜ ë°œìƒ!");
+            Debug.LogError($"ì˜¤ë¥˜ ë©”ì‹œì§€: {e.Message}");
+            Debug.LogError($"ìŠ¤íƒ íŠ¸ë ˆì´ìŠ¤: {e.StackTrace}");
         }
     }
 
@@ -1255,7 +1257,7 @@ public class GameManager : MonoBehaviour
         if (dragon != null)
         {
             dragon.PlayPassOutAnimation();
-            Debug.Log("[LoadGame] ±âÀı ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı ¿Ï·á");
+            Debug.Log("[LoadGame] ê¸°ì ˆ ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ ì™„ë£Œ");
         }
     }
 
@@ -1263,14 +1265,14 @@ public class GameManager : MonoBehaviour
     {
         if (dragonHealth == null)
         {
-            AlarmManager.Instance.ShowAlarm("Ä¡·áÇÒ µå·¡°ïÀÌ ¾ø¾î¿ä!");
+            AlarmManager.Instance.ShowAlarm("ì¹˜ë£Œí•  ë“œë˜ê³¤ì´ ì—†ì–´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
 
         if (!dragonHealth.isPassOut)
         {
-            AlarmManager.Instance.ShowAlarm("µå·¡°ïÀÌ ¿ÏÀüÈ÷ °Ç°­ÇØ¿ä!");
+            AlarmManager.Instance.ShowAlarm("ë“œë˜ê³¤ì´ ì™„ì „íˆ ê±´ê°•í•´ìš”!");
             SoundManager.Instance.PlayErrorSound();
             return;
         }
@@ -1282,10 +1284,10 @@ public class GameManager : MonoBehaviour
 
         dragonHealth.GetComponent<DragonBehavior>().PlayRecoverAnimation();
 
-        AlarmManager.Instance.ShowAlarm("Ä¡·á ¿Ï·á! Ã¼·Â +10");
+        AlarmManager.Instance.ShowAlarm("ì¹˜ë£Œ ì™„ë£Œ! ì²´ë ¥ +10");
         SoundManager.Instance.PlaySFX(SoundManager.Instance.successAudioClip);
 
-        Debug.Log("µå·¡°ï Ä¡·á ¿Ï·á");
+        Debug.Log("ë“œë˜ê³¤ ì¹˜ë£Œ ì™„ë£Œ");
 
     }
 }
