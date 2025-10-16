@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -159,6 +162,8 @@ public class GameManager : MonoBehaviour
     public int restCount = 0;
     public int passOutCount = 0;
 
+    public DateTime dateTime;
+
     public Shop shop;
 
     public Sprite[] statusSprites;
@@ -177,14 +182,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    IEnumerator InitializeGame()
     {
+        yield return StartCoroutine(StartTime());
+
         LoadGame();
 
+        coinText.text = playerManager.coin.ToString();
+    }
+
+    private void Start()
+    {
         releaseButton.gameObject.SetActive(false);
         alarmPanel.gameObject.SetActive(false);
 
-        coinText.text = playerManager.coin.ToString();
+        StartCoroutine(InitializeGame());
     }
 
     public void Update()
@@ -370,7 +382,6 @@ public class GameManager : MonoBehaviour
         cleanSlider.value = Mathf.Clamp01(stats.clean / stats.maxClean);
         experienceSlider.value = Mathf.Clamp01(stats.experience / stats.experienceMax);
     }
-
 
     public void GetFeed()
     {
@@ -639,8 +650,8 @@ public class GameManager : MonoBehaviour
 
     public void OnClickEggCheat()
     {
-        int randomElement = Random.Range(0, 4);
-        int randomSpecies = Random.Range(0, 4);
+        int randomElement = UnityEngine.Random.Range(0, 4);
+        int randomSpecies = UnityEngine.Random.Range(0, 4);
 
         Debug.Log("랜덤 알 생성");
 
@@ -687,7 +698,7 @@ public class GameManager : MonoBehaviour
 
         if (allItems.Count > 0)
         {
-            int randomIndex = Random.Range(0, allItems.Count);
+            int randomIndex = UnityEngine.Random.Range(0, allItems.Count);
             var randomItem = allItems[randomIndex];
 
             inventoryManager.AddItem(randomItem.ITEM_ID, 1);
@@ -1050,7 +1061,7 @@ public class GameManager : MonoBehaviour
             saveData.TutorialCompleted = TutorialManager.Instance.isTutorialClear;
         }
 
-        saveData.LastSaveTime = System.DateTime.Now.ToBinary().ToString();
+        saveData.LastSaveTime = dateTime.ToBinary().ToString();
 
         bool success = SaveLoadManager.Save();
 
@@ -1186,15 +1197,18 @@ public class GameManager : MonoBehaviour
                 return;
             }
 
-            long lastSaveTimeBinary = System.Convert.ToInt64(lastSaveTimeString);
-            System.DateTime lastSaveTime = System.DateTime.FromBinary(lastSaveTimeBinary);
-            System.DateTime currentTime = System.DateTime.Now;
-
+            DateTime lastSaveTime = DateTime.FromBinary(Convert.ToInt64(lastSaveTimeString));
+            DateTime currentTime = dateTime;
 
             double offlineMinutes = (currentTime - lastSaveTime).TotalMinutes;
 
+            Debug.Log($"[Offline Progress] LastSaveTime: {lastSaveTime}");
+            Debug.Log($"[Offline Progress] CurrentTime: {currentTime}");
+            Debug.Log($"[Offline Progress] OfflineMinutes: {offlineMinutes}");
+
             if (offlineMinutes <= 0)
             {
+                Debug.Log("[Offline Progress] OfflineMinutes <= 0, 적용 안 됨");
                 return;
             }
 
@@ -1237,9 +1251,12 @@ public class GameManager : MonoBehaviour
                     dragonHealth.stats.ChangeStat(StatType.Stamina, -staminaDecrease);
                     Debug.Log($"체력: {dragonHealth.stats.stamina}/{dragonHealth.stats.maxStamina}");
                 }
+
+                Debug.Log("계산완료");
             }
             else
             {
+                Debug.Log("계산실패");
             }
         }
         catch (System.Exception e)
@@ -1289,5 +1306,39 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("드래곤 치료 완료");
 
+    }
+
+    IEnumerator StartTime()
+    {
+        Debug.Log("서버 시간 요청 시작");
+
+        using (UnityWebRequest www = UnityWebRequest.Get("https://worldtimeapi.org/api/timezone/Asia/Seoul"))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("요청 성공");
+                Debug.Log(www.downloadHandler.text);
+
+                var json = www.downloadHandler.text;
+                var timeStr = JsonUtility.FromJson<TimeApiData>(json).datetime;
+                dateTime = DateTime.Parse(timeStr);
+
+                Debug.Log("서버 시간: " + dateTime);
+            }
+            else
+            {
+                Debug.LogError("요청 실패: " + www.result);
+                Debug.LogError("에러 메시지: " + www.error);
+                dateTime = DateTime.Now;
+            }
+        }
+    }
+
+    [System.Serializable]
+    public class TimeApiData
+    {
+        public string datetime;
     }
 }
