@@ -169,6 +169,8 @@ public class GameManager : MonoBehaviour
     public Sprite[] statusSprites;
     public StatusUI statusUI;
 
+    private bool isTimeSync = false;
+
     public void Awake()
     {
         if (Instance == null)
@@ -201,6 +203,11 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
+        if (isTimeSync)
+        { 
+            dateTime = dateTime.AddSeconds(Time.deltaTime);
+        }
+
         if (Input.GetKeyDown(KeyCode.S))
         {
             SaveGame();
@@ -1067,6 +1074,7 @@ public class GameManager : MonoBehaviour
 
         if (success)
         {
+            Debug.Log(dateTime);
             Debug.Log("게임 저장 완료");
         }
     }
@@ -1308,7 +1316,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    IEnumerator StartTime()
+    private IEnumerator StartTime()
     {
         Debug.Log("서버 시간 요청 시작");
 
@@ -1325,6 +1333,8 @@ public class GameManager : MonoBehaviour
                 var timeStr = JsonUtility.FromJson<TimeApiData>(json).datetime;
                 dateTime = DateTime.Parse(timeStr);
 
+                isTimeSync = true;
+
                 Debug.Log("서버 시간: " + dateTime);
             }
             else
@@ -1332,6 +1342,8 @@ public class GameManager : MonoBehaviour
                 Debug.LogError("요청 실패: " + www.result);
                 Debug.LogError("에러 메시지: " + www.error);
                 dateTime = DateTime.Now;
+
+                isTimeSync = true;
             }
         }
     }

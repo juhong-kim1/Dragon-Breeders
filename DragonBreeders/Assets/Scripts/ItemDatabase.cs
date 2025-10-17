@@ -1,4 +1,5 @@
-using UnityEngine;
+ï»¿using UnityEngine;
+using System.Collections.Generic;
 
 public class ItemDatabase : MonoBehaviour
 {
@@ -8,12 +9,6 @@ public class ItemDatabase : MonoBehaviour
 
         if (itemData != null)
         {
-            //Debug.Log($"¾ÆÀÌÅÛ µ¥ÀÌÅÍ Ã£À½: ID={itemData.ITEM_ID}");
-            //Debug.Log($"¾ÆÀÌÅÛ ÀÌ¸§ Å°: {itemData.ITEM_NAME}");
-            //Debug.Log($"´Ù±¹¾î ÀÌ¸§: {itemData.StringName}");
-            //Debug.Log($"¾ÆÀÌÄÜ ÀÌ¸§: {itemData.ITEM_IMAGE}");
-            //Debug.Log($"¾ÆÀÌÄÜ ½ºÇÁ¶óÀÌÆ®: {itemData.SpriteIcon}");
-
             return new Item
             {
                 itemID = itemData.ITEM_ID,
@@ -24,7 +19,7 @@ public class ItemDatabase : MonoBehaviour
             };
         }
 
-        Debug.LogWarning($"¾ÆÀÌÅÛ ID {itemID}¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+        Debug.LogWarning($"ì•„ì´í…œ ID {itemID}ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
         return null;
     }
 
@@ -37,10 +32,11 @@ public class ItemDatabase : MonoBehaviour
     {
         return DataTableManger.ItemTable.Get(itemID);
     }
-    public System.Collections.Generic.List<IItem> GetItemsByType(int itemType)
+
+    public List<IItem> GetItemsByType(int itemType)
     {
         var allItems = DataTableManger.ItemTable.GetAll();
-        var result = new System.Collections.Generic.List<IItem>();
+        var result = new List<IItem>();
 
         foreach (var itemData in allItems)
         {
@@ -53,10 +49,10 @@ public class ItemDatabase : MonoBehaviour
         return result;
     }
 
-    public System.Collections.Generic.List<IItem> GetAllItems()
+    public List<IItem> GetAllItems()
     {
         var allItems = DataTableManger.ItemTable.GetAll();
-        var result = new System.Collections.Generic.List<IItem>();
+        var result = new List<IItem>();
 
         foreach (var itemData in allItems)
         {
