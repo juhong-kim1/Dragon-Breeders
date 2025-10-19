@@ -1037,6 +1037,12 @@ public class GameManager : MonoBehaviour
 
     public void SaveGame()
     {
+        if (TutorialManager.Instance != null && !TutorialManager.Instance.isTutorialClear)
+        {
+            Debug.Log("튜토리얼 완료 전에는 저장되지 않습니다!");
+            return;
+        }
+
         var saveData = SaveLoadManager.Data;
 
         saveData.InventoryItems = inventoryManager.GetAllItems();
@@ -1143,15 +1149,23 @@ public class GameManager : MonoBehaviour
             CalculateOfflineProgress(saveData.LastSaveTime);
         }
 
+
         if (TutorialManager.Instance != null)
         {
-            TutorialManager.Instance.currentStep = saveData.TutorialStep;
-            TutorialManager.Instance.isTutorialClear = saveData.TutorialCompleted;
-
-            if (!saveData.TutorialCompleted && saveData.TutorialStep > 0)
+            if (!saveData.TutorialCompleted)
             {
+                TutorialManager.Instance.currentStep = 0;
+                TutorialManager.Instance.isTutorialClear = false;
                 TutorialManager.Instance.tutorialActive = true;
                 TutorialManager.Instance.tutorialPanel.SetActive(true);
+            }
+            else
+            {
+                TutorialManager.Instance.currentStep = saveData.TutorialStep;
+                TutorialManager.Instance.isTutorialClear = true;
+                TutorialManager.Instance.tutorialActive = false;
+                TutorialManager.Instance.tutorialPanel.SetActive(false);
+
             }
         }
     }
