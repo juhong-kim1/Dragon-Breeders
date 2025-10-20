@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
@@ -44,7 +44,7 @@ public class InventoryUI : MonoBehaviour
             slotPool.Enqueue(newSlot);
         }
 
-        Debug.Log($"ÀÎº¥Åä¸® ÃÊ±âÈ­: ±âº» 6°³ ½½·Ô + Ç® {initialPoolSize - 6}°³");
+        Debug.Log($"ì¸ë²¤í† ë¦¬ ì´ˆê¸°í™”: ê¸°ë³¸ 6ê°œ ìŠ¬ë¡¯ + í’€ {initialPoolSize - 6}ê°œ");
     }
 
     public void RefreshDisplay(Dictionary<int, int> inventoryItems)
@@ -116,7 +116,7 @@ public class InventoryUI : MonoBehaviour
             itemIndex++;
         }
 
-        Debug.Log($"ÀÎº¥Åä¸® UI »õ·Î°íÄ§: {itemList.Count}°³ ¾ÆÀÌÅÛ, {activeSlots.Count}°³ ½½·Ô");
+        //Debug.Log($"ì¸ë²¤í† ë¦¬ UI ìƒˆë¡œê³ ì¹¨: {itemList.Count}ê°œ ì•„ì´í…œ, {activeSlots.Count}ê°œ ìŠ¬ë¡¯");
     }
 
 
@@ -166,7 +166,7 @@ public class InventoryUI : MonoBehaviour
             activeSlots.RemoveRange(6, activeSlots.Count - 6);
         }
 
-        Debug.Log("ÀÎº¥Åä¸® UI ¸ğµç ½½·Ô Á¤¸®");
+        Debug.Log("ì¸ë²¤í† ë¦¬ UI ëª¨ë“  ìŠ¬ë¡¯ ì •ë¦¬");
     }
 
     public int GetDisplayedItemCount()

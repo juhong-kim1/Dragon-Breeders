@@ -173,6 +173,8 @@ public class GameManager : MonoBehaviour
 
     public void Awake()
     {
+        Debug.unityLogger.logEnabled = false;
+
         if (Instance == null)
         {
             Instance = this;
