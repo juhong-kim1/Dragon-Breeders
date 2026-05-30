@@ -33,4 +33,4 @@ Google Play 출시작 / 개발 1인, 기획 2인 프로젝트
 
 ## 플레이스토어
 
-[Google Play에서 보기](https://play.google.com/store/apps/details?id=com.juhong-kim1.Dragon-Breeders)
+[Google Play에서 보기](https://play.google.com/store/apps/details?id=com.KyungIl.DragonBreeders)
